@@ -3,1084 +3,539 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traffic Loop Solution Organizational Chart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Traffic Loop | Organization</title>
+    
+    <!-- Premium Typography: Inter (Closest to Apple's San Francisco) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    colors: { 
+                        // Extracted from Logo
+                        brand: {
+                            dark: '#1d1d1f',    // Apple/Google Black
+                            gray: '#86868b',    // Apple Gray
+                            purple: '#8b5cf6',  // Traffic Loop Purple
+                            light: '#F5F5F7',   // Premium Background
+                            surface: '#FFFFFF'
+                        }
+                    },
+                    boxShadow: {
+                        'premium': '0 4px 24px rgba(0, 0, 0, 0.04)', // Ultra soft shadow
+                        'premium-hover': '0 8px 32px rgba(0, 0, 0, 0.08)',
+                        'floating': '0 12px 40px rgba(0, 0, 0, 0.12)',
+                    },
+                    borderRadius: {
+                        'xl': '18px', // Smooth corners
+                        '2xl': '24px',
+                    },
+                    transitionProperty: {
+                        'height': 'height, max-height, opacity, margin',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* Use Lato for headings and Poppins for body text */
+        /* --- CUPERTINO DESIGN SYSTEM --- */
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); /* Lighter, more subtle gradient */
-            min-height: 100vh;
-            padding-bottom: 50px;
-            color: #333;
-            line-height: 1.6;
+            background-color: #F5F5F7;
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        h1, h2, h3, .font-bold {
-            font-family: 'Lato', sans-serif; /* Use Lato for headings and bold text */
+        /* Glass Header (Frosted) */
+        .nav-blur {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .org-chart {
-            font-family: 'Poppins', sans-serif; /* Ensure Poppins is default for general text */
-        }
-
-        /* Styling for entity boxes */
-        .entity-box {
-            transition: all 0.3s ease, opacity 0.4s ease-in-out, transform 0.4s ease-in-out, visibility 0.4s ease-in-out;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Softer initial shadow */
-            border-radius: 12px;
+        /* Card Philosophy: "Content First" */
+        .card-premium {
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03); /* Barely visible shadow */
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 1px solid rgba(0,0,0,0.02); /* Micro-border for contrast */
             position: relative;
             overflow: hidden;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            outline: none;
-            border: 1px solid transparent; /* Subtle border for focus/click ring */
-            background-color: #ffffff; /* Explicit white background */
         }
 
-        /* State for elements hidden by filter */
-        .filtered-hidden {
-            /* Use display: none !important to ensure it overrides flex/grid */
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            transform: scale(0.98) !important; /* Subtle scale effect */
-             height: 0 !important;
-             margin-top: 0 !important;
-             margin-bottom: 0 !important;
-             padding-top: 0 !important;
-             padding-bottom: 0 !important;
-             border: none !important;
+        .card-premium:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
         }
 
-
-        /* Focus state for keyboard navigation */
-        .entity-box:focus-within {
-             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* indigo-500 with opacity */
-             border-color: rgba(99, 102, 241, 0.5);
-        }
-
-        /* Visual style for clicked entity box */
-        .entity-box.clicked {
-             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.8); /* More opaque indigo ring */
-             border-color: rgba(99, 102, 241, 0.8);
-        }
-
-        /* Highlight style for entity boxes in the reporting chain */
-        .entity-box.reporting-chain-highlight {
-             box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.8); /* Purple ring */
-             border-color: rgba(168, 85, 247, 0.8);
-        }
-
-
-        /* Top border color based on role/department */
-        .entity-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px; /* Border thickness */
-        }
-
-        /* Hover effect */
-        .entity-box:hover {
-            transform: translateY(-3px); /* Less pronounced lift */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
-        }
-
-        /* Specific border colors - Using a more refined palette */
-        .manager::before {
-            background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%); /* Indigo gradient */
-        }
-
-        .supervisor::before {
-            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); /* Blue gradient */
-        }
-
-        .team-leader::before {
-            background: linear-gradient(90deg, #059669 0%, #10b981 100%); /* Emerald gradient */
-        }
-
-        .mailer::before {
-            background: linear-gradient(90deg, #9ca3af 0%, #6b7280 100%); /* Gray gradient */
-        }
-
-        .support-dept::before {
-            background: linear-gradient(90deg, #f97316 0%, #ea580c 100%); /* Orange gradient */
-        }
-
-        .technician-dept::before {
-            background: linear-gradient(90deg, #a855f7 0%, #9333ea 100%); /* Purple gradient */
-        }
-
-        .offers-dept::before {
-            background: linear-gradient(90deg, #ec4899 0%, #e879f9 100%); /* Pink to Fuchsia gradient */
-        }
-
-         .it-dept::before {
-            background: linear-gradient(90deg, #06b6d4 0%, #0891b2 100%); /* Cyan gradient */
-        }
-
-
-        /* Location header styling */
-        .location-header {
-            background: linear-gradient(90deg, rgba(55,65,81,0.9) 0%, rgba(31,41,55,0.95) 100%); /* Darker gradient */
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-             transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, visibility 0.4s ease-in-out;
-             cursor: pointer;
-             box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Shadow for header */
-             display: flex; /* Use flex for better alignment */
-             justify-content: center;
-             align-items: center;
-             padding: 1rem 1.5rem; /* Increased padding */
-        }
-
-        /* Subtle background effect for location header */
-        .location-header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); /* Slightly less opacity */
-            transform: rotate(30deg);
-        }
-
-        .location-header h2 {
-            font-size: 1.5rem; /* Larger font size */
-            font-weight: 700; /* Bolder font */
-            margin: 0; /* Remove default margin */
-        }
-
-        .location-header .text-sm {
-             font-weight: 400; /* Regular weight for count */
-             background-color: rgba(255,255,255,0.15); /* Slightly more visible background */
-             padding: 0.25rem 0.75rem; /* Adjusted padding */
-             border-radius: 9999px; /* Fully rounded */
-        }
-
-
-        /* Styling for individual team members and clickable supervisor names */
-        .team-member, .clickable-supervisor {
-            transition: all 0.2s ease, opacity 0.4s ease-in-out, transform 0.4s ease-in-out, visibility 0.4s ease-in-out;
-            position: relative;
-            padding: 4px 0; /* Increased padding */
-            cursor: pointer;
-            outline: none;
-            color: #4b5563; /* Darker gray text */
-        }
-
-         /* State for elements hidden by filter (redundant with .filtered-hidden, but kept for potential specific styling) */
-        .team-member.filtered-hidden, .clickable-person.filtered-hidden {
-             /* display: none !important; already handled by .filtered-hidden */
-        }
-
-
-        /* Hover effect for team members and clickable supervisors */
-        .team-member:hover, .clickable-supervisor:hover {
-            transform: translateX(3px); /* Less pronounced slide */
-            color: #3b82f6; /* Highlight color on hover */
-            font-weight: 500; /* Slightly bolder on hover */
-        }
-
-        /* Focus state for keyboard navigation */
-        .team-member:focus, .clickable-supervisor:focus {
-            background-color: #e0f2fe; /* blue-100 */
-            font-weight: 600;
-            padding: 4px 6px; /* Adjusted padding */
-            border-radius: 4px;
-        }
-
-        /* Highlight effect for clicked/selected team members and supervisors */
-        .team-member.highlighted, .clickable-supervisor.highlighted {
-            background-color: #fef9c3; /* yellow-100 */
-            font-weight: 600;
-            padding: 4px 6px;
-            border-radius: 4px;
-        }
-
-         /* Highlight effect for elements in the reporting chain */
-         .reporting-chain-highlight {
-             background-color: #ede9fe; /* violet-100 */
-             font-weight: 600;
-             padding: 4px 6px;
-             border-radius: 4px;
-         }
-
-
-        /* Styling for the 'TL' label */
-        .team-member.tl::after {
-            content: 'TL';
-            position: absolute;
-            top: 50%;
-            right: 0;
-            background-color: #10b981; /* Emerald */
-            color: white;
-            font-size: 10px;
-            padding: 1px 5px; /* Adjusted padding */
-            border-radius: 4px;
-            transform: translateY(-50%);
-            font-weight: 600; /* Semi-bold TL label */
-        }
-
-        /* Floating animation for manager boxes - Made more subtle */
-        .animate-float {
-            animation: float 8s ease-in-out infinite; /* Longer duration */
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); } /* Smaller movement */
-            100% { transform: translateY(0px); }
-        }
-
-        /* Tooltip styling */
-        .tooltip {
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-            position: absolute;
-            z-index: 1;
-            background-color: rgba(31, 41, 55, 0.9); /* Darker background */
-            color: white;
-            font-size: 11px; /* Slightly smaller font */
-            padding: 4px 8px;
-            border-radius: 4px;
-            white-space: nowrap;
-            pointer-events: none;
-            bottom: calc(100% + 5px); /* Position above */
-            left: 50%;
-            transform: translateX(-50%); /* Center horizontally */
-        }
-
-        /* Show tooltip on hover */
-        .has-tooltip:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-         /* Tooltip arrow */
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: rgba(31, 41, 55, 0.9) transparent transparent transparent; /* Match tooltip background */
-        }
-
-
-        /* Team collapse/expand transition */
-        .team-collapse {
-            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
-            overflow: hidden;
-            max-height: 0;
-            opacity: 0;
-        }
-
-        .team-collapse.expanded {
-            max-height: 1000px; /* Allow enough height */
-            opacity: 1;
-        }
-
-        /* Toggle button styling */
-        .toggle-btn {
-            transition: all 0.3s ease;
-            cursor: pointer;
-            user-select: none;
-            outline: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 8px; /* Increased padding */
-            margin-bottom: 0.5rem; /* Added margin */
-            border-radius: 6px; /* Slightly more rounded */
-        }
-
-        /* Hover effect for toggle button */
-        .toggle-btn:hover {
-            background-color: #f3f4f6; /* Gray-100 */
-        }
-
-        /* Rotate icon when collapsed */
-        .toggle-btn.collapsed .fa-chevron-down {
-            transform: rotate(-90deg);
-        }
-        .toggle-btn .fa-chevron-down {
-             transition: transform 0.3s ease; /* Smooth rotation */
-        }
-
-
-        .entity-content {
-            flex-grow: 1;
-        }
-
-        /* Added styles for the detail modal */
-        .modal {
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4); /* Slightly less opaque backdrop */
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(6px); /* Slightly more blur */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
-            display: flex;
-        }
-
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* Stronger, more diffused shadow */
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            animation: modalopen 0.4s ease-out;
-            border: 1px solid #e5e7eb; /* Subtle border */
-        }
-
-         /* Styles for the Map Modal */
-        #mapModal .modal-content {
-             max-width: 800px;
-             height: 80%;
-             display: flex;
-             flex-direction: column;
-        }
-
-         #mapModal .modal-content iframe {
-             width: 100%;
-             flex-grow: 1;
-             border: none;
-             border-radius: 8px;
-         }
-
-
-        /* Modal open animation */
-        @keyframes modalopen {
-            from { opacity: 0; transform: translateY(-30px); } /* Start higher */
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-
-        .close-button {
-            color: #9ca3af; /* Gray color */
-            font-size: 30px; /* Slightly larger */
-            font-weight: normal; /* Normal weight */
-            position: absolute;
-            top: 15px; /* Adjusted position */
-            right: 20px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: #6b7280; /* Darker gray on hover/focus */
-            text-decoration: none;
-            outline: none;
-        }
-
-        /* Search highlight styling */
-        .highlight {
-            background-color: #fef08a; /* yellow-200 */
-            padding: 1px 2px;
+        /* The "Loop" Accent - Subtle indication of Brand */
+        .brand-indicator {
+            width: 40px; height: 4px;
+            background: #8b5cf6; /* Traffic Loop Purple */
             border-radius: 2px;
-            font-weight: 600; /* Make highlight slightly bolder */
+            margin-bottom: 16px;
+            opacity: 0.8;
         }
 
-        /* Telegram link styling */
-        .telegram-link {
-            color: #0088cc; /* Telegram blue */
-            text-decoration: none;
+        /* Typography Hierarchy */
+        h1, h2, h3, h4 { letter-spacing: -0.02em; }
+        
+        /* Inputs */
+        .input-premium {
+            background: #e6e6e8; /* Darker input bg for contrast on white */
+            border: none;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            color: #1d1d1f;
+        }
+        .input-premium:focus {
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15); /* Purple Focus Ring */
+            outline: none;
+        }
+
+        /* Buttons: Apple Style Pills */
+        .btn-pill {
+            border-radius: 9999px;
             font-weight: 500;
-            transition: color 0.2s ease;
+            transition: all 0.2s ease;
         }
+        .btn-primary {
+            background: #1d1d1f;
+            color: white;
+        }
+        .btn-primary:hover { background: #333; transform: translateY(-1px); }
+        
+        .btn-secondary {
+            background: #e8e8ed;
+            color: #1d1d1f;
+        }
+        .btn-secondary:hover { background: #dcdce0; }
 
-        .telegram-link:hover {
-            text-decoration: underline;
-            color: #005f8c; /* Darker blue on hover */
-        }
-
-        /* Search input container for icon */
-        .search-container {
-            position: relative;
-            width: 100%;
-            max-width: 300px; /* Limit max width */
-        }
-
-        .search-container input {
-            padding-left: 2.5rem; /* Make space for the icon */
-        }
-
-        .search-container .search-icon {
-            position: absolute;
-            left: 0.75rem; /* Position icon inside */
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af; /* Gray icon color */
-            pointer-events: none; /* Icon is not clickable */
-        }
-
-        /* Filter dropdown styling */
-        .filter-dropdown {
-            padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            background-color: white;
-            font-size: 0.875rem; /* text-sm */
-            color: #374151; /* gray-700 */
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            appearance: none; /* Remove default dropdown arrow */
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%236b7280%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M1.646%204.646a.5.5%200%200%201%20.708%200L8%2010.293l5.646-5.647a.5.5%200%200%201%20.708.708l-6%206a.5.5%200%200%201-.708%200l-6-6a.5.5%200%200%201%200-.708z%22/%3E%3C/svg%3E'); /* Simple chevron down */
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1em auto; /* Adjust size */
-            padding-right: 2.5rem; /* Ensure space for custom arrow */
-        }
-
-        .filter-dropdown:focus {
-             border-color: #6366f1; /* indigo-500 */
-             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
-        }
-
-        /* --- Styles for Multi-Role Filter --- */
-        .role-filter-container {
-            position: relative;
-            width: 100%; /* Full width on mobile */
-        }
-
-        .role-filter-button {
-            padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            background-color: white;
-            font-size: 0.875rem;
-            color: #374151;
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%; /* Button takes full width of container */
-            text-align: left;
-        }
-        .role-filter-button:focus {
-             border-color: #6366f1;
-             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
-        }
-        .role-filter-button .selected-roles-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex-grow: 1;
-            margin-right: 8px; /* Space before icon */
-        }
-        .role-filter-button .fa-chevron-down {
-            transition: transform 0.3s ease;
-        }
-        .role-filter-button.open .fa-chevron-down {
-            transform: rotate(180deg);
-        }
-
-        .role-filter-dropdown {
-            position: absolute;
-            top: calc(100% + 4px); /* Position below button */
-            left: 0;
-            right: 0;
-            background-color: white;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 50; /* Ensure it's above other content */
-            max-height: 250px; /* Limit height and make scrollable */
-            overflow-y: auto;
+        /* Collapse Animation (Smooth) */
+        .team-collapse {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
             opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
         }
-        .role-filter-dropdown.open {
+        .team-collapse.expanded {
+            grid-template-rows: 1fr;
             opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+            margin-top: 12px;
         }
+        .team-collapse > div { overflow: hidden; }
 
-        .role-filter-dropdown label {
-            display: block;
-            padding: 8px 12px;
-            font-size: 0.875rem;
-            color: #374151;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            border-bottom: 1px solid #e5e7eb; /* Separator */
+        /* Modal Overlay */
+        .modal-overlay {
+            background: rgba(50, 50, 50, 0.4); /* Darker, sophisticated overlay */
+            backdrop-filter: blur(8px);
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            z-index: 100; position: fixed; inset: 0;
         }
-        .role-filter-dropdown label:last-child {
-            border-bottom: none;
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+
+        .modal-card {
+            transform: scale(0.94) translateY(16px);
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
-        .role-filter-dropdown label:hover {
-            background-color: #f3f4f6; /* gray-100 */
-        }
-        .role-filter-dropdown input[type="checkbox"] {
-            margin-right: 8px;
-            accent-color: #6366f1; /* indigo-500 */
-        }
+        .modal-overlay.show .modal-card { transform: scale(1) translateY(0); }
 
-        /* Responsive adjustments */
-        @media (max-width: 767px) {
-            .entity-box {
-                width: 100%;
-                margin-bottom: 1.5rem; /* Increased margin */
-            }
-
-            .location-header h2 {
-                font-size: 1.3rem; /* Slightly larger font */
-            }
-
-            .manager-box {
-                width: 95%; /* Adjusted width */
-            }
-
-            /* Stack columns on small screens */
-            .grid-cols-5, .grid-cols-3, .grid-cols-2, .grid-cols-4 {
-                grid-template-columns: 1fr !important;
-            }
-
-            .legend-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .summary-flex {
-                flex-direction: column;
-                gap: 1.5rem; /* Increased gap */
-            }
-
-             #mapModal .modal-content {
-                 height: 90%;
-             }
-
-             .search-container {
-                 max-width: 100%; /* Full width on small screens */
-             }
-             .filter-controls {
-                 flex-direction: column;
-                 align-items: stretch; /* Stretch controls full width */
-                 gap: 1rem;
-             }
-             .filter-dropdown, .role-filter-container { /* Apply to new filter */
-                 width: 100%; /* Full width dropdowns */
-             }
-        }
-
-        @media (min-width: 768px) {
-            /* --- NEW --- Adjust width for role filter on larger screens */
-            .role-filter-container {
-                 width: auto; /* Allow it to size based on content/flex */
-                 min-width: 180px; /* Give it a minimum width */
-            }
-        }
-
-
-        @media (min-width: 768px) and (max-width: 1023px) {
-             /* Adjust grid columns for medium screens */
-            .grid-cols-5 {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-
-            .grid-cols-3 {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-
-             .grid-cols-4 {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-
-            .legend-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-        }
-
-        /* Print styles */
+        /* Utilities */
+        .filtered-hidden { display: none !important; }
+        .clickable-person { cursor: pointer; border-radius: 8px; transition: background 0.2s; }
+        .clickable-person:hover { background: #F5F5F7; }
+        
+        /* Print */
         @media print {
-            body {
-                background: white !important;
-                color: black !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .entity-box {
-                break-inside: avoid;
-                box-shadow: none !important;
-                border: 1px solid #d1d5db !important; /* Lighter border for print */
-                opacity: 1 !important;
-                visibility: visible !important;
-                transform: none !important;
-                height: auto !important;
-                margin: initial !important;
-                padding: initial !important;
-            }
-
-             .filtered-hidden {
-                 display: none !important;
-             }
-
-
-            /* Ensure collapsed sections are visible when printing */
-            .team-collapse.collapsed {
-                max-height: none !important;
-                opacity: 1 !important;
-                display: block !important; /* Ensure content is shown */
-            }
-             .team-collapse {
-                 max-height: none !important; /* Ensure all content is printed */
-                 opacity: 1 !important;
-                 display: block !important;
-             }
-
-            .location-header {
-                background: #1f2937 !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                transform: none !important;
-            }
-
-            /* Hide elements not needed for print */
-            .toggle-btn .fa-chevron-down, /* Hide chevron icon */
-            .modal, #memberSearch, button,
-            .search-container .search-icon,
-            .filter-controls, .animate-float,
-            .role-filter-button .fa-chevron-down, /* Hide role filter icon */
-            .role-filter-dropdown /* Hide role filter dropdown */ {
-                display: none !important;
-            }
-
-            .member-count {
-                background-color: #e5e7eb !important;
-                color: #333 !important;
-            }
-
-             .entity-box::before {
-                 height: 2px;
-             }
-
-             /* Ensure highlights are visible in print */
-             .highlight {
-                 background-color: #ffff00 !important; /* Yellow highlight for print */
-                 -webkit-print-color-adjust: exact;
-                 print-color-adjust: exact;
-                 font-weight: normal; /* Avoid excessive bolding */
-                 padding: 0;
-                 border-radius: 0;
-             }
-             .telegram-link {
-                 color: #0088cc !important;
-                 text-decoration: none !important;
-             }
-             .telegram-link i {
-                 display: none; /* Hide icon in print */
-             }
+            body { background: white; }
+            .no-print { display: none; }
+            .card-premium { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            .team-collapse { display: block !important; grid-template-rows: 1fr !important; opacity: 1 !important; }
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <div class="container mx-auto px-4 py-8 org-chart">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-6">
-             <div class="text-center md:text-left flex flex-col items-center md:items-start">
-                <img src="https://i.imgur.com/Paft0Df.png" alt="Traffic Loop Solutions Logo" class="h-16 mb-4" />
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-1">Traffic Loop Solutions</h1>
-                <p class="text-gray-600">Organizational Structure</p>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav-blur fixed top-0 w-full z-50 h-16 flex items-center">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <img src="https://i.imgur.com/Paft0Df.png" alt="Traffic Loop" class="h-8 w-auto object-contain">
+                <div class="h-4 w-[1px] bg-gray-300 mx-1"></div>
+                <span class="text-sm font-medium text-brand-gray tracking-wide">Organization</span>
             </div>
-             <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto filter-controls">
-                 <div class="search-container flex-grow w-full sm:w-auto">
-                     <input type="text" id="memberSearch" placeholder="Search name, role, team, entity..." class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" aria-label="Search team members">
-                     <i class="fas fa-search search-icon"></i>
-                 </div>
-                 <div class="role-filter-container flex-shrink-0 w-full sm:w-auto">
-                     <button type="button" id="roleFilterButton" class="role-filter-button" aria-haspopup="listbox" aria-expanded="false">
-                         <span class="selected-roles-text">All Roles</span>
-                         <i class="fas fa-chevron-down text-xs text-gray-500"></i>
-                     </button>
-                     <div id="roleFilterDropdown" class="role-filter-dropdown" role="listbox" aria-multiselectable="true">
-                         </div>
-                 </div>
-                 <select id="locationFilter" class="filter-dropdown w-full sm:w-auto">
-                     <option value="">All Locations</option>
-                     </select>
+
+            <!-- Global Search & Actions -->
+            <div class="flex items-center gap-4 no-print">
+                <!-- Search Bar -->
+                <div class="relative hidden md:block group">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                    <input type="text" id="globalSearch" placeholder="Search..." 
+                           class="input-premium pl-9 pr-4 py-1.5 text-sm w-64 placeholder-gray-500">
+                </div>
+                
+                <!-- Filters Trigger -->
+                <button id="filterToggleBtn" class="btn-secondary w-8 h-8 flex items-center justify-center rounded-full text-sm">
+                    <i class="fas fa-sliders-h"></i>
+                </button>
             </div>
         </div>
+    </nav>
 
-        <div class="flex justify-center gap-4 mb-10 flex-wrap">
-            <button onclick="expandAllTeams()" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition ease-in-out duration-150 shadow-md hover:shadow-lg">
-                <i class="fas fa-expand mr-2"></i>Expand All
-            </button>
-            <button onclick="collapseAllTeams()" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition ease-in-out duration-150 shadow-md hover:shadow-lg">
-                <i class="fas fa-compress mr-2"></i>Collapse All
-            </button>
-             <button onclick="exportDataToCsv()" class="px-6 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 transition ease-in-out duration-150 shadow-md hover:shadow-lg">
-                <i class="fas fa-file-csv mr-2"></i>Export to CSV
-            </button>
-             <button onclick="exportDataToPdf()" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition ease-in-out duration-150 shadow-md hover:shadow-lg">
-                <i class="fas fa-file-pdf mr-2"></i>Export to PDF
-            </button>
-        </div>
-
-        <div class="flex flex-col md:flex-row justify-center gap-8 mb-12">
-             <div class="entity-box manager bg-white rounded-xl p-6 text-center w-full md:w-72 animate-float relative overflow-hidden" tabindex="0" role="button" aria-label="Salaheddine Elyaakoubi - Manager">
-                <div class="absolute top-0 left-0 w-full h-full opacity-10" style="background: radial-gradient(circle at center, #6366f1 0%, transparent 70%);"></div>
-                <div class="relative z-10 clickable-person" data-name="Salaheddine Elyaakoubi" data-role="Manager" data-team="N/A" data-entity="N/A" data-location="California" data-telegram="@Salaheddine_elyakoubi">
-                    <div class="text-2xl font-bold text-gray-800">Salaheddine Elyaakoubi</div>
-                    <div class="text-sm text-indigo-600 font-medium" data-search-text="Manager">Manager</div>
-                    <div class="text-xs mt-2 text-gray-500" data-search-text="All Locations">All Locations</div>
-                    <div class="mt-4 flex justify-center space-x-3">
-                         <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
-                             <i class="fas fa-crown text-sm"></i>
-                         </div>
+    <!-- Filters Panel (Hidden by default, slides down) -->
+    <div id="filterPanel" class="fixed top-16 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-100 z-40 hidden transition-all duration-300 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row gap-6 items-center justify-between">
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <select id="locationFilter" class="input-premium px-4 py-2 text-sm w-full md:w-48 cursor-pointer">
+                    <option value="">All Locations</option>
+                </select>
+                <div class="relative w-full md:w-48">
+                    <button id="roleDropdownBtn" class="input-premium px-4 py-2 text-sm w-full text-left flex justify-between items-center">
+                        <span class="selected-role-text">All Roles</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                    </button>
+                    <!-- Role Dropdown -->
+                    <div id="roleDropdown" class="absolute top-full left-0 w-full mt-2 bg-white rounded-xl shadow-floating p-2 hidden border border-gray-100 max-h-60 overflow-y-auto">
+                        <!-- JS Populated -->
                     </div>
                 </div>
             </div>
-            <div class="entity-box manager bg-white rounded-xl p-6 text-center w-full md:w-72 animate-float relative overflow-hidden" tabindex="0" role="button" aria-label="Ibrahim EL Maimouni - HR">
-                 <div class="absolute top-0 left-0 w-full h-full opacity-10" style="background: radial-gradient(circle at center, #4f46e5 0%, transparent 70%);"></div>
-                 <div class="relative z-10 clickable-person" data-name="Ibrahim EL Maimouni" data-role="HR" data-team="N/A" data-entity="N/A" data-location="California" data-telegram="@Ibrahim_Elmimouni">
-                    <div class="text-2xl font-bold text-gray-800">Ibrahim EL Maimouni</div>
-                    <div class="text-sm text-indigo-600 font-medium" data-search-text="HR">HR</div>
-                    <div class="text-xs mt-2 text-gray-500" data-search-text="Human Resources">Human Resources</div>
-                    <div class="mt-4 flex justify-center space-x-3">
-                         <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
-                             <i class="fas fa-user-tie text-sm"></i>
-                         </div>
-                    </div>
+            
+            <div class="flex gap-2">
+                <button onclick="expandAllTeams()" class="text-xs font-semibold text-brand-purple hover:text-brand-dark transition-colors px-3 py-1">Expand All</button>
+                <button onclick="collapseAllTeams()" class="text-xs font-semibold text-gray-500 hover:text-brand-dark transition-colors px-3 py-1">Collapse</button>
+                <button onclick="exportPDF()" class="text-xs font-semibold text-gray-500 hover:text-brand-dark transition-colors px-3 py-1"><i class="fas fa-download mr-1"></i> PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Canvas -->
+    <main class="container mx-auto px-6 pt-32 pb-20 org-chart-canvas">
+        
+        <!-- Hero: Executive Leadership -->
+        <div class="text-center mb-16 animate-fade-in">
+            <h1 class="text-4xl font-bold text-brand-dark mb-4 tracking-tight">Leadership</h1>
+            <p class="text-brand-gray text-lg max-w-2xl mx-auto">Traffic Loop Solutions structure overview.</p>
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-center gap-8 mb-24">
+            <!-- Manager Card -->
+            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person" 
+                 data-name="Salaheddine Elyaakoubi" data-role="Manager" data-location="Global" data-telegram="@Salaheddine_elyakoubi">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center text-3xl text-brand-dark shadow-inner">
+                    <img src="https://ui-avatars.com/api/?name=Salaheddine+E&background=random&color=fff&size=128" class="rounded-full w-full h-full object-cover opacity-90" alt="">
+                </div>
+                <h2 class="text-2xl font-bold text-brand-dark mb-1">Salaheddine Elyaakoubi</h2>
+                <p class="text-brand-purple font-medium text-sm tracking-wide uppercase mb-4">Manager</p>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold text-gray-600">
+                    <i class="fas fa-globe-americas"></i> Global
+                </div>
+            </div>
+
+            <!-- HR Card -->
+            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person"
+                 data-name="Ibrahim EL Maimouni" data-role="HR Manager" data-location="HQ" data-telegram="@Ibrahim_Elmimouni">
+                 <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center text-3xl text-brand-dark shadow-inner">
+                    <img src="https://ui-avatars.com/api/?name=Ibrahim+E&background=random&color=fff&size=128" class="rounded-full w-full h-full object-cover opacity-90" alt="">
+                </div>
+                <h2 class="text-2xl font-bold text-brand-dark mb-1">Ibrahim EL Maimouni</h2>
+                <p class="text-brand-purple font-medium text-sm tracking-wide uppercase mb-4">Human Resources</p>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold text-gray-600">
+                    <i class="fas fa-building"></i> Headquarters
                 </div>
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto" data-location="Special Departments (California)">
-            <div class="location-header text-white rounded-xl p-4 mb-8 relative" data-map-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1dPLACEHOLDER_CALIFORNIA_SPECIAL_DEPARTMENTS!2d-118.243683!3d34.052235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fcd699d41e495!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2sus!4v1678888888888!5m2!1sen!2sushttps://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.7368258798906!2d-5.8449250237249295!3d35.78184052443994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c79a01a02e7a7%3A0x3742104ecd03499a!2sTraffic%20loop%20solutions!5e0!3m2!1sen!2sma!4v1746104811818!5m2!1sen!2sma">
-                 <h2 class="text-xl font-bold text-center relative z-10">
-                    <i class="fas fa-globe mr-2"></i>California (Special Departments)                </h2>
+        <!-- Section Divider -->
+        <div class="border-t border-gray-200 my-16"></div>
+
+        <!-- Special Departments (Grid Layout) -->
+        <div class="mb-20" data-location="Special Departments (California)">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-brand-dark">Specialized Departments</h3>
+                    <p class="text-brand-gray text-sm">California Campus</p>
+                </div>
+                <!-- Map Button -->
+                <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                    data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.733248043701!2d-118.2436849847898!3d34.05223422525514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fcd699d41e495!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2sus!4v1678888888888!5m2!1sen!2sus">
+                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+                </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="entity-box technician-dept bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="Technician Department" data-entity="Technician">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="Technician">Technician</div>
-                                <div class="text-xs text-purple-600 font-medium" data-search-text="Support Department">Support Department</div>
-                            </div>
-                            <div class="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
-                        <div class="flex items-center mb-4 clickable-person clickable-supervisor" tabindex="0" role="button" aria-label="Mohamed Alaoui - Technician" data-name="Mohamed Alaoui" data-role="Technician" data-team="Technician" data-entity="Technician" data-location="Special Departments (California)">
-                            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
-                                <i class="fas fa-tools"></i>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-gray-800" data-search-text="Mohamed Alaoui">Mohamed Alaoui</div>
-                                <div class="text-xs text-purple-600" data-search-text="Technical Support">Technical Support</div>
-                            </div>
+                <!-- Tech Dept -->
+                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Technician">
+                    <div class="brand-indicator"></div>
+                    <div class="flex justify-between items-start mb-6">
+                        <h4 class="font-bold text-lg">Technician</h4>
+                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">SUPPORT</span>
+                    </div>
+                    <!-- Single Person -->
+                    <div class="flex items-center gap-3 clickable-person p-2" data-name="Mohamed Alaoui" data-role="Tech Lead" data-team="Technician">
+                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold text-sm">MA</div>
+                        <div>
+                            <div class="font-semibold text-sm">Mohamed Alaoui</div>
+                            <div class="text-xs text-brand-gray">Technical Lead</div>
                         </div>
                     </div>
                 </div>
-                <div class="entity-box offers-dept bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="Offers Team Department" data-entity="Offers Team">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="Offers Team">Offers Team</div>
-                                <div class="text-xs text-pink-600 font-medium" data-search-text="Support Department">Support Department</div>
-                            </div>
-                             <div class="bg-pink-100 text-pink-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
 
-                        <div class="flex justify-between items-center mb-2 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="offers-team">
-                            <div class="text-sm text-gray-600" data-team="Offers Team">Team Members</div>
-                            <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                        </div>
-                        <div id="offers-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                            <ul class="space-y-2">
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Bouchra Merroun" data-name="Bouchra Merroun" data-role="Offers Team" data-team="Offers Team" data-entity="Offers Team" data-telegram="@B_chra" data-location="Special Departments (California)">Bouchra Merroun</li>
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Imane" data-name="Imane" data-role="Offers Team" data-team="Offers Team" data-entity="Offers Team" data-telegram="" data-location="Special Departments (California)">Imane</li>
-                            
-							</ul>
+                <!-- Offers -->
+                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Offers Team">
+                    <div class="brand-indicator"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-bold text-lg">Offers</h4>
+                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">MARKETING</span>
+                    </div>
+                    <div class="mt-auto">
+                        <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
+                            <span>View Members</span>
+                            <i class="fas fa-plus transition-transform"></i>
+                        </button>
+                        <div class="team-collapse">
+                            <div class="space-y-1 pt-2">
+                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Bouchra Merroun" data-role="Offers">Bouchra Merroun</div>
+                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Imane Laboudi" data-role="Offers">Imane Laboudi</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="entity-box support-dept bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="Security Department" data-entity="Security">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="Security">Security</div>
-                                <div class="text-xs text-orange-600 font-medium" data-search-text="Support Department">Support Department</div>
-                            </div>
-                             <div class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
 
-                        <div class="flex justify-between items-center mb-2 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="security-team">
-                            <div class="text-sm text-gray-600" data-team="Security">Members</div>
-                            <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                        </div>
-                        <div id="security-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                            <ul class="space-y-2">
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Abdelmoumen" data-name="Abdelmoumen" data-role="Support Staff" data-team="Security" data-entity="Security" data-location="Special Departments (California)">Abdelmoumen</li>
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Hamid" data-name="Hamid" data-role="Support Staff" data-team="Security" data-entity="Security" data-location="Special Departments (California)">Hamid</li>
-                            </ul>
+                <!-- Security -->
+                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Security">
+                    <div class="brand-indicator"></div>
+                     <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-bold text-lg">Security</h4>
+                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
+                    </div>
+                    <div class="mt-auto">
+                        <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
+                            <span>View Staff</span>
+                            <i class="fas fa-plus transition-transform"></i>
+                        </button>
+                        <div class="team-collapse">
+                            <div class="space-y-1 pt-2">
+                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Abdelmoumen" data-role="Security">Abdelmoumen</div>
+                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Hamid" data-role="Security">Hamid</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="entity-box support-dept bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="Cleaning Department" data-entity="Cleaning">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="Cleaning">Cleaning</div>
-                                <div class="text-xs text-orange-600 font-medium" data-search-text="Support Department">Support Department</div>
+
+                <!-- Cleaning -->
+                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Cleaning">
+                    <div class="brand-indicator"></div>
+                     <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-bold text-lg">Cleaning</h4>
+                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
+                    </div>
+                    <div class="mt-auto">
+                        <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
+                            <span>View Staff</span>
+                            <i class="fas fa-plus transition-transform"></i>
+                        </button>
+                        <div class="team-collapse">
+                            <div class="space-y-1 pt-2">
+                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Mounia" data-role="Cleaning">Mounia</div>
+                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Aziza" data-role="Cleaning">Aziza</div>
                             </div>
-                             <div class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
-                        <div class="flex justify-between items-center mb-2 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="cleaning-team">
-                            <div class="text-sm text-gray-600" data-team="Cleaning">Members</div>
-                            <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                        </div>
-                        <div id="cleaning-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                            <ul class="space-y-2">
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Mounia" data-name="Mounia" data-role="Support Staff" data-team="Cleaning" data-entity="Cleaning" data-location="Special Departments (California)">Mounia</li>
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Aziza" data-name="Aziza" data-role="Support Staff" data-team="Cleaning" data-entity="Cleaning" data-location="Special Departments (California)">Aziza</li>
-                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto mt-12" data-location="California">
-            <div class="location-header text-white rounded-xl p-4 mb-8 relative" data-map-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.7368258798906!2d-5.8449250237249295!3d35.78184052443994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c79a01a02e7a7%3A0x3742104ecd03499a!2sTraffic%20loop%20solutions!5e0!3m2!1sen!2sma!4v1746104811818!5m2!1sen!2sma">
-                 <h2 class="text-xl font-bold text-center relative z-10">
-                    <i class="fas fa-map-marker-alt mr-2"></i>California
-					</h2>
+        <!-- California Main -->
+        <div class="mb-20" data-location="California">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-brand-dark">California Operations</h3>
+                    <p class="text-brand-gray text-sm">Main Office</p>
+                </div>
+                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                    data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.7368258798906!2d-5.8449250237249295!3d35.78184052443994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c79a01a02e7a7%3A0x3742104ecd03499a!2sTraffic%20loop%20solutions!5e0!3m2!1sen!2sma!4v1746104811818!5m2!1sen!2sma">
+                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div class="entity-box supervisor bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="GML Entity" data-entity="GML">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="GML">GML</div>
-                            </div>
-                             <div class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- GML Supervisor -->
+                <div class="card-premium p-0 entity-box" data-entity="GML">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="brand-indicator"></div>
+                        <h4 class="font-bold text-xl mb-4">GML</h4>
+                        <div class="flex items-center gap-3 clickable-person" data-name="Hicham Mennour" data-role="Supervisor" data-telegram="@hichamwork">
+                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold">HM</div>
+                             <div>
+                                <div class="font-bold text-sm">Hicham Mennour</div>
+                                <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
+                             </div>
                         </div>
-                        <div class="flex items-center mb-4 clickable-person clickable-supervisor" tabindex="0" role="button" aria-label="Hicham Mennour - Supervisor" data-name="Hicham Mennour" data-role="Supervisor" data-entity="GML" data-location="California" data-telegram="@hichamwork">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-                                <i class="fas fa-user-shield"></i>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-gray-800" data-search-text="Hicham Mennour">Hicham Mennour</div>
-                                <div class="text-xs text-blue-600" data-search-text="Supervisor">Supervisor</div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mb-2 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gml-others-team">
-                            <div class="text-sm text-gray-600" data-team="Others Team">Others Team</div>
-                            <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                        </div>
-                        <div id="gml-others-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                            <ul class="space-y-1">
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Mohamed khallouqi" data-name="Mohamed khallouqi" data-role="Mailer" data-team="Others Team" data-entity="GML" data-telegram="@M_med_018" data-location="California">Mohamed khallouqi</li>
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Ihab Lamsaadi" data-name="Ihab Lamsaadi" data-role="Mailer" data-team="Others Team" data-entity="GML" data-telegram="@ihablams" data-location="California">Ihab Lamsaadi</li>
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Khalid Touil" data-name="Khalid Touil" data-role="Mailer" data-team="Others Team" data-entity="GML" data-telegram="@koli78" data-location="California">Khalid Touil</li>
-                                <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Nadir Elabid" data-name="Nadir Elabid" data-role="Mailer" data-team="Others Team" data-entity="GML" data-location="California">Nadir Elabid</li>
-                            </ul>
-                        </div>
-						<div>
-                                <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gml-smtp-team">
-                                    <div class="text-sm text-gray-600" data-team="SMTP Team">Gmail Team</div>
-                                    <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
+                    </div>
+                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
+                        <!-- Team 1 -->
+                        <div class="mb-2">
+                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
+                                <span>OTHERS TEAM</span>
+                                <i class="fas fa-plus text-[10px] opacity-50"></i>
+                            </button>
+                            <div class="team-collapse pl-2">
+                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mohamed khallouqi">Mohamed khallouqi</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Ihab Lamsaadi">Ihab Lamsaadi</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Khalid Touil">Khalid Touil</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Nadir Elabid">Nadir Elabid</div>
                                 </div>
-                                <div id="gm2-yahoo-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                    <ul class="space-y-1">
-                                        <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Akram Mlouki - Team Leader" data-name="Akram Mlouki" data-role="Team Leader" data-team="SMTP Team" data-entity="GML" data-telegram="@akrammlouki" data-location="California">
-                                            Akram Mlouki
-                                            <div class="tooltip">Team Leader</div>
-                                        </li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Oumaima El Moussaoui" data-name="Oumaima El Moussaoui" data-role="Mailer" data-team="Others Team" data-entity="GML" data-telegram="@OumaimaELMusaui" data-location="California">Oumaima El Moussaoui</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Charif Edrissi" data-name="Charif Edrissi" data-role="Mailer" data-team="Hotmail Spam" data-entity="GMK" data-location="California">Charif Edrissi</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Khalid Mesbah" data-name="Khalid Mesbah" data-role="Mailer" data-team="Gmail Spam" data-entity="GMK" data-telegram="@khaledeeev" data-location="California">Khalid Mesbah</li>
+                            </div>
+                        </div>
+                        <!-- Team 2 -->
+                        <div>
+                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
+                                <span>GMAIL TEAM</span>
+                                <i class="fas fa-plus text-[10px] opacity-50"></i>
+                            </button>
+                            <div class="team-collapse pl-2">
+                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
+                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Akram Mlouki" data-role="Team Leader">Akram Mlouki (Lead)</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Oumaima El Moussaoui">Oumaima El Moussaoui</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Charif Edrissi">Charif Edrissi</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Khalid Mesbah">Khalid Mesbah</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                    </ul>
-                                </div>
-                            </div>
+                <!-- GMK Supervisor -->
+                <div class="card-premium p-0 entity-box" data-entity="GMK">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="brand-indicator"></div>
+                        <h4 class="font-bold text-xl mb-4">GMK</h4>
+                        <div class="flex items-center gap-3 clickable-person" data-name="Hamza Fellah" data-role="Supervisor">
+                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold">HF</div>
+                             <div>
+                                <div class="font-bold text-sm">Hamza Fellah</div>
+                                <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
+                             </div>
+                        </div>
                     </div>
-                </div>
-                <div class="entity-box supervisor bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="GMK Entity" data-entity="GMK">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="GMK">GMK</div>
-                            </div>
-                             <div class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
-                         <div class="flex items-center mb-4 clickable-person clickable-supervisor" tabindex="0" role="button" aria-label="Hamza Fellah - Supervisor" data-name="Hamza Fellah" data-role="Supervisor" data-entity="GMK" data-location="California">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-                                <i class="fas fa-user-shield"></i>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-gray-800" data-search-text="Hamza Fellah">Hamza Fellah</div>
-                                <div class="text-xs text-blue-600" data-search-text="Supervisor">Supervisor</div>
+                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
+                        <!-- Hotmail -->
+                        <div class="mb-2">
+                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
+                                <span>HOTMAIL TEAM</span>
+                                <i class="fas fa-plus text-[10px] opacity-50"></i>
+                            </button>
+                            <div class="team-collapse pl-2">
+                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
+                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Marouane Latif" data-role="Team Leader">Marouane Latif (Lead)</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mhamed Gssayer">Mhamed Gssayer</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gmk-hotmail-spam-team">
-                                    <div class="text-sm text-gray-600" data-team="Hotmail Spam">Hotmail Team</div>
-                                    <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                </div>
-                                <div id="gmk-hotmail-spam-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                    <ul class="space-y-1">
-                                        <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Marouane Latif - Team Leader" data-name="Marouane Latif" data-role="Team Leader" data-team="Hotmail Spam" data-entity="GMK" data-telegram="@marouanLatif" data-location="California">
-                                            Marouane Latif
-                                            <div class="tooltip">Team Leader</div>
-                                        </li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Mhamed Gssayer" data-name="Mhamed Gssayer" data-role="Mailer" data-team="Hotmail Inbox" data-entity="GMK" data-telegram="@Mhagsa" data-location="California">Mhamed Gssayer</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gmk-gmail-spam-team">
-                                    <div class="text-sm text-gray-600" data-team="Gmail Spam">Gmail Team</div>
-                                    <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                </div>
-                                <div id="gmk-gmail-spam-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                    <ul class="space-y-1">
-                                        <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Haitam Oullad Benhammou - Team Leader" data-name="Haitam Oullad Benhammou" data-role="Team Leader" data-team="Gmail Spam" data-entity="GMK" data-telegram="@haitamouladbenhammou" data-location="California">
-                                            Haitam Oullad Benhammou
-                                            <div class="tooltip">Team Leader</div>
-                                        </li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Bouchra S'bai" data-name="Bouchra S'bai" data-role="Mailer" data-team="Gmail Spam" data-entity="GMK" data-location="California">Bouchra S'bai</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Naim Bellali" data-name="Naim Bellali" data-role="Mailer" data-team="Gmail Spam" data-entity="GMK" data-telegram="@Theusers212" data-location="California">Naim Bellali</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Houda Rossi" data-name="Houda Rossi" data-role="Mailer" data-team="Gmail Spam" data-entity="GMK" data-location="California">Houda Rossi</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Firdaous El Harrak" data-name="Firdaous El Harrak" data-role="Mailer" data-team="Gmail Spam" data-entity="GMK" data-location="California">Firdaous El Harrak</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Nadia Samadi" data-name="Nadia Samadi" data-role="Mailer" data-team="Hotmail Spam" data-entity="GMK" data-telegram="@NadaSamadi" data-location="California">Nadia Samadi</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Yasir Babahammou" data-name="Yasir Babahammou" data-role="Mailer" data-team="Hotmail Inbox" data-entity="GMK" data-telegram="@babahammouyassir" data-location="California">Yasir Babahammou</li>
-									</ul>
+                        <!-- Gmail -->
+                        <div>
+                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
+                                <span>GMAIL TEAM</span>
+                                <i class="fas fa-plus text-[10px] opacity-50"></i>
+                            </button>
+                            <div class="team-collapse pl-2">
+                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
+                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Haitam Oullad Benhammou" data-role="Team Leader">Haitam O. Benhammou (Lead)</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Bouchra S'bai">Bouchra S'bai</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Naim Bellali">Naim Bellali</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Houda Rossi">Houda Rossi</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Firdaous El Harrak">Firdaous El Harrak</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Nadia Samadi">Nadia Samadi</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Yasir Babahammou">Yasir Babahammou</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="entity-box supervisor bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="GM2 Entity" data-entity="GM2">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="GM2">GM2</div>
-                            </div>
-                             <div class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
-                         <div class="flex items-center mb-4 clickable-person clickable-supervisor" tabindex="0" role="button" aria-label="Ismail Semlali - Supervisor" data-name="Ismail Semlali" data-role="Supervisor" data-entity="GM2" data-location="California" data-telegram="@esmaelwork">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-                                <i class="fas fa-user-shield"></i>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-gray-800" data-search-text="Ismail Semlali">Ismail Semlali</div>
-                                <div class="text-xs text-blue-600" data-search-text="Supervisor">Supervisor</div>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gm2-gmail-inbox-team">
-                                    <div class="text-sm text-gray-600" data-team="Gmail Inbox">Gmail Team (Inbox)</div>
-                                    <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                </div>
-                                <div id="gm2-gmail-inbox-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                    <ul class="space-y-1">
-                                        <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Mehdi Kazman - Team Leader" data-name="Mehdi Kazman" data-role="Team Leader" data-team="Gmail Inbox" data-entity="GM2" data-telegram="@mkazmane" data-location="California">
-                                            Mehdi Kazman
-                                            <div class="tooltip">Team Leader</div>
-                                        </li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Meryam Benoualidine" data-name="Meryam Benoualidine" data-role="Mailer" data-team="Gmail Inbox" data-entity="GM2" data-telegram="@meryam200" data-location="California">Meryam Benoualidine</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="entity-box supervisor bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="GMS Entity" data-entity="GMS">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="GMS">GMS</div>
-                            </div>
-                             <div class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
 
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gms-gmail-spam-team">
-                                    <div class="text-sm text-gray-600" data-team="Gmail Spam">Gmail Spam</div>
-                                    <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                </div>
-                                <div id="gms-gmail-spam-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                    <ul class="space-y-1">
-                                        <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Adil Jbilou Mnari - Team Leader" data-name="Adil Jbilou Mnari" data-role="Team Leader" data-team="Gmail Spam" data-entity="GMS" data-telegram="@mohammedmnari" data-location="California">
-                                            Adil Jbilou Mnari
-                                            <div class="tooltip">Team Leader</div>
-                                        </li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Ayoub El Mahdi" data-name="Ayoub El Mahdi" data-role="Mailer" data-team="Gmail Spam" data-entity="GMS" data-telegram="@ayoubelmahdi" data-location="California">Ayoub El Mahdi</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Halima Es-sebyity" data-name="Halima Es-sebyity" data-role="Mailer" data-team="Gmail Spam" data-entity="GMS" data-telegram="@Essebyity" data-location="California">Halima Es-sebyity</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Achraf Jebari" data-name="Achraf Jebari" data-role="Mailer" data-team="Gmail Spam" data-entity="GMS" data-telegram="@achrafmaro" data-location="California">Achraf Jebari</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Firdaws El Haouzi" data-name="Firdaws El Haouzi" data-role="Mailer" data-team="Gmail Spam" data-entity="GMS" data-telegram="@firdaw123" data-location="California">Firdaws El Haouzi </li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Adnan Bakkali" data-name="Adnan Bakkali" data-role="Mailer" data-team="Gmail Spam" data-entity="GMS" data-location="California">Adnan Bakkali</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Soulaimane El Harras" data-name="Soulaimane El Harras" data-role="Mailer" data-team="Gmail Spam" data-entity="GMS" data-location="California">Soulaimane El Harras</li>
-                                        <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Fatima Zahrae Chaoui" data-name="Fatima Zahrae Chaoui" data-role="Mailer" data-team="Hotmail Spam" data-entity="GMK" data-telegram="@chaouiFatimazahrae" data-location="California">Fatima Zahrae Chaoui</li>
-                                    </ul>
+                <!-- GM2 Supervisor -->
+                 <div class="card-premium p-0 entity-box" data-entity="GM2">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="brand-indicator"></div>
+                        <h4 class="font-bold text-xl mb-4">GM2</h4>
+                        <div class="flex items-center gap-3 clickable-person" data-name="Ismail Semlali" data-role="Supervisor" data-telegram="@esmaelwork">
+                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold">IS</div>
+                             <div>
+                                <div class="font-bold text-sm">Ismail Semlali</div>
+                                <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
+                        <div>
+                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
+                                <span>GMAIL INBOX</span>
+                                <i class="fas fa-plus text-[10px] opacity-50"></i>
+                            </button>
+                            <div class="team-collapse pl-2">
+                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
+                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Mehdi Kazman" data-role="Team Leader">Mehdi Kazman (Lead)</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Meryam Benoualidine">Meryam Benoualidine</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="entity-box supervisor bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="GMW Entity" data-entity="GMW">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="GMW">GMW</div>
-                            </div>
-                             <div class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
-                        </div>
 
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gmw-yahoo-team">
-                                    <div class="text-sm text-gray-600" data-team="Yahoo Team">Yahoo Team</div>
-                                    <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
+                <!-- GMS/GMW -->
+                 <div class="card-premium p-0 entity-box" data-entity="GMS">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="brand-indicator"></div>
+                        <h4 class="font-bold text-xl mb-4">GMS / GMW</h4>
+                         <div class="text-xs text-brand-gray mb-2">Combined Units</div>
+                    </div>
+                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
+                         <!-- GMS -->
+                         <div class="mb-2">
+                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
+                                <span>GMAIL SPAM (GMS)</span>
+                                <i class="fas fa-plus text-[10px] opacity-50"></i>
+                            </button>
+                            <div class="team-collapse pl-2">
+                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
+                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Adil Jbilou Mnari" data-role="Team Leader">Adil Jbilou Mnari (Lead)</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Ayoub El Mahdi">Ayoub El Mahdi</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Halima Es-sebyity">Halima Es-sebyity</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Achraf Jebari">Achraf Jebari</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Firdaws El Haouzi">Firdaws El Haouzi</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Adnan Bakkali">Adnan Bakkali</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Soulaimane El Harras">Soulaimane El Harras</div>
+                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Fatima Zahrae Chaoui">Fatima Zahrae Chaoui</div>
                                 </div>
-                                <div id="gmw-yahoo-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                    <ul class="space-y-1">
-                                        <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Souhail Kabbour - Team Leader" data-name="Souhail Kabbour" data-role="Team Leader" data-team="Yahoo Team" data-entity="GMW" data-location="California">
-                                            Souhail Kabbour
-                                            <div class="tooltip">Team Leader</div>
-                                        </li>
-                                    </ul>
+                            </div>
+                        </div>
+                        <!-- GMW -->
+                        <div>
+                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
+                                <span>YAHOO TEAM (GMW)</span>
+                                <i class="fas fa-plus text-[10px] opacity-50"></i>
+                            </button>
+                            <div class="team-collapse pl-2">
+                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
+                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Souhail Kabbour" data-role="Team Leader">Souhail Kabbour (Lead)</div>
                                 </div>
                             </div>
                         </div>
@@ -1089,1191 +544,439 @@
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto mt-12" data-location="Sour El Maagazine">
-            <div class="location-header text-white rounded-xl p-4 mb-8 relative" data-map-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.787475691114!2d-5.814137823725026!3d35.780596524508454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c7f142e05ed99%3A0x8c6ad852c8e2742e!2sPI%20Marketing!5e0!3m2!1sen!2sma!4v1746104905595!5m2!1sen!2sma">
-                 <h2 class="text-xl font-bold text-center relative z-10">
-                    <i class="fas fa-map-marker-alt mr-2"></i>Sour El Maagazine
-                 </h2>
+        <!-- Sour El Maagazine -->
+         <div class="mb-20" data-location="Sour El Maagazine">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-brand-dark">Sour El Maagazine</h3>
+                    <p class="text-brand-gray text-sm">Marketing Hub</p>
+                </div>
+                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                    data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.787475691114!2d-5.814137823725026!3d35.780596524508454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c7f142e05ed99%3A0x8c6ad852c8e2742e!2sPI%20Marketing!5e0!3m2!1sen!2sma!4v1746104905595!5m2!1sen!2sma">
+                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="entity-box supervisor bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="GMA Entity" data-entity="GMA">
-                    <div class="entity-content">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800" data-search-text="GMA">GMA</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- GMA -->
+                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2" data-entity="GMA">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="brand-indicator"></div>
+                        <h4 class="font-bold text-xl mb-1">GMA</h4>
+                    </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Hatim -->
+                        <div>
+                             <div class="flex items-center gap-3 clickable-person mb-4" data-name="Hatim Lachiri" data-role="Team Leader" data-telegram="@HatimLac">
+                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold">HL</div>
+                                <div>
+                                    <div class="font-bold text-sm">Hatim Lachiri</div>
+                                    <div class="text-xs text-brand-gray uppercase tracking-wide">Team Leader</div>
                                 </div>
-                             <div class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
+                            </div>
+                            <!-- Sub Teams -->
+                             <div class="pl-5 border-l-2 border-gray-100 space-y-2">
+                                 <div>
+                                    <button class="w-full text-left text-xs font-semibold text-gray-500 hover:text-brand-purple py-1 toggle-btn" onclick="toggleTeam(this)">Yahoo Team</button>
+                                    <div class="team-collapse">
+                                        <div class="pl-2 pt-1 pb-2">
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mohamed Stitou">Mohamed Stitou (Lead)</div>
+                                        </div>
+                                    </div>
+                                 </div>
+                                 <div>
+                                    <button class="w-full text-left text-xs font-semibold text-gray-500 hover:text-brand-purple py-1 toggle-btn" onclick="toggleTeam(this)">Gmail Spam</button>
+                                    <div class="team-collapse">
+                                        <div class="pl-2 pt-1 pb-2">
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mehdi Eziyami">Mehdi Eziyami (Lead)</div>
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Younes Benkirou">Younes Benkirou</div>
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="FatimaZohra Marso">FatimaZohra Marso</div>
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Yassine Tahiri">Yassine Tahiri</div>
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Yousra El Filali">Yousra El Filali</div>
+											<div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Asmae Khalfi">Asmae Khalfi</div>
+                                        </div>
+                                    </div>
+                                 </div>
+                             </div>
                         </div>
-                        <div class="mb-6">
-                            <div class="flex items-center mb-4 clickable-person" tabindex="0" role="button" aria-label="Hatim Lachiri - Team Leader" data-name="Hatim Lachiri" data-role="Team Leader" data-entity="GMA" data-location="Sour El Maagazine" data-telegram="@HatimLac">
-                                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mr-3"> <i class="fas fa-user-tie"></i>
-                                </div>
+
+                        <!-- Ahmed -->
+                        <div>
+                             <div class="flex items-center gap-3 clickable-person mb-4" data-name="Ahmed Benjelloun Fahri" data-role="Team Leader">
+                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold">AB</div>
                                 <div>
-                                    <div class="font-semibold text-gray-800" data-search-text="Hatim Lachiri">Hatim Lachiri</div>
-                                    <div class="text-xs text-emerald-600" data-search-text="Team Leader">Team Leader</div> </div>
-                            </div>
-                            <div class="space-y-4 ml-4">
-                                <div>
-                                    <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gma-hatim-yahoo-team">
-                                        <div class="text-sm text-gray-600" data-team="Yahoo Team">Yahoo Team</div>
-                                        <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                    </div>
-                                    <div id="gma-hatim-yahoo-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                        <ul class="space-y-1">
-										<li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Mohamed Stitou" data-name="Mohamed Stitou" data-role="Team Leader" data-team="Yahoo Team" data-entity="GMA" data-location="Sour El Maagazine">
-											Mohamed Stitou
-											<div class="tooltip">Team Leader</div>
-										</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gma-hatim-gmail-spam-team">
-                                        <div class="text-sm text-gray-600" data-team="Gmail Spam">Gmail Spam</div>
-                                        <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                    </div>
-                                    <div id="gma-hatim-gmail-spam-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                        <ul class="space-y-1">
-                                            <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Mehdi Eziyami" data-name="Mehdi Eziyami" data-role="Team Leader" data-team="Gmail Spam" data-entity="GMA" data-telegram="@EziyamiMehdi" data-location="Sour El Maagazine">
-												Mehdi Eziyami
-												<div class="tooltip">Team Leader</div>
-											</li>
-                                            <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Younes Benkirou" data-name="Younes Benkirou" data-role="Mailer" data-team="Gmail Spam" data-entity="GMA" data-location="Sour El Maagazine">Younes Benkirou</li>
-                                            <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="FatimaZohra Marso" data-name="FatimaZohra Marso" data-role="Mailer" data-team="Gmail Spam" data-entity="GMA" data-location="Sour El Maagazine">FatimaZohra Marso</li>
-                                            <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Yassine Tahiri" data-name="Yassine Tahiri" data-role="Mailer" data-team="Gmail Spam" data-entity="GMA" data-location="Sour El Maagazine">Yassine Tahiri</li>
-                                            <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Yousra El Filali" data-name="Yousra El Filali" data-role="Mailer" data-team="Gmail Spam" data-entity="GMA" data-location="Sour El Maagazine">Yousra El Filali</li>
-                                        </ul>
-                                    </div>
+                                    <div class="font-bold text-sm">Ahmed Benjelloun Fahri</div>
+                                    <div class="text-xs text-brand-gray uppercase tracking-wide">Team Leader</div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-4">
-                            <div class="flex items-center mb-4 clickable-person" tabindex="0" role="button" aria-label="Ahmed Benjelloun Fahri - Team Leader" data-name="Ahmed Benjelloun Fahri" data-role="Team Leader" data-entity="GMA" data-location="Sour El Maagazine">
-                                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mr-3"> <i class="fas fa-user-tie"></i>
-                                </div>
-                                <div>
-                                    <div class="font-semibold text-gray-800" data-search-text="Ahmed Benjelloun Fahri">Ahmed Benjelloun Fahri</div>
-                                    <div class="text-xs text-emerald-600" data-search-text="Team Leader">Team Leader</div> </div>
-                            </div>
-                             <div class="space-y-4 ml-4">
-                                <div>
-                                    <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="gma-ahmed-others-team">
-                                        <div class="text-sm text-gray-600" data-team="Others Team">Others Team</div>
-                                        <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
+                             <div class="pl-5 border-l-2 border-gray-100 space-y-2">
+                                 <div>
+                                    <button class="w-full text-left text-xs font-semibold text-gray-500 hover:text-brand-purple py-1 toggle-btn" onclick="toggleTeam(this)">Others Team</button>
+                                    <div class="team-collapse">
+                                        <div class="pl-2 pt-1 pb-2">
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Afaf Dahimi">Afaf Dahimi</div>
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mohamed Farsani">Mohamed Farsani</div>
+                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Oumaima Maich">Oumaima Maich</div>
+                                        </div>
                                     </div>
-                                    <div id="gma-ahmed-others-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                        <ul class="space-y-1">
-                                            <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Afaf Dahimi" data-name="Afaf Dahimi" data-role="Mailer" data-team="Others Team" data-entity="GMA" data-telegram="@afafdahimi" data-location="Sour El Maagazine">Afaf Dahimi</li>
-                                            <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Mohamed Farsani" data-name="Mohamed Farsani" data-role="Mailer" data-team="Others Team" data-entity="GMA" data-location="Sour El Maagazine">Mohamed Farsani</li>
-                                            <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Oumaima Maich" data-name="Oumaima Maich" data-role="Mailer" data-team="Others Team" data-entity="GMA" data-location="Sour El Maagazine">Oumaima Maich</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                                 </div>
+                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
 
-        <div class="max-w-6xl mx-auto mt-12" data-location="Riad Tetouan">
-            <div class="location-header text-white rounded-xl p-4 mb-8 relative" data-map-url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1477.0876264023589!2d-5.801125955928066!3d35.77059454517391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b81ca76fe8ea9%3A0x288e0c1dc391b2d7!2sTangier%20Office%20Center!5e1!3m2!1sen!2sma!4v1746174355291!5m2!1sen!2sma">
-                 <h2 class="text-xl font-bold text-center relative z-10">
-                    <i class="fas fa-map-marker-alt mr-2"></i>Riad Tetouan
-                 </h2>
+        <!-- Riad Tetouan -->
+        <div class="mb-12" data-location="Riad Tetouan">
+             <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-brand-dark">Riad Tetouan</h3>
+                    <p class="text-brand-gray text-sm">IT & Development</p>
+                </div>
+                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                    data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1477.0876264023589!2d-5.801125955928066!3d35.77059454517391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b81ca76fe8ea9%3A0x288e0c1dc391b2d7!2sTangier%20Office%20Center!5e1!3m2!1sen!2sma!4v1746174355291!5m2!1sen!2sma">
+                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="entity-box it-dept bg-white rounded-xl p-5" tabindex="0" role="button" aria-label="EIN CONSULTING Entity" data-entity="EIN CONSULTING">
-                     <div class="entity-content">
-                         <div class="flex justify-between items-start mb-3">
-                             <div>
-                                 <div class="text-lg font-bold text-gray-800" data-search-text="EIN CONSULTING">EIN CONSULTING</div>
-                                 <div class="text-xs text-cyan-600 font-medium" data-search-text="IT Consulting">IT Consulting</div>
-                             </div>
-                              <div class="bg-cyan-100 text-cyan-700 text-xs px-2 py-1 rounded-full member-count font-semibold">0 members</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2" data-entity="EIN CONSULTING">
+                     <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                         <div>
+                            <div class="brand-indicator"></div>
+                            <h4 class="font-bold text-xl">EIN CONSULTING</h4>
                          </div>
-
-                         <div class="flex items-center mb-4 clickable-person clickable-supervisor" tabindex="0" role="button" aria-label="Mohamed Aoujil - IT Manager" data-name="Mohamed Aoujil" data-role="IT Manager" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@aoujilmed">
-                             <div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mr-3">
-                                 <i class="fas fa-user-shield"></i>
-                             </div>
-                             <div>
-                                 <div class="font-semibold text-gray-800" data-search-text="Mohamed Aoujil">Mohamed Aoujil</div>
-                                 <div class="text-xs text-cyan-600" data-search-text="IT Manager">IT Manager</div>
+                         <div class="flex gap-4">
+                             <!-- IT Manager -->
+                             <div class="text-right clickable-person p-2" data-name="Mohamed Aoujil" data-role="IT Manager" data-telegram="@aoujilmed">
+                                 <div class="font-bold text-sm text-brand-dark">Mohamed Aoujil</div>
+                                 <div class="text-xs text-brand-purple font-bold">IT MANAGER</div>
                              </div>
                          </div>
-
-                         <div class="flex items-center mb-4 clickable-person clickable-supervisor" tabindex="0" role="button" aria-label="Jihane El Moustaid - Reporting Manager" data-name="Jihane El Moustaid" data-role="Reporting Manager" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="N/A">
-                             <div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mr-3">
-                                 <i class="fas fa-user-shield"></i>
+                     </div>
+                     
+                     <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+                         <!-- Reporting -->
+                         <div class="bg-gray-50 rounded-xl p-4">
+                             <div class="flex items-center gap-2 mb-3">
+                                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-chart-line text-xs"></i></div>
+                                 <span class="font-bold text-sm">Reporting</span>
                              </div>
-                             <div>
-                                 <div class="font-semibold text-gray-800" data-search-text="Jihane El Moustaid">Jihane El Moustaid</div>
-                                 <div class="text-xs text-cyan-600" data-search-text="Reporting Manager">Reporting Manager</div>
+                             <!-- Reporting Manager -->
+                             <div class="clickable-person p-2 mb-2 bg-white rounded-lg border border-gray-100 shadow-sm" data-name="Jihane El Moustaid" data-role="Manager">
+                                 <div class="text-xs font-bold text-brand-dark">Jihane El Moustaid</div>
+                                 <div class="text-[10px] text-gray-500">Manager</div>
+                             </div>
+                             <div class="space-y-1">
+                                 <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Hamza Nigriyya">Hamza Nigriyya</div>
                              </div>
                          </div>
 
-                         <div class="space-y-4">
-                             <div>
-                                 <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="ein-consulting-reporting-team">
-                                     <div class="text-sm text-gray-600" data-team="Reporting">Reporting Team</div>
-                                     <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                 </div>
-                                 <div id="ein-consulting-reporting-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                     <ul class="space-y-1">
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Hamza Nigriyya" data-name="Hamza Nigriyya" data-role="Reporting" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="N/A">Hamza Nigriyya</li>
-                                     </ul>
-                                 </div>
+                         <!-- Support -->
+                         <div class="bg-gray-50 rounded-xl p-4">
+                             <div class="flex items-center gap-2 mb-3">
+                                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-headset text-xs"></i></div>
+                                 <span class="font-bold text-sm">Support</span>
                              </div>
-
-                             <div>
-                                 <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="ein-consulting-support-team">
-                                     <div class="text-sm text-gray-600" data-team="Support">Support Team</div>
-                                     <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                 </div>
-                                 <div id="ein-consulting-support-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                     <ul class="space-y-1">
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Abdellatif Mrini" data-name="Abdellatif Mrini" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@elmriniabeltif">Abdellatif Mrini</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Mohamed Abasidi" data-name="Mohamed Abasidi" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@Abasidi_mohamed">Mohamed Abasidi</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Abdelhay Amrani" data-name="Abdelhay Amrani" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@Abdelhayamrani">Abdelhay Amrani</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Mouad El Mediouni" data-name="Mouad El Mediouni" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@Mouad_elmediouni">Mouad El Mediouni</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Hafsa M'bital" data-name="Hafsa M'bital" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@hafsamb">Hafsa M'bital</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Mohammed Ifri" data-name="Mohammed Ifri" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@ifrimohamed">Mohammed Ifri</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Abdelali Laatamli" data-name="Abdelali Laatamli" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="N/A">Abdelali Laatamli</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Ilias Anouar" data-name="Ilias Anouar" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="N/A">Ilias Anouar</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Najoua" data-name="Najoua" data-role="Support" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="N/A">Najoua</li>
-                                     </ul>
-                                 </div>
+                             <button class="w-full text-center text-xs text-brand-purple font-semibold py-2 bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow toggle-btn" onclick="toggleTeam(this)">Show Team</button>
+                             <div class="team-collapse">
+                                <div class="space-y-1 pt-2">
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Abdellatif Mrini">Abdellatif Mrini</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Mohamed Abasidi">Mohamed Abasidi</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Abdelhay Amrani">Abdelhay Amrani</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Mouad El Mediouni">Mouad El Mediouni</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Hafsa M'bital">Hafsa M'bital</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Mohammed Ifri">Mohammed Ifri</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Abdelali Laatamli">Abdelali Laatamli</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Ilias Anouar">Ilias Anouar</div>
+                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Najoua">Najoua</div>
+                                </div>
                              </div>
+                         </div>
 
-                             <div>
-                                 <div class="flex justify-between items-center mb-1 px-2 py-1 rounded toggle-btn collapsed" onclick="toggleTeam(this)" tabindex="0" role="button" aria-expanded="false" aria-controls="ein-consulting-development-team">
-                                     <div class="text-sm text-gray-600" data-team="Development">Development Team</div>
-                                     <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform"></i>
-                                 </div>
-                                 <div id="ein-consulting-development-team" class="team-collapse collapsed ml-2" aria-hidden="true">
-                                     <ul class="space-y-1">
-                                          <li class="team-member tl text-sm text-gray-700 has-tooltip relative clickable-person" tabindex="0" role="button" aria-label="Younes Zaidi - Development Leader" data-name="Younes Zaidi" data-role="Development Leader" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@Younes_Zaidi">
-                                             Younes Zaidi
-                                             <div class="tooltip">Development Leader</div>
-                                         </li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Ouarda Taimi" data-name="Ouarda Taimi" data-role="Development" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="N/A">Ouarda Taimi</li>
-                                         <li class="team-member text-sm text-gray-700 clickable-person" tabindex="0" role="button" aria-label="Zakariyae Chmaili" data-name="Zakariyae Chmaili" data-role="Development" data-team="IT" data-entity="EIN CONSULTING" data-location="Riad Tetouan" data-telegram="@Zakariyae007">Zakariyae Chmaili</li>
-                                     </ul>
-                                 </div>
+                         <!-- Dev -->
+                         <div class="bg-gray-50 rounded-xl p-4">
+                             <div class="flex items-center gap-2 mb-3">
+                                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-code text-xs"></i></div>
+                                 <span class="font-bold text-sm">Development</span>
+                             </div>
+                             <div class="clickable-person p-2 mb-2 bg-white rounded-lg border border-gray-100 shadow-sm" data-name="Younes Zaidi" data-role="Lead Dev">
+                                 <div class="text-xs font-bold text-brand-dark">Younes Zaidi</div>
+                                 <div class="text-[10px] text-gray-500">Lead Developer</div>
+                             </div>
+                             <div class="space-y-1">
+                                 <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Ouarda Taimi">Ouarda Taimi</div>
+                                 <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Zakariyae Chmaili">Zakariyae Chmaili</div>
                              </div>
                          </div>
                      </div>
                  </div>
             </div>
         </div>
+    </main>
 
-        <div class="mt-12 p-6 bg-white rounded-xl shadow-lg max-w-4xl mx-auto">
-            <h3 class="text-lg font-bold text-center mb-6 text-gray-800">Organization Legend</h3>
-            <div class="grid legend-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                 <div class="flex items-center p-3 bg-indigo-50 rounded-lg">
-                    <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">Manager/HR</div>
-                        <div class="text-xs text-gray-600">Top leadership</div>
-                    </div>
+    <!-- Modal System -->
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal-overlay flex items-center justify-center p-4">
+        <div class="modal-card bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden relative" onclick="event.stopPropagation()">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-brand-dark z-10 p-2" onclick="closeModals()">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <div class="p-8 text-center">
+                <div class="w-20 h-20 mx-auto bg-brand-purple text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 shadow-lg shadow-purple-100">
+                    <span id="modalInitials">AB</span>
                 </div>
-                <div class="flex items-center p-3 bg-blue-50 rounded-lg">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-                        <i class="fas fa-user-shield"></i>
+                <h3 id="modalName" class="text-xl font-bold text-brand-dark mb-1">Name</h3>
+                <p id="modalRole" class="text-brand-purple font-medium text-sm uppercase tracking-wide">Role</p>
+                
+                <div class="mt-8 space-y-4 text-left">
+                    <div class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-users"></i></div>
+                         <div>
+                             <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Team</p>
+                             <p id="modalTeam" class="text-sm font-semibold text-gray-700">Team</p>
+                         </div>
                     </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">Supervisor</div>
-                        <div class="text-xs text-gray-600">Entity leadership</div>
+                     <div class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-map-pin"></i></div>
+                         <div>
+                             <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Location</p>
+                             <p id="modalLocation" class="text-sm font-semibold text-gray-700">Location</p>
+                         </div>
                     </div>
-                </div>
-                <div class="flex items-center p-3 bg-emerald-50 rounded-lg">
-                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mr-3">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">Team Leader</div>
-                        <div class="text-xs text-gray-600">Team management</div>
-                    </div>
-                </div>
-                 <div class="flex items-center p-3 bg-cyan-50 rounded-lg">
-                    <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mr-3">
-                        <i class="fas fa-laptop-code"></i> </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">IT Department</div>
-                        <div class="text-xs text-gray-600">Technical roles</div>
-                    </div>
-                </div>
-                <div class="flex items-center p-3 bg-gray-100 rounded-lg">
-                     <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 mr-3">
-                         <i class="fas fa-user"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">Team Member</div>
-                        <div class="text-xs text-gray-600">General member</div>
-                    </div>
-                </div>
-                <div class="flex items-center p-3 bg-orange-50 rounded-lg">
-                    <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mr-3">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">Support Staff</div>
-                        <div class="text-xs text-gray-600">Security/Cleaning</div>
-                    </div>
-                </div>
-                <div class="flex items-center p-3 bg-purple-50 rounded-lg">
-                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">Technician</div>
-                        <div class="text-xs text-gray-600">Technical Support</div>
-                    </div>
-                </div>
-                <div class="flex items-center p-3 bg-pink-50 rounded-lg">
-                    <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 mr-3">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm font-medium text-gray-800">Offers Team</div>
-                        <div class="text-xs text-gray-600">Special Offers</div>
-                    </div>
+                    <!-- Telegram Button -->
+                    <a id="modalTelegramLink" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#0088cc] text-white font-semibold hover:bg-[#0077b5] transition-colors shadow-sm mt-4">
+                        <i class="fab fa-telegram-plane"></i> Contact via Telegram
+                    </a>
                 </div>
             </div>
         </div>
-
-        <div class="mt-10 p-4 bg-white rounded-xl shadow-md max-w-2xl mx-auto text-center">
-            <div class="text-sm text-gray-600 mb-2">Organization Summary</div>
-            <div class="flex summary-flex flex-wrap justify-center gap-6 sm:gap-8">
-                <div>
-                    <div class="text-2xl font-bold text-indigo-600" id="total-locations">0</div> <div class="text-xs text-gray-600">Locations</div> </div>
-                <div>
-                     <div class="text-2xl font-bold text-blue-600" id="total-entities">0</div>
-                    <div class="text-xs text-gray-600">Entities</div> </div>
-                <div>
-                     <div class="text-2xl font-bold text-emerald-600" id="total-teams">0</div>
-                    <div class="text-xs text-gray-600">Teams</div> </div>
-                <div>
-                     <div class="text-2xl font-bold text-gray-700" id="total-members">0</div>
-                     <div class="text-xs text-gray-600">Members</div> </div>
-            </div>
-        </div>
-
-        <div id="detailModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeModal('detailModal')" aria-label="Close Modal">×</span>
-                <h3 id="modalTitle" class="text-xl font-bold mb-4 text-gray-800">Member Details</h3>
-                <div id="modalContent" class="space-y-3 text-gray-700">
-                     <p><span class="font-semibold">Name:</span> <span id="modalName"></span></p>
-                    <p><span class="font-semibold">Role:</span> <span id="modalRole"></span></p>
-                    <p><span class="font-semibold">Department/Team:</span> <span id="modalTeam"></span></p>
-                    <p><span class="font-semibold">Location:</span> <span id="modalLocation"></span></p>
-                    <div id="modalTelegramContainer"><span class="font-semibold">Telegram:</span> <span id="modalTelegram">N/A</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="mapModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="mapModalTitle" aria-hidden="true">
-             <div class="modal-content">
-                 <span class="close-button" onclick="closeModal('mapModal')" aria-label="Close Map Modal">×</span>
-                 <h3 id="mapModalTitle" class="text-xl font-bold mb-4 text-gray-800">Location Map</h3>
-                 <iframe id="locationMapIframe" src="" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location Map"></iframe>
-             </div>
-         </div>
-
     </div>
+
+    <!-- Map Modal -->
+    <div id="mapModal" class="modal-overlay flex items-center justify-center p-4">
+        <div class="modal-card bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[70vh] flex flex-col overflow-hidden relative" onclick="event.stopPropagation()">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
+                <h3 class="font-bold text-lg text-brand-dark">Location View</h3>
+                <button class="text-gray-400 hover:text-brand-dark p-2" onclick="closeModals()"><i class="fas fa-times"></i></button>
+            </div>
+            <iframe id="mapFrame" class="w-full h-full bg-gray-100" frameborder="0"></iframe>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- START: Populate Filters ---
-            populateRoleFilter();
-            populateLocationFilter();
-            // --- END: Populate Filters ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initFilters();
+            
+            // Modal Backdrop Click
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', closeModals);
+            });
 
-            // Collapse all teams by default
-            collapseAllTeams();
+            // Person Click
+            document.querySelectorAll('.clickable-person').forEach(item => {
+                item.addEventListener('click', () => openProfile(item));
+            });
 
-            // Count team members for each entity and location and update summary
-            updateAllCounts(); // Initial count
+            // Map Click
+            document.querySelectorAll('.location-map-btn').forEach(btn => {
+                btn.addEventListener('click', () => openMap(btn.dataset.map));
+            });
 
-            // Add event listeners
-            addClickableListeners(); // For members/supervisors/managers
-            setupSearchFiltering(); // Setup search and filter logic
-            addEntityClickListeners(); // For entity boxes
-            addLocationHeaderListeners(); // For location headers
-            addTooltipListeners(); // For tooltips
-            setupRoleFilterInteraction(); // Setup interaction for the new role filter
+            // Search
+            document.getElementById('globalSearch').addEventListener('input', (e) => filterData(e.target.value));
+
+            // Toggle Filter Panel
+            document.getElementById('filterToggleBtn').addEventListener('click', () => {
+                document.getElementById('filterPanel').classList.toggle('hidden');
+            });
+            
+            // Toggle Role Dropdown
+            document.getElementById('roleDropdownBtn').addEventListener('click', (e) => {
+                 e.stopPropagation();
+                 document.getElementById('roleDropdown').classList.toggle('hidden');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if(!document.getElementById('roleDropdownBtn').contains(e.target)) {
+                    document.getElementById('roleDropdown').classList.add('hidden');
+                }
+            });
         });
 
-         // Add click effect to entity boxes
-        function addEntityClickListeners() {
-            document.querySelectorAll('.entity-box').forEach(box => {
-                box.removeEventListener('click', handleEntityBoxClick); // Avoid duplicates
-                box.removeEventListener('keydown', handleEntityBoxKeyDown); // Avoid duplicates
+        /* --- Team Toggle (Smooth) --- */
+        window.toggleTeam = function(btn) {
+            const container = btn.parentElement;
+            const collapse = container.querySelector('.team-collapse') || btn.nextElementSibling;
+            const icon = btn.querySelector('.fa-plus');
 
-                box.addEventListener('click', handleEntityBoxClick);
-                box.addEventListener('keydown', handleEntityBoxKeyDown);
-            });
-        }
-
-        function handleEntityBoxClick() {
-            // Remove highlight from all other boxes and reporting chain highlights
-            document.querySelectorAll('.entity-box').forEach(b => b.classList.remove('clicked', 'reporting-chain-highlight'));
-            document.querySelectorAll('.team-member, .clickable-person').forEach(m => m.classList.remove('highlighted', 'reporting-chain-highlight'));
-
-            // Add highlight to the clicked box
-            this.classList.add('clicked');
-        }
-
-        function handleEntityBoxKeyDown(event) {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault(); // Prevent default spacebar behavior (scrolling)
-                this.click(); // Trigger the click logic
-            }
-        }
-
-         // Add click listeners to location headers to show map modal
-         function addLocationHeaderListeners() {
-             document.querySelectorAll('.location-header').forEach(header => {
-                 header.removeEventListener('click', handleLocationHeaderClick); // Avoid duplicates
-                 header.addEventListener('click', handleLocationHeaderClick);
-             });
-         }
-
-         function handleLocationHeaderClick() {
-             const mapUrl = this.dataset.mapUrl;
-             const locationName = this.closest('[data-location]').dataset.location;
-
-             if (mapUrl && mapUrl !== 'null' && mapUrl !== 'undefined') { // Check if URL is valid
-                 showMapModal(mapUrl, locationName);
-             } else {
-                 console.warn('No valid map URL found for this location header:', locationName);
-                 // Optionally show a user-friendly message here instead of alert
-             }
-         }
-
-        // Add listeners for tooltips
-        function addTooltipListeners() {
-            document.querySelectorAll('.has-tooltip').forEach(el => {
-                el.addEventListener('mouseenter', function() {
-                    const tooltip = this.querySelector('.tooltip');
-                    if (tooltip) {
-                        tooltip.style.visibility = 'visible';
-                        tooltip.style.opacity = '1';
-                    }
-                });
-                 el.addEventListener('mouseleave', function() {
-                    const tooltip = this.querySelector('.tooltip');
-                     if (tooltip) {
-                        tooltip.style.visibility = 'hidden';
-                        tooltip.style.opacity = '0';
-                     }
-                 });
-            });
-        }
-
-
-        /**
-         * Updates all dynamic counts displayed on the page.
-         * - Visible Locations: Counts location sections not hidden by filters.
-         * - Total Entities: Counts all defined entities.
-         * - Total Teams: Counts all defined teams (toggle buttons).
-         * - Visible Members: Counts all individual members not hidden by filters.
-         * - Updates member counts per location and per entity based on visibility.
-         */
-        function updateAllCounts() {
-            // Count visible locations
-            const visibleLocations = document.querySelectorAll('[data-location]:not(.filtered-hidden)').length;
-
-            // Count total defined entities (consider only visible ones if needed, but usually total is fine)
-            const totalDefinedEntities = document.querySelectorAll('.entity-box').length; // Or :not(.filtered-hidden)
-
-            // Count total defined teams (consider only visible ones if needed)
-            const totalDefinedTeams = document.querySelectorAll('.toggle-btn').length; // Or :not(.filtered-hidden)
-
-            // Count visible members
-            const totalVisibleMembers = document.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
-
-            // Update location member counts based on visible members within each location
-            document.querySelectorAll('[data-location]').forEach(locationEl => {
-                const locationId = locationEl.dataset.location.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-                const visibleMembersInLocation = locationEl.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
-                // Note: The location header doesn't have a dedicated count span in the current HTML,
-                // but we update the entity counts below which implicitly covers this.
-            });
-
-            // Update entity member counts based on visible members within each entity
-            document.querySelectorAll('.entity-box').forEach(entityBox => {
-                const visibleMembersInEntity = entityBox.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
-                const countElement = entityBox.querySelector('.member-count');
-                if (countElement) {
-                    // Only show count if the entity itself is not hidden
-                    if (!entityBox.classList.contains('filtered-hidden')) {
-                        countElement.textContent = `${visibleMembersInEntity} member${visibleMembersInEntity !== 1 ? 's' : ''}`;
-                        countElement.style.visibility = 'visible'; // Ensure it's visible
-                    } else {
-                        countElement.style.visibility = 'hidden'; // Hide count if entity is hidden
-                    }
+            if(collapse.classList.contains('expanded')) {
+                collapse.classList.remove('expanded');
+                btn.classList.remove('text-brand-purple');
+                if(icon) {
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
                 }
-            });
-
-
-            // --- Update Summary Display ---
-            document.getElementById('total-locations').textContent = 3; // Dynamic: Visible locations
-            document.getElementById('total-entities').textContent = 6; // Dynamic: Visible entities
-            document.getElementById('total-teams').textContent = 13; // Dynamic: Visible teams
-            document.getElementById('total-members').textContent = totalVisibleMembers; // Dynamic: Visible members
-        }
-
-
-        // Toggle team collapse/expand
-        function toggleTeam(button) {
-            const teamCollapse = button.nextElementSibling;
-            if (!teamCollapse || !teamCollapse.classList.contains('team-collapse')) return; // Exit if structure is wrong
-
-            const isCollapsed = teamCollapse.classList.contains('collapsed');
-
-            // Toggle the clicked team
-            if (isCollapsed) {
-                teamCollapse.classList.remove('collapsed');
-                teamCollapse.classList.add('expanded');
-                teamCollapse.setAttribute('aria-hidden', 'false');
-                button.classList.remove('collapsed');
-                button.classList.add('expanded');
-                button.setAttribute('aria-expanded', 'true');
             } else {
-                teamCollapse.classList.remove('expanded');
-                teamCollapse.classList.add('collapsed');
-                teamCollapse.setAttribute('aria-hidden', 'true');
-                button.classList.remove('expanded');
-                button.classList.add('collapsed');
-                button.setAttribute('aria-expanded', 'false');
+                collapse.classList.add('expanded');
+                btn.classList.add('text-brand-purple');
+                if(icon) {
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                }
             }
-             // Note: Counts are updated by applyFilters or initial load, not needed here unless specifically desired
-        }
+        };
 
-        // Function to expand all teams
-        function expandAllTeams() {
+        window.expandAllTeams = () => {
             document.querySelectorAll('.team-collapse').forEach(el => {
-                // Only expand if the team itself and its button are not hidden by filters
-                 if (!el.classList.contains('filtered-hidden')) {
-                    const prevBtn = el.previousElementSibling;
-                     if(prevBtn && prevBtn.classList.contains('toggle-btn') && !prevBtn.classList.contains('filtered-hidden')) {
-                        el.classList.remove('collapsed');
-                        el.classList.add('expanded');
-                        el.setAttribute('aria-hidden', 'false');
-                        prevBtn.classList.remove('collapsed');
-                        prevBtn.classList.add('expanded');
-                        prevBtn.setAttribute('aria-expanded', 'true');
-                     }
-                 }
-            });
-        }
-
-        // Function to collapse all teams
-        function collapseAllTeams() {
-            document.querySelectorAll('.team-collapse').forEach(el => {
-                el.classList.remove('expanded');
-                el.classList.add('collapsed');
-                el.setAttribute('aria-hidden', 'true');
-                const prevBtn = el.previousElementSibling;
-                 if(prevBtn && prevBtn.classList.contains('toggle-btn')) {
-                    prevBtn.classList.remove('expanded');
-                    prevBtn.classList.add('collapsed');
-                    prevBtn.setAttribute('aria-expanded', 'false');
-                 }
-            });
-        }
-
-
-        // Add click listeners to all clickable members (team members and supervisors/managers)
-        function addClickableListeners() {
-            const clickableElements = document.querySelectorAll('.clickable-person');
-
-            clickableElements.forEach(element => {
-                element.removeEventListener('click', handleMemberClick); // Avoid duplicates
-                element.removeEventListener('keydown', handleMemberKeyDown); // Avoid duplicates
-
-                element.addEventListener('click', handleMemberClick);
-                element.addEventListener('keydown', handleMemberKeyDown);
-            });
-        }
-
-        function handleMemberClick(event) {
-            event.stopPropagation(); // Prevent click bubbling to parent entity box
-
-            // Remove all existing highlights
-            document.querySelectorAll('.highlighted, .reporting-chain-highlight, .entity-box.clicked').forEach(el => {
-                el.classList.remove('highlighted', 'reporting-chain-highlight', 'clicked');
-            });
-
-            // Add highlight to the clicked element
-            this.classList.add('highlighted');
-
-            // Highlight the reporting chain upwards
-            highlightReportingChain(this);
-
-            // Optional: Scroll into view
-            // this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-            // Show member details in a modal
-            showMemberDetails(this);
-        }
-
-        function handleMemberKeyDown(event) {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault(); // Prevent default spacebar behavior (scrolling)
-                this.click(); // Trigger the click logic
-            }
-        }
-
-        // Function to highlight the reporting chain
-        function highlightReportingChain(element) {
-            // Highlight the clicked element first
-            element.classList.add('reporting-chain-highlight');
-
-            // Traverse up the DOM
-            let parentTeamCollapse = element.closest('.team-collapse');
-            let parentEntityBox = element.closest('.entity-box');
-
-             // Highlight team toggle button if inside a team
-             if (parentTeamCollapse) {
-                 const parentToggleButton = parentTeamCollapse.previousElementSibling;
-                 if (parentToggleButton && parentToggleButton.classList.contains('toggle-btn')) {
-                     parentToggleButton.classList.add('reporting-chain-highlight');
-                 }
-             }
-
-            // Highlight the parent entity box
-            if (parentEntityBox) {
-                parentEntityBox.classList.add('reporting-chain-highlight');
-
-                // Highlight the supervisor/leader within the same box (if not the clicked element)
-                // Find supervisor or TL within the same entity box
-                const entityLeaders = parentEntityBox.querySelectorAll('.clickable-person.clickable-supervisor, .clickable-person[data-role*="Leader"], .clickable-person[data-role*="Manager"]'); // Include Manager roles as leaders
-                 entityLeaders.forEach(leader => {
-                     if (leader !== element) {
-                         leader.classList.add('reporting-chain-highlight');
-                     }
-                 });
-            }
-            // Highlighting top-level manager would require data linking, omitted for simplicity
-        }
-
-        // --- START: Filter Population ---
-        /**
-         * Populates the role filter checkbox list dynamically.
-         */
-        function populateRoleFilter() {
-            const roleDropdown = document.getElementById('roleFilterDropdown');
-            const roles = new Set(); // Use a Set to store unique roles
-
-            // Collect all unique roles from data-role attributes
-            document.querySelectorAll('.clickable-person[data-role]').forEach(el => {
-                const role = el.dataset.role.trim();
-                if (role && role !== 'N/A') {
-                    roles.add(role);
+                if(!el.classList.contains('expanded')) {
+                    const btn = el.parentElement.querySelector('.toggle-btn');
+                    if(btn) toggleTeam(btn);
                 }
             });
+        };
 
-            // Sort roles alphabetically
-            const sortedRoles = Array.from(roles).sort((a, b) => a.localeCompare(b));
+        window.collapseAllTeams = () => {
+            document.querySelectorAll('.team-collapse').forEach(el => {
+                if(el.classList.contains('expanded')) {
+                    const btn = el.parentElement.querySelector('.toggle-btn');
+                    if(btn) toggleTeam(btn);
+                }
+            });
+        };
 
-            // Create checkboxes for each role
-            sortedRoles.forEach(role => {
-                const label = document.createElement('label');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = role.toLowerCase(); // Use lowercase value for matching
-                checkbox.id = `role-${role.toLowerCase().replace(/\s+/g, '-')}`; // Create unique ID
-                checkbox.name = 'roleFilter';
-                checkbox.addEventListener('change', applyFilters); // Apply filters on change
+        /* --- Filtering --- */
+        function initFilters() {
+            // Populate Location Select
+            const locs = new Set();
+            document.querySelectorAll('[data-location]').forEach(el => locs.add(el.dataset.location));
+            const locSelect = document.getElementById('locationFilter');
+            locs.forEach(l => {
+                const opt = document.createElement('option');
+                opt.value = l; opt.textContent = l;
+                locSelect.appendChild(opt);
+            });
+            locSelect.addEventListener('change', () => filterData(document.getElementById('globalSearch').value));
 
-                label.htmlFor = checkbox.id;
-                label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(` ${role}`)); // Add space before role name
-                roleDropdown.appendChild(label);
+            // Populate Roles
+            const roles = new Set();
+            document.querySelectorAll('[data-role]').forEach(el => roles.add(el.dataset.role));
+            const roleContainer = document.getElementById('roleDropdown');
+            roles.forEach(role => {
+                const div = document.createElement('div');
+                div.className = "flex items-center px-3 py-2 hover:bg-gray-50 rounded cursor-pointer";
+                div.innerHTML = `<input type="checkbox" value="${role}" class="rounded text-brand-purple border-gray-300 focus:ring-brand-purple"><span class="ml-2 text-sm text-gray-700">${role}</span>`;
+                div.querySelector('input').addEventListener('change', () => filterData(document.getElementById('globalSearch').value));
+                roleContainer.appendChild(div);
             });
         }
 
-        /**
-         * Populates the location filter dropdown dynamically.
-         */
-         function populateLocationFilter() {
-            const locationSelect = document.getElementById('locationFilter');
-            const locations = new Set();
+        function filterData(searchTerm) {
+            const term = searchTerm.toLowerCase();
+            const location = document.getElementById('locationFilter').value;
+            const selectedRoles = Array.from(document.querySelectorAll('#roleDropdown input:checked')).map(cb => cb.value);
 
-            // Collect unique locations from data-location attributes on the main location divs
-            document.querySelectorAll('[data-location]').forEach(el => {
-                const locationName = el.dataset.location.trim();
-                if (locationName) {
-                    locations.add(locationName);
-                }
-            });
+            // Update text
+            document.querySelector('.selected-role-text').textContent = selectedRoles.length ? `${selectedRoles.length} Roles Selected` : 'All Roles';
 
-             // Collect unique locations from top-level managers/HR if they have specific locations
-             document.querySelectorAll('.clickable-person[data-location]').forEach(el => {
-                 // Only add if not already part of a main location div (check parent)
-                 if (!el.closest('[data-location]')) {
-                    const locationName = el.dataset.location.trim();
-                    if (locationName && locationName !== 'All Locations' && locationName !== 'N/A') {
-                        locations.add(locationName);
+            document.querySelectorAll('.clickable-person').forEach(person => {
+                const name = person.dataset.name.toLowerCase();
+                const role = (person.dataset.role || '').toLowerCase();
+                const pLoc = (person.dataset.location || person.closest('[data-location]')?.dataset.location || '').toLowerCase();
+                
+                const matchTerm = !term || name.includes(term) || role.includes(term);
+                const matchLoc = !location || pLoc === location.toLowerCase();
+                const matchRole = !selectedRoles.length || selectedRoles.includes(person.dataset.role);
+
+                if(matchTerm && matchLoc && matchRole) {
+                    person.classList.remove('filtered-hidden');
+                    // Auto-expand parent if searching
+                    if(term) {
+                        const collapse = person.closest('.team-collapse');
+                        if(collapse && !collapse.classList.contains('expanded')) {
+                            const btn = collapse.parentElement.querySelector('.toggle-btn');
+                            if(btn) toggleTeam(btn);
+                        }
                     }
-                 }
-             });
-
-
-            // Sort locations alphabetically
-            const sortedLocations = Array.from(locations).sort((a, b) => a.localeCompare(b));
-
-            // Clear existing options except the first "All Locations" one
-            while (locationSelect.options.length > 1) {
-                locationSelect.remove(1);
-            }
-
-            // Create options for each location
-            sortedLocations.forEach(location => {
-                const option = document.createElement('option');
-                option.value = location.toLowerCase(); // Use lowercase value for matching
-                option.textContent = location;
-                locationSelect.appendChild(option);
-            });
-        }
-        // --- END: Filter Population ---
-
-        /**
-         * Sets up interaction for the multi-role filter button and dropdown.
-         */
-        function setupRoleFilterInteraction() {
-            const button = document.getElementById('roleFilterButton');
-            const dropdown = document.getElementById('roleFilterDropdown');
-            const selectedRolesText = button.querySelector('.selected-roles-text');
-
-            button.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent click from closing immediately
-                const isOpen = dropdown.classList.toggle('open');
-                button.classList.toggle('open', isOpen);
-                button.setAttribute('aria-expanded', String(isOpen));
-            });
-
-            // Close dropdown if clicking outside
-            document.addEventListener('click', (event) => {
-                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                    dropdown.classList.remove('open');
-                    button.classList.remove('open');
-                    button.setAttribute('aria-expanded', 'false');
-                }
-            });
-
-            // Update button text when checkboxes change
-            dropdown.addEventListener('change', () => {
-                const checkedBoxes = dropdown.querySelectorAll('input[type="checkbox"]:checked');
-                if (checkedBoxes.length === 0) {
-                    selectedRolesText.textContent = 'All Roles';
-                } else if (checkedBoxes.length === 1) {
-                    selectedRolesText.textContent = checkedBoxes[0].parentElement.textContent.trim(); // Get text from label
                 } else {
-                    selectedRolesText.textContent = `${checkedBoxes.length} roles selected`;
+                    person.classList.add('filtered-hidden');
                 }
+            });
+
+            // Hide empty containers logic (simplified for brevity)
+            document.querySelectorAll('.entity-box').forEach(box => {
+                const visible = box.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
+                box.style.display = visible ? 'flex' : 'none';
             });
         }
 
+        /* --- Modals --- */
+        function openProfile(el) {
+            document.getElementById('modalName').textContent = el.dataset.name;
+            document.getElementById('modalRole').textContent = el.dataset.role || 'Member';
+            
+            // Initials
+            const nameParts = el.dataset.name.split(' ');
+            const initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '')).toUpperCase();
+            document.getElementById('modalInitials').textContent = initials;
 
-        /**
-         * Sets up event listeners for search input and filter dropdowns/checkboxes.
-         */
-        function setupSearchFiltering() {
-            const searchInput = document.getElementById('memberSearch');
-            // Role filter changes are handled in populateRoleFilter and setupRoleFilterInteraction
-            const locationFilter = document.getElementById('locationFilter');
-
-            // Debounce function to limit filter application rate
-            let debounceTimer;
-            function debouncedApplyFilters() {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(applyFilters, 250); // Apply filters 250ms after last input/change
+            // Context
+            let team = el.dataset.team;
+            if(!team) {
+                // Try to infer from header
+                const box = el.closest('.entity-box');
+                if(box) team = box.dataset.entity;
             }
+            document.getElementById('modalTeam').textContent = team || 'General';
+            
+            const loc = el.dataset.location || el.closest('[data-location]')?.dataset.location || 'Main Office';
+            document.getElementById('modalLocation').textContent = loc;
 
-            searchInput.addEventListener('input', debouncedApplyFilters);
-            locationFilter.addEventListener('change', applyFilters); // No debounce needed for dropdowns
-            // Role filter changes trigger applyFilters directly via checkbox event listeners
-        }
-
-        /**
-         * Applies search and dropdown filters to the organizational chart.
-         * Handles multi-role selection with stricter visibility.
-         */
-        function applyFilters() {
-            const searchInput = document.getElementById('memberSearch');
-            const roleDropdown = document.getElementById('roleFilterDropdown');
-            const locationFilter = document.getElementById('locationFilter');
-            const filterText = searchInput.value.toLowerCase().trim();
-            const selectedLocation = locationFilter.value.toLowerCase();
-
-            // Get selected roles from checkboxes
-            const selectedRoles = Array.from(roleDropdown.querySelectorAll('input[type="checkbox"]:checked'))
-                                      .map(cb => cb.value.toLowerCase()); // Already lowercase
-
-            console.log(`Filtering - Text: "${filterText}", Roles: [${selectedRoles.join(', ')}], Location: "${selectedLocation}"`); // Debug log
-
-            // --- 1. Reset State ---
-            // Remove previous search highlights
-            document.querySelectorAll('span.highlight').forEach(span => {
-                 if (span.parentNode) {
-                    span.replaceWith(span.textContent);
-                 }
-            });
-            document.querySelectorAll('.clickable-person, .entity-box .text-lg, .entity-box .text-xs, .location-header h2').forEach(el => el.normalize());
-
-            // Remove click/reporting highlights
-            document.querySelectorAll('.highlighted, .reporting-chain-highlight, .entity-box.clicked').forEach(el => {
-                el.classList.remove('highlighted', 'reporting-chain-highlight', 'clicked');
-            });
-
-            // Hide all potentially filterable items initially
-            document.querySelectorAll('.clickable-person, .toggle-btn, .team-collapse, .entity-box, [data-location]').forEach(el => {
-                el.classList.add('filtered-hidden');
-            });
-
-            // --- 2. Iterate through individuals and mark matches ---
-            let matchedIndividuals = []; // Keep track of individuals who match the filters
-            document.querySelectorAll('.clickable-person').forEach(element => {
-                const name = (element.dataset.name || element.textContent.replace(/<[^>]*>/g, '')).toLowerCase();
-                const role = (element.dataset.role || '').toLowerCase();
-                const teamEl = element.closest('.team-collapse')?.previousElementSibling?.querySelector('[data-team]');
-                const team = (teamEl?.dataset.team || element.dataset.team || '').toLowerCase();
-                const entityEl = element.closest('.entity-box');
-                const entity = (entityEl?.dataset.entity || '').toLowerCase();
-                const locationEl = element.closest('[data-location]');
-                const elementLocation = (element.dataset.location || locationEl?.dataset.location || '').toLowerCase();
-
-                // Text match checks name, role, team, entity, location
-                const textToSearch = `${name} ${role} ${team} ${entity} ${elementLocation}`;
-                const textMatch = filterText === '' || textToSearch.includes(filterText);
-
-                // Role match: No roles selected OR the element's role is in the selected list
-                const roleMatch = selectedRoles.length === 0 || selectedRoles.includes(role);
-
-                // Location match: empty selection OR exact match
-                const locationMatch = selectedLocation === '' || elementLocation === selectedLocation;
-
-                // *** Core Logic Change: Only mark the individual as visible if they match ALL criteria ***
-                if (textMatch && roleMatch && locationMatch) {
-                    element.classList.remove('filtered-hidden');
-                    matchedIndividuals.push(element); // Add to list of matched individuals
-
-                    // Highlight matching text if search text is present
-                    if (filterText !== '') {
-                        highlightText(element, filterText);
-                    }
-                }
-            });
-
-            // --- 3. Reveal Parent Structures for Matched Individuals ---
-            matchedIndividuals.forEach(element => {
-                // Reveal parents (Team Collapse -> Toggle Button -> Entity Box -> Location)
-                let currentParent = element.parentElement;
-                while (currentParent && !currentParent.classList.contains('org-chart')) {
-                    if (currentParent.classList.contains('filtered-hidden')) {
-                        currentParent.classList.remove('filtered-hidden');
-
-                        // If revealing a team-collapse, ensure its toggle button is also revealed and expand it
-                        if (currentParent.classList.contains('team-collapse')) {
-                            const toggleBtn = currentParent.previousElementSibling;
-                            if (toggleBtn && toggleBtn.classList.contains('toggle-btn')) {
-                                toggleBtn.classList.remove('filtered-hidden'); // Make sure button is visible
-                                // Expand the team only if filters are active
-                                if (filterText || selectedRoles.length > 0 || selectedLocation) {
-                                    currentParent.classList.add('expanded');
-                                    currentParent.classList.remove('collapsed');
-                                    currentParent.setAttribute('aria-hidden', 'false');
-                                    toggleBtn.classList.add('expanded');
-                                    toggleBtn.classList.remove('collapsed');
-                                    toggleBtn.setAttribute('aria-expanded', 'true');
-                                }
-                            }
-                        }
-                    }
-                    currentParent = currentParent.parentElement;
-                }
-            });
-
-            // --- 4. Ensure Entity/Location visibility if their name matches filter (independent of children) ---
-            // This logic remains largely the same, ensuring containers are visible if they match text/location directly.
-
-            // Show entity if its name/title matches search text AND location matches
-            document.querySelectorAll('.entity-box').forEach(entityBox => {
-                const entityName = (entityBox.dataset.entity || entityBox.querySelector('.text-lg.font-bold')?.textContent || '').toLowerCase();
-                 const entityLocation = (entityBox.closest('[data-location]')?.dataset.location || '').toLowerCase();
-
-                const textMatch = filterText === '' || entityName.includes(filterText);
-                const locationMatch = selectedLocation === '' || entityLocation === selectedLocation;
-
-                // Show if the entity itself matches text/location filters AND is currently hidden
-                // (Visibility due to children is handled in step 3)
-                if (textMatch && locationMatch && entityBox.classList.contains('filtered-hidden')) {
-                     entityBox.classList.remove('filtered-hidden');
-                     // Show parent location too if it's hidden
-                     entityBox.closest('[data-location]')?.classList.remove('filtered-hidden');
-
-                     // If filtering by text, highlight the entity title
-                     if (filterText !== '') {
-                         highlightText(entityBox.querySelector('.text-lg.font-bold'), filterText);
-                     }
-                }
-            });
-
-             // Show location if its name matches search text AND location filter matches
-             document.querySelectorAll('[data-location]').forEach(locationEl => {
-                 const locationName = (locationEl.dataset.location || '').toLowerCase();
-                 const textMatch = filterText === '' || locationName.includes(filterText);
-                 const locationMatch = selectedLocation === '' || locationName === selectedLocation;
-
-                 // Show if the location itself matches text/location filters AND is currently hidden
-                 // (Visibility due to children is handled in step 3)
-                 if (textMatch && locationMatch && locationEl.classList.contains('filtered-hidden')) {
-                     locationEl.classList.remove('filtered-hidden');
-                     // If filtering by text, highlight the location header
-                     if (filterText !== '') {
-                          highlightText(locationEl.querySelector('.location-header h2'), filterText);
-                     }
-                 }
-             });
-
-
-            // --- 5. Update Counts ---
-            updateAllCounts(); // Update counts based on the final filtered view
-
-            // --- 6. Reset to collapsed view if NO filters are active ---
-            if (filterText === '' && selectedRoles.length === 0 && selectedLocation === '') {
-                collapseAllTeams();
-            }
-        }
-
-        /**
-         * Helper function to wrap matching text within an element with a highlight span.
-         * Avoids nested highlights and handles text nodes correctly.
-         * @param {HTMLElement} element - The container element to search within.
-         * @param {string} searchText - The text to highlight.
-         */
-        function highlightText(element, searchText) {
-            if (!element || !searchText) return;
-
-            const regex = new RegExp(`(${searchText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'); // Escape regex special chars
-
-            // Iterate through text nodes only to avoid breaking HTML structure
-            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
-            let node;
-            const nodesToReplace = []; // Store nodes and replacements
-
-            while (node = walker.nextNode()) {
-                // Avoid highlighting inside existing highlight spans
-                if (node.parentElement && node.parentElement.classList.contains('highlight')) {
-                    continue;
-                }
-                if (node.nodeValue.toLowerCase().includes(searchText)) {
-                    const fragment = document.createDocumentFragment();
-                    let lastIndex = 0;
-                    node.nodeValue.replace(regex, (match, p1, offset) => {
-                        // Add text before the match
-                        if (offset > lastIndex) {
-                            fragment.appendChild(document.createTextNode(node.nodeValue.substring(lastIndex, offset)));
-                        }
-                        // Add the highlighted match
-                        const span = document.createElement('span');
-                        span.className = 'highlight';
-                        span.textContent = match;
-                        fragment.appendChild(span);
-                        lastIndex = offset + match.length;
-                    });
-                    // Add any remaining text after the last match
-                    if (lastIndex < node.nodeValue.length) {
-                        fragment.appendChild(document.createTextNode(node.nodeValue.substring(lastIndex)));
-                    }
-                    // Store the original node and the fragment to replace it with
-                    nodesToReplace.push({ original: node, replacement: fragment });
-                }
-            }
-
-            // Perform replacements after iteration to avoid modifying the live node list
-            nodesToReplace.forEach(item => {
-                 // Check if the original node still has a parent before replacing
-                 if (item.original.parentNode) {
-                    item.original.parentNode.replaceChild(item.replacement, item.original);
-                 }
-            });
-        }
-
-
-        // Function to show member details in a modal
-        function showMemberDetails(element) {
-            const modal = document.getElementById('detailModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalName = document.getElementById('modalName');
-            const modalRole = document.getElementById('modalRole');
-            const modalTeam = document.getElementById('modalTeam');
-            const modalLocation = document.getElementById('modalLocation');
-            const modalTelegramContainer = document.getElementById('modalTelegramContainer'); // Target container
-            const modalTelegram = document.getElementById('modalTelegram');
-
-            // Get details from data attributes
-            const name = element.dataset.name || element.textContent.replace(/<[^>]*>/g, '').trim();
-            const role = element.dataset.role || 'N/A';
-            const telegramHandle = element.dataset.telegram;
-
-            // Determine Team
-            let team = 'N/A';
-            const teamToggleDiv = element.closest('.team-collapse')?.previousElementSibling?.querySelector('div[data-team]');
-            if (teamToggleDiv) {
-                team = teamToggleDiv.dataset.team;
-            } else if (element.dataset.team) { // Check element's own data-team (for supervisors/technicians etc.)
-                 team = element.dataset.team;
-            } else if (element.classList.contains('clickable-supervisor') || role.toLowerCase().includes('leader') || role.toLowerCase().includes('manager')) {
-                 // If supervisor/TL/Manager not in a team list, use their role or entity
-                 team = role; // Or potentially entityName
+            // Telegram
+            const tgBtn = document.getElementById('modalTelegramLink');
+            if(el.dataset.telegram) {
+                tgBtn.href = `https://t.me/${el.dataset.telegram.replace('@','')}`;
+                tgBtn.style.display = 'flex';
             } else {
-                // Fallback: Maybe use entity name if no team found?
-                team = element.closest('.entity-box')?.dataset.entity || 'N/A';
+                tgBtn.style.display = 'none';
             }
 
-
-            // Determine Location
-            let location = 'N/A';
-            const locationContainer = element.closest('[data-location]');
-             if (locationContainer) {
-                location = locationContainer.dataset.location;
-             } else if (element.dataset.location) { // Check element's own data-location (for managers/HR)
-                 location = element.dataset.location;
-             }
-
-
-            modalTitle.textContent = `Details for ${name}`;
-            modalName.textContent = name;
-            modalRole.textContent = role;
-            modalTeam.textContent = team;
-            modalLocation.textContent = location;
-
-            // Display Telegram handle as a link if available
-            if (telegramHandle && telegramHandle !== 'N/A') {
-                modalTelegram.innerHTML = `<a href="https://t.me/${telegramHandle.replace('@', '')}" target="_blank" class="telegram-link">${telegramHandle} <i class="fab fa-telegram-plane ml-1"></i></a>`;
-                modalTelegramContainer.style.display = 'block'; // Show container
-            } else {
-                modalTelegram.innerHTML = 'N/A'; // Set innerHTML to handle potential previous link
-                modalTelegramContainer.style.display = 'block'; // Keep container visible but show N/A
-            }
-
-            modal.classList.add('show');
-            modal.style.display = 'flex'; // Ensure display is flex for centering
-            modal.setAttribute('aria-hidden', 'false');
-            // Focus the close button for accessibility
-            modal.querySelector('.close-button').focus();
+            document.getElementById('profileModal').classList.add('show');
         }
 
-        // Function to show the map modal
-        function showMapModal(mapUrl, locationName) {
-            const modal = document.getElementById('mapModal');
-            const mapIframe = document.getElementById('locationMapIframe');
-            const modalTitle = document.getElementById('mapModalTitle');
-
-            modalTitle.textContent = `Map for ${locationName}`;
-            mapIframe.src = mapUrl; // Set iframe source
-
-            modal.classList.add('show');
-            modal.style.display = 'flex'; // Ensure display is flex
-            modal.setAttribute('aria-hidden', 'false');
-            // Focus the close button
-             modal.querySelector('.close-button').focus();
+        function openMap(url) {
+            document.getElementById('mapFrame').src = url;
+            document.getElementById('mapModal').classList.add('show');
         }
 
-
-        // Function to close a modal
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (!modal) return;
-
-            modal.classList.remove('show');
-            modal.setAttribute('aria-hidden', 'true');
-
-            // Use transitionend event for smoother closing if needed, or simple timeout
+        function closeModals() {
+            document.querySelectorAll('.modal-overlay').forEach(el => el.classList.remove('show'));
             setTimeout(() => {
-                modal.style.display = 'none';
-                 if (modalId === 'mapModal') {
-                     document.getElementById('locationMapIframe').src = ''; // Clear iframe src
-                 }
-            }, 400); // Match CSS transition duration
-
-             // Remove highlights only when closing the detail modal
-             if (modalId === 'detailModal') {
-                document.querySelectorAll('.highlighted, .reporting-chain-highlight, .entity-box.clicked').forEach(el => {
-                    el.classList.remove('highlighted', 'reporting-chain-highlight', 'clicked');
-                });
-             }
+                document.getElementById('mapFrame').src = '';
+            }, 300);
         }
 
-        // Close modal if clicked outside the modal content
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal') && event.target.classList.contains('show')) {
-                closeModal(event.target.id);
-            }
-        });
+        /* --- Export PDF --- */
+        function exportPDF() {
+            expandAllTeams();
+            const element = document.querySelector('.org-chart-canvas');
+            
+            // Hide navbar/filters for print
+            const nav = document.querySelector('nav');
+            nav.style.display = 'none';
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const openModal = document.querySelector('.modal.show');
-                if (openModal) {
-                    closeModal(openModal.id);
-                }
-                // Also close role filter dropdown on Escape
-                const roleDropdown = document.getElementById('roleFilterDropdown');
-                if (roleDropdown.classList.contains('open')) {
-                    roleDropdown.classList.remove('open');
-                    document.getElementById('roleFilterButton').classList.remove('open');
-                    document.getElementById('roleFilterButton').setAttribute('aria-expanded', 'false');
-                }
-            }
-        });
-
-        // Prevent modal closing when clicking inside modal content
-        document.querySelectorAll('.modal-content').forEach(content => {
-             content.addEventListener('click', event => event.stopPropagation());
-        });
-
-
-        // --- Data Export Functions ---
-
-        // Helper to escape values for CSV
-        function escapeCsv(value) {
-            if (value === null || value === undefined) return '""';
-            const stringValue = String(value);
-            // Escape double quotes by doubling them and wrap if necessary (contains comma, quote, or newline)
-            if (stringValue.includes('"') || stringValue.includes(',') || stringValue.includes('\n')) {
-                return `"${stringValue.replace(/"/g, '""')}"`;
-            }
-            return stringValue; // Return as is if no special characters
-        }
-
-        // Function to export data to CSV
-        function exportDataToCsv() {
-            const data = [];
-            const headers = ["Name", "Role", "Team", "Entity", "Location", "Telegram"];
-            data.push(headers.map(escapeCsv).join(',')); // Add headers
-
-            // Add Manager/HR data (top level)
-            document.querySelectorAll('.org-chart > .flex.justify-center.gap-8.mb-12 > .entity-box.manager .clickable-person').forEach(managerEl => {
-                 const name = managerEl.dataset.name || managerEl.textContent.replace(/<[^>]*>/g, '').trim();
-                 const role = managerEl.dataset.role || 'N/A';
-                 const location = managerEl.dataset.location || 'N/A';
-                 const telegram = managerEl.dataset.telegram || 'N/A';
-                 // For top-level managers, Team and Entity are N/A
-                 data.push([escapeCsv(name), escapeCsv(role), escapeCsv('N/A'), escapeCsv('N/A'), escapeCsv(location), escapeCsv(telegram)].join(','));
-            });
-
-
-            // Iterate through locations, entities, and members
-            document.querySelectorAll('[data-location]').forEach(locationEl => {
-                const locationName = locationEl.dataset.location;
-                locationEl.querySelectorAll('.entity-box').forEach(entityBox => {
-                    const entityName = entityBox.dataset.entity || (entityBox.querySelector('.text-lg.font-bold') ? entityBox.querySelector('.text-lg.font-bold').textContent.trim() : 'N/A');
-
-                    entityBox.querySelectorAll('.clickable-person').forEach(personEl => {
-                         const name = personEl.dataset.name || personEl.textContent.replace(/<[^>]*>/g, '').trim();
-                         const role = personEl.dataset.role || 'N/A';
-                         const telegram = personEl.dataset.telegram || 'N/A';
-
-                         // Determine Team Name (more robustly)
-                         let teamName = 'N/A';
-                         const teamToggleDiv = personEl.closest('.team-collapse')?.previousElementSibling?.querySelector('div[data-team]');
-                         if (teamToggleDiv) {
-                             teamName = teamToggleDiv.dataset.team;
-                         } else if (personEl.dataset.team) { // Check element's own data-team
-                             teamName = personEl.dataset.team;
-                         } else if (personEl.classList.contains('clickable-supervisor') || role.toLowerCase().includes('leader') || role.toLowerCase().includes('manager')) {
-                             // If supervisor/TL/Manager not in a team list, use their role or entity
-                             // Use the role if it's a specific leadership role, otherwise N/A or entity name
-                             if (role.toLowerCase().includes('leader') || role.toLowerCase().includes('manager') || role.toLowerCase().includes('supervisor')) {
-                                 teamName = role; // Use the specific role as the 'team' for these leaders
-                             } else {
-                                 teamName = entityName; // Fallback to entity name if no specific team/role found
-                             }
-                         }
-
-
-                         data.push([escapeCsv(name), escapeCsv(role), escapeCsv(teamName), escapeCsv(entityName), escapeCsv(locationName), escapeCsv(telegram)].join(','));
-                    });
-                });
-            });
-
-            // Create and download CSV
-            const csvContent = data.join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', 'traffic_loop_solutions_org_chart.csv');
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url); // Clean up blob URL
-            } else {
-                // Fallback for older browsers
-                alert('CSV export requires a modern browser.');
-            }
-        }
-
-        // Function to export data to PDF
-        function exportDataToPdf() {
-            const element = document.querySelector('.org-chart');
-            // Temporarily expand all teams for PDF export
-            const initiallyCollapsed = [];
-            document.querySelectorAll('.team-collapse.collapsed').forEach(el => {
-                const btn = el.previousElementSibling;
-                if (btn && btn.classList.contains('toggle-btn')) {
-                    initiallyCollapsed.push(btn); // Store the button to re-collapse later
-                    toggleTeam(btn); // Expand the team
-                }
-            });
-
-
-            const options = {
-                margin:       10,
-                filename:     'traffic_loop_solutions_org_chart.pdf',
-                image:        { type: 'jpeg', quality: 0.95 }, // Slightly lower quality for smaller size
-                html2canvas:  { scale: 2, logging: false, dpi: 192, letterRendering: true, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a3', orientation: 'landscape' }
-            };
-
-            console.log("Starting PDF export...");
-            html2pdf().from(element).set(options).save().then(() => {
-                 console.log("PDF export finished.");
-                 // Re-collapse teams that were initially collapsed
-                 initiallyCollapsed.forEach(btn => {
-                     if (btn && btn.classList.contains('expanded')) { // Check if it's still expanded
-                        toggleTeam(btn); // Collapse it back
-                     }
-                 });
-            }).catch(err => {
-                console.error("PDF export error:", err);
-                 // Re-collapse teams even if there's an error
-                 initiallyCollapsed.forEach(btn => {
-                     if (btn && btn.classList.contains('expanded')) {
-                        toggleTeam(btn);
-                     }
-                 });
+            html2pdf().from(element).set({
+                margin: 10,
+                filename: 'traffic_loop_org_chart.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF: { unit: 'mm', format: 'a3', orientation: 'landscape' }
+            }).save().then(() => {
+                nav.style.display = 'flex';
+                collapseAllTeams();
             });
         }
-
     </script>
 </body>
 </html>
-
-
-
-
-
