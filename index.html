@@ -34,15 +34,27 @@
                     },
                     boxShadow: {
                         'premium': '0 4px 24px rgba(0, 0, 0, 0.04)', // Ultra soft shadow
-                        'premium-hover': '0 8px 32px rgba(0, 0, 0, 0.08)',
+                        'premium-hover': '0 20px 40px rgba(0, 0, 0, 0.08)',
                         'floating': '0 12px 40px rgba(0, 0, 0, 0.12)',
                     },
                     borderRadius: {
                         'xl': '18px', // Smooth corners
                         '2xl': '24px',
+                        '3xl': '32px',
                     },
-                    transitionProperty: {
-                        'height': 'height, max-height, opacity, margin',
+                    animation: {
+                        'fade-up': 'fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'scale-in': 'scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
                     }
                 }
             }
@@ -56,11 +68,12 @@
             color: #1d1d1f;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
         /* Glass Header (Frosted) */
         .nav-blur {
-            background: rgba(251, 251, 253, 0.8);
+            background: rgba(251, 251, 253, 0.85);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -71,15 +84,17 @@
             background: #FFFFFF;
             border-radius: 20px;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03); /* Barely visible shadow */
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid rgba(0,0,0,0.02); /* Micro-border for contrast */
             position: relative;
             overflow: hidden;
+            opacity: 0; /* For animation */
         }
 
         .card-premium:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+            transform: translateY(-4px) scale(1.005);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            z-index: 10;
         }
 
         /* The "Loop" Accent - Subtle indication of Brand */
@@ -109,20 +124,10 @@
         }
 
         /* Buttons: Apple Style Pills */
-        .btn-pill {
-            border-radius: 9999px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        .btn-primary {
-            background: #1d1d1f;
-            color: white;
-        }
-        .btn-primary:hover { background: #333; transform: translateY(-1px); }
-        
         .btn-secondary {
             background: #e8e8ed;
             color: #1d1d1f;
+            transition: background 0.2s;
         }
         .btn-secondary:hover { background: #dcdce0; }
 
@@ -130,7 +135,7 @@
         .team-collapse {
             display: grid;
             grid-template-rows: 0fr;
-            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+            transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
             opacity: 0;
         }
         .team-collapse.expanded {
@@ -140,31 +145,48 @@
         }
         .team-collapse > div { overflow: hidden; }
 
+        /* Count Badge */
+        .count-badge {
+            background: #F5F5F7;
+            color: #86868b;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+
         /* Modal Overlay */
         .modal-overlay {
-            background: rgba(50, 50, 50, 0.4); /* Darker, sophisticated overlay */
-            backdrop-filter: blur(8px);
-            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.3); /* Subtle dark overlay */
+            backdrop-filter: blur(12px); /* Strong blur */
+            opacity: 0; visibility: hidden; transition: all 0.4s ease;
             z-index: 100; position: fixed; inset: 0;
         }
         .modal-overlay.show { opacity: 1; visibility: visible; }
 
         .modal-card {
-            transform: scale(0.94) translateY(16px);
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: scale(0.92) translateY(20px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
         .modal-overlay.show .modal-card { transform: scale(1) translateY(0); }
 
         /* Utilities */
         .filtered-hidden { display: none !important; }
-        .clickable-person { cursor: pointer; border-radius: 8px; transition: background 0.2s; }
+        .clickable-person { cursor: pointer; border-radius: 12px; transition: background 0.2s; }
         .clickable-person:hover { background: #F5F5F7; }
+        
+        /* Staggered Animation Delays */
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
         
         /* Print */
         @media print {
             body { background: white; }
             .no-print { display: none; }
-            .card-premium { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            .card-premium { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; opacity: 1 !important; }
             .team-collapse { display: block !important; grid-template-rows: 1fr !important; opacity: 1 !important; }
         }
     </style>
@@ -175,7 +197,7 @@
     <nav class="nav-blur fixed top-0 w-full z-50 h-16 flex items-center">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <!-- Brand -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
                 <img src="https://i.imgur.com/Paft0Df.png" alt="Traffic Loop" class="h-8 w-auto object-contain">
                 <div class="h-4 w-[1px] bg-gray-300 mx-1"></div>
                 <span class="text-sm font-medium text-brand-gray tracking-wide">Organization</span>
@@ -191,7 +213,7 @@
                 </div>
                 
                 <!-- Filters Trigger -->
-                <button id="filterToggleBtn" class="btn-secondary w-8 h-8 flex items-center justify-center rounded-full text-sm">
+                <button id="filterToggleBtn" class="btn-secondary w-8 h-8 flex items-center justify-center rounded-full text-sm transition-transform hover:scale-105 active:scale-95">
                     <i class="fas fa-sliders-h"></i>
                 </button>
             </div>
@@ -199,7 +221,7 @@
     </nav>
 
     <!-- Filters Panel (Hidden by default, slides down) -->
-    <div id="filterPanel" class="fixed top-16 left-0 w-full bg-white/90 backdrop-blur-xl border-b border-gray-100 z-40 hidden transition-all duration-300 shadow-sm">
+    <div id="filterPanel" class="fixed top-16 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-100 z-40 hidden transition-all duration-300 shadow-sm">
         <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row gap-6 items-center justify-between">
             <div class="flex items-center gap-4 w-full md:w-auto">
                 <select id="locationFilter" class="input-premium px-4 py-2 text-sm w-full md:w-48 cursor-pointer">
@@ -211,7 +233,7 @@
                         <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                     </button>
                     <!-- Role Dropdown -->
-                    <div id="roleDropdown" class="absolute top-full left-0 w-full mt-2 bg-white rounded-xl shadow-floating p-2 hidden border border-gray-100 max-h-60 overflow-y-auto">
+                    <div id="roleDropdown" class="absolute top-full left-0 w-full mt-2 bg-white rounded-xl shadow-floating p-2 hidden border border-gray-100 max-h-60 overflow-y-auto z-50">
                         <!-- JS Populated -->
                     </div>
                 </div>
@@ -226,17 +248,33 @@
     </div>
 
     <!-- Main Canvas -->
-    <main class="container mx-auto px-6 pt-32 pb-20 org-chart-canvas">
+    <main class="container mx-auto px-6 pt-28 pb-20 org-chart-canvas">
         
-        <!-- Hero: Executive Leadership -->
-        <div class="text-center mb-16 animate-fade-in">
-            <h1 class="text-4xl font-bold text-brand-dark mb-4 tracking-tight">Leadership</h1>
-            <p class="text-brand-gray text-lg max-w-2xl mx-auto">Traffic Loop Solutions structure overview.</p>
+        <!-- Hero: Executive Leadership & Stats -->
+        <div class="text-center mb-16 animate-fade-up">
+            <h1 class="text-5xl font-bold text-brand-dark mb-4 tracking-tight">Leadership</h1>
+            <p class="text-brand-gray text-lg max-w-2xl mx-auto mb-10">Traffic Loop Solutions structure overview.</p>
+            
+            <!-- Company Stats Dashboard -->
+            <div class="inline-flex flex-wrap justify-center gap-4 bg-white px-6 py-3 rounded-2xl shadow-premium border border-gray-100">
+                <div class="text-center px-4 border-r border-gray-100">
+                    <div class="text-2xl font-bold text-brand-dark" id="total-members-count">0</div>
+                    <div class="text-[10px] font-semibold text-brand-gray uppercase tracking-widest">Members</div>
+                </div>
+                <div class="text-center px-4 border-r border-gray-100">
+                    <div class="text-2xl font-bold text-brand-dark" id="total-teams-count">0</div>
+                    <div class="text-[10px] font-semibold text-brand-gray uppercase tracking-widest">Teams</div>
+                </div>
+                <div class="text-center px-4">
+                    <div class="text-2xl font-bold text-brand-dark" id="total-loc-count">0</div>
+                    <div class="text-[10px] font-semibold text-brand-gray uppercase tracking-widest">Locations</div>
+                </div>
+            </div>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-center gap-8 mb-24">
+        <div class="flex flex-col md:flex-row justify-center gap-8 mb-24 animate-fade-up delay-100">
             <!-- Manager Card -->
-            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person" 
+            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person animate-fade-up delay-100" 
                  data-name="Salaheddine Elyaakoubi" data-role="Manager" data-location="Global" data-telegram="@Salaheddine_elyakoubi">
                 <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center text-3xl text-brand-dark shadow-inner">
                     <img src="https://ui-avatars.com/api/?name=Salaheddine+E&background=random&color=fff&size=128" class="rounded-full w-full h-full object-cover opacity-90" alt="">
@@ -249,7 +287,7 @@
             </div>
 
             <!-- HR Card -->
-            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person"
+            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person animate-fade-up delay-200"
                  data-name="Ibrahim EL Maimouni" data-role="HR Manager" data-location="HQ" data-telegram="@Ibrahim_Elmimouni">
                  <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center text-3xl text-brand-dark shadow-inner">
                     <img src="https://ui-avatars.com/api/?name=Ibrahim+E&background=random&color=fff&size=128" class="rounded-full w-full h-full object-cover opacity-90" alt="">
@@ -266,14 +304,14 @@
         <div class="border-t border-gray-200 my-16"></div>
 
         <!-- Special Departments (Grid Layout) -->
-        <div class="mb-20" data-location="Special Departments (California)">
+        <div class="mb-20 animate-fade-up delay-200" data-location="Special Departments (California)">
             <div class="flex items-center justify-between mb-8">
                 <div>
                     <h3 class="text-2xl font-bold text-brand-dark">Specialized Departments</h3>
                     <p class="text-brand-gray text-sm">California Campus</p>
                 </div>
                 <!-- Map Button -->
-                <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
                     data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.733248043701!2d-118.2436849847898!3d34.05223422525514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fcd699d41e495!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2sus!4v1678888888888!5m2!1sen!2sus">
                     <i class="fas fa-map-marker-alt text-brand-purple"></i>
                 </button>
@@ -281,11 +319,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Tech Dept -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Technician">
+                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up" data-entity="Technician">
                     <div class="brand-indicator"></div>
                     <div class="flex justify-between items-start mb-6">
-                        <h4 class="font-bold text-lg">Technician</h4>
-                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">SUPPORT</span>
+                        <div>
+                            <h4 class="font-bold text-lg">Technician</h4>
+                            <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">SUPPORT</span>
+                        </div>
+                        <span class="count-badge member-count-badge">0</span>
                     </div>
                     <!-- Single Person -->
                     <div class="flex items-center gap-3 clickable-person p-2" data-name="Mohamed Alaoui" data-role="Tech Lead" data-team="Technician" data-telegram="+212636203456">
@@ -298,11 +339,14 @@
                 </div>
 
                 <!-- Offers -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Offers Team">
+                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up delay-100" data-entity="Offers Team">
                     <div class="brand-indicator"></div>
                     <div class="flex justify-between items-start mb-4">
-                        <h4 class="font-bold text-lg">Offers</h4>
-                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">MARKETING</span>
+                        <div>
+                             <h4 class="font-bold text-lg">Offers</h4>
+                             <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">MARKETING</span>
+                        </div>
+                        <span class="count-badge member-count-badge">0</span>
                     </div>
                     <div class="mt-auto">
                         <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
@@ -319,11 +363,14 @@
                 </div>
 
                 <!-- Security -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Security">
+                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up delay-200" data-entity="Security">
                     <div class="brand-indicator"></div>
                      <div class="flex justify-between items-start mb-4">
-                        <h4 class="font-bold text-lg">Security</h4>
-                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
+                        <div>
+                             <h4 class="font-bold text-lg">Security</h4>
+                             <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
+                        </div>
+                        <span class="count-badge member-count-badge">0</span>
                     </div>
                     <div class="mt-auto">
                         <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
@@ -340,11 +387,14 @@
                 </div>
 
                 <!-- Cleaning -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box" data-entity="Cleaning">
+                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up delay-300" data-entity="Cleaning">
                     <div class="brand-indicator"></div>
                      <div class="flex justify-between items-start mb-4">
-                        <h4 class="font-bold text-lg">Cleaning</h4>
-                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
+                        <div>
+                             <h4 class="font-bold text-lg">Cleaning</h4>
+                             <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
+                        </div>
+                        <span class="count-badge member-count-badge">0</span>
                     </div>
                     <div class="mt-auto">
                         <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
@@ -363,13 +413,13 @@
         </div>
 
         <!-- California Main -->
-        <div class="mb-20" data-location="California">
+        <div class="mb-20 animate-fade-up delay-300" data-location="California">
             <div class="flex items-center justify-between mb-8">
                 <div>
                     <h3 class="text-2xl font-bold text-brand-dark">California Operations</h3>
                     <p class="text-brand-gray text-sm">Main Office</p>
                 </div>
-                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
                     data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.7368258798906!2d-5.8449250237249295!3d35.78184052443994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c79a01a02e7a7%3A0x3742104ecd03499a!2sTraffic%20loop%20solutions!5e0!3m2!1sen!2sma!4v1746104811818!5m2!1sen!2sma">
                     <i class="fas fa-map-marker-alt text-brand-purple"></i>
                 </button>
@@ -377,12 +427,15 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- GML Supervisor -->
-                <div class="card-premium p-0 entity-box" data-entity="GML">
+                <div class="card-premium p-0 entity-box animate-fade-up" data-entity="GML">
                     <div class="p-6 border-b border-gray-100">
-                        <div class="brand-indicator"></div>
+                        <div class="flex justify-between items-start mb-4">
+                             <div class="brand-indicator mb-0"></div>
+                             <span class="count-badge member-count-badge">0</span>
+                        </div>
                         <h4 class="font-bold text-xl mb-4">GML</h4>
-                        <div class="flex items-center gap-3 clickable-person" data-name="Hicham Mennour" data-role="Supervisor" data-telegram="@hichamwork">
-                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold">HM</div>
+                        <div class="flex items-center gap-3 clickable-person p-2 -ml-2 hover:bg-gray-50" data-name="Hicham Mennour" data-role="Supervisor" data-telegram="@hichamwork">
+                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shadow-md">HM</div>
                              <div>
                                 <div class="font-bold text-sm">Hicham Mennour</div>
                                 <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
@@ -424,12 +477,15 @@
                 </div>
 
                 <!-- GMK Supervisor -->
-                <div class="card-premium p-0 entity-box" data-entity="GMK">
+                <div class="card-premium p-0 entity-box animate-fade-up delay-100" data-entity="GMK">
                     <div class="p-6 border-b border-gray-100">
-                        <div class="brand-indicator"></div>
+                        <div class="flex justify-between items-start mb-4">
+                             <div class="brand-indicator mb-0"></div>
+                             <span class="count-badge member-count-badge">0</span>
+                        </div>
                         <h4 class="font-bold text-xl mb-4">GMK</h4>
-                        <div class="flex items-center gap-3 clickable-person" data-name="Hamza Fellah" data-role="Supervisor" data-telegram="+212677510391">
-                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold">HF</div>
+                        <div class="flex items-center gap-3 clickable-person p-2 -ml-2 hover:bg-gray-50" data-name="Hamza Fellah" data-role="Supervisor" data-telegram="+212677510391">
+                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shadow-md">HF</div>
                              <div>
                                 <div class="font-bold text-sm">Hamza Fellah</div>
                                 <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
@@ -472,12 +528,15 @@
                 </div>
 
                 <!-- GM2 Supervisor -->
-                 <div class="card-premium p-0 entity-box" data-entity="GM2">
+                 <div class="card-premium p-0 entity-box animate-fade-up delay-200" data-entity="GM2">
                     <div class="p-6 border-b border-gray-100">
-                        <div class="brand-indicator"></div>
+                        <div class="flex justify-between items-start mb-4">
+                             <div class="brand-indicator mb-0"></div>
+                             <span class="count-badge member-count-badge">0</span>
+                        </div>
                         <h4 class="font-bold text-xl mb-4">GM2</h4>
-                        <div class="flex items-center gap-3 clickable-person" data-name="Ismail Semlali" data-role="Supervisor" data-telegram="@esmaelwork">
-                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold">IS</div>
+                        <div class="flex items-center gap-3 clickable-person p-2 -ml-2 hover:bg-gray-50" data-name="Ismail Semlali" data-role="Supervisor" data-telegram="@esmaelwork">
+                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shadow-md">IS</div>
                              <div>
                                 <div class="font-bold text-sm">Ismail Semlali</div>
                                 <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
@@ -501,11 +560,15 @@
                 </div>
 
                 <!-- GMS/GMW -->
-                 <div class="card-premium p-0 entity-box" data-entity="GMS">
+                 <div class="card-premium p-0 entity-box animate-fade-up delay-300" data-entity="GMS">
                     <div class="p-6 border-b border-gray-100">
-                        <div class="brand-indicator"></div>
+                         <div class="flex justify-between items-start mb-4">
+                             <div class="brand-indicator mb-0"></div>
+                             <span class="count-badge member-count-badge">0</span>
+                        </div>
                         <h4 class="font-bold text-xl mb-4">GMS / GMW</h4>
-					</div>
+                         <div class="text-xs text-brand-gray mb-2">Combined Units</div>
+                    </div>
                     <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
                          <!-- GMS -->
                          <div class="mb-2">
@@ -544,13 +607,13 @@
         </div>
 
         <!-- Sour El Maagazine -->
-         <div class="mb-20" data-location="Sour El Maagazine">
+         <div class="mb-20 animate-fade-up delay-300" data-location="Sour El Maagazine">
             <div class="flex items-center justify-between mb-8">
                 <div>
                     <h3 class="text-2xl font-bold text-brand-dark">Sour El Maagazine</h3>
                     <p class="text-brand-gray text-sm">Marketing Hub</p>
                 </div>
-                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
                     data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.787475691114!2d-5.814137823725026!3d35.780596524508454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c7f142e05ed99%3A0x8c6ad852c8e2742e!2sPI%20Marketing!5e0!3m2!1sen!2sma!4v1746104905595!5m2!1sen!2sma">
                     <i class="fas fa-map-marker-alt text-brand-purple"></i>
                 </button>
@@ -558,16 +621,19 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- GMA -->
-                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2" data-entity="GMA">
+                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2 animate-fade-up" data-entity="GMA">
                     <div class="p-6 border-b border-gray-100">
-                        <div class="brand-indicator"></div>
+                        <div class="flex justify-between items-start mb-4">
+                             <div class="brand-indicator mb-0"></div>
+                             <span class="count-badge member-count-badge">0</span>
+                        </div>
                         <h4 class="font-bold text-xl mb-1">GMA</h4>
                     </div>
                     <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Hatim -->
                         <div>
-                             <div class="flex items-center gap-3 clickable-person mb-4" data-name="Hatim Lachiri" data-role="Team Leader" data-telegram="@HatimLac">
-                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold">HL</div>
+                             <div class="flex items-center gap-3 clickable-person mb-4 p-2 -ml-2 hover:bg-gray-50 rounded-xl" data-name="Hatim Lachiri" data-role="Team Leader" data-telegram="@HatimLac">
+                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold shadow-md">HL</div>
                                 <div>
                                     <div class="font-bold text-sm">Hatim Lachiri</div>
                                     <div class="text-xs text-brand-gray uppercase tracking-wide">Team Leader</div>
@@ -601,8 +667,8 @@
 
                         <!-- Ahmed -->
                         <div>
-                             <div class="flex items-center gap-3 clickable-person mb-4" data-name="Ahmed Benjelloun Fahri" data-role="Team Leader">
-                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold">AB</div>
+                             <div class="flex items-center gap-3 clickable-person mb-4 p-2 -ml-2 hover:bg-gray-50 rounded-xl" data-name="Ahmed Benjelloun Fahri" data-role="Team Leader">
+                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold shadow-md">AB</div>
                                 <div>
                                     <div class="font-bold text-sm">Ahmed Benjelloun Fahri</div>
                                     <div class="text-xs text-brand-gray uppercase tracking-wide">Team Leader</div>
@@ -627,28 +693,29 @@
         </div>
 
         <!-- Riad Tetouan -->
-        <div class="mb-12" data-location="Riad Tetouan">
+        <div class="mb-12 animate-fade-up delay-300" data-location="Riad Tetouan">
              <div class="flex items-center justify-between mb-8">
                 <div>
                     <h3 class="text-2xl font-bold text-brand-dark">Riad Tetouan</h3>
                     <p class="text-brand-gray text-sm">IT & Development</p>
                 </div>
-                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn"
+                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
                     data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1477.0876264023589!2d-5.801125955928066!3d35.77059454517391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b81ca76fe8ea9%3A0x288e0c1dc391b2d7!2sTangier%20Office%20Center!5e1!3m2!1sen!2sma!4v1746174355291!5m2!1sen!2sma">
                     <i class="fas fa-map-marker-alt text-brand-purple"></i>
                 </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2" data-entity="EIN CONSULTING">
+                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2 animate-fade-up" data-entity="EIN CONSULTING">
                      <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                          <div>
                             <div class="brand-indicator"></div>
                             <h4 class="font-bold text-xl">EIN CONSULTING</h4>
                          </div>
-                         <div class="flex gap-4">
+                         <div class="flex items-center gap-4">
+                             <span class="count-badge member-count-badge">0</span>
                              <!-- IT Manager -->
-                             <div class="text-right clickable-person p-2" data-name="Mohamed Aoujil" data-role="IT Manager" data-telegram="@aoujilmed">
+                             <div class="text-right clickable-person p-2 rounded-xl hover:bg-gray-50" data-name="Mohamed Aoujil" data-role="IT Manager" data-telegram="@aoujilmed">
                                  <div class="font-bold text-sm text-brand-dark">Mohamed Aoujil</div>
                                  <div class="text-xs text-brand-purple font-bold">IT MANAGER</div>
                              </div>
@@ -657,7 +724,7 @@
                      
                      <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                          <!-- Reporting -->
-                         <div class="bg-gray-50 rounded-xl p-4">
+                         <div class="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
                              <div class="flex items-center gap-2 mb-3">
                                  <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-chart-line text-xs"></i></div>
                                  <span class="font-bold text-sm">Reporting</span>
@@ -673,7 +740,7 @@
                          </div>
 
                          <!-- Support -->
-                         <div class="bg-gray-50 rounded-xl p-4">
+                         <div class="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
                              <div class="flex items-center gap-2 mb-3">
                                  <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-headset text-xs"></i></div>
                                  <span class="font-bold text-sm">Support</span>
@@ -695,7 +762,7 @@
                          </div>
 
                          <!-- Dev -->
-                         <div class="bg-gray-50 rounded-xl p-4">
+                         <div class="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
                              <div class="flex items-center gap-2 mb-3">
                                  <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-code text-xs"></i></div>
                                  <span class="font-bold text-sm">Development</span>
@@ -718,35 +785,36 @@
     <!-- Modal System -->
     <!-- Profile Modal -->
     <div id="profileModal" class="modal-overlay flex items-center justify-center p-4">
-        <div class="modal-card bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden relative" onclick="event.stopPropagation()">
-            <button class="absolute top-4 right-4 text-gray-400 hover:text-brand-dark z-10 p-2" onclick="closeModals()">
+        <div class="modal-card bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden relative" onclick="event.stopPropagation()">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-brand-dark z-10 p-2 transition-transform hover:rotate-90" onclick="closeModals()">
                 <i class="fas fa-times text-lg"></i>
             </button>
             <div class="p-8 text-center">
-                <div class="w-20 h-20 mx-auto bg-brand-purple text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 shadow-lg shadow-purple-100">
+                <div class="w-24 h-24 mx-auto bg-brand-purple text-white rounded-full flex items-center justify-center text-3xl font-bold mb-6 shadow-floating shadow-purple-200">
                     <span id="modalInitials">AB</span>
                 </div>
-                <h3 id="modalName" class="text-xl font-bold text-brand-dark mb-1">Name</h3>
-                <p id="modalRole" class="text-brand-purple font-medium text-sm uppercase tracking-wide">Role</p>
+                <h3 id="modalName" class="text-2xl font-bold text-brand-dark mb-1 tracking-tight">Name</h3>
+                <p id="modalRole" class="text-brand-purple font-semibold text-xs uppercase tracking-widest">Role</p>
                 
                 <div class="mt-8 space-y-4 text-left">
-                    <div class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 border border-gray-100">
-                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-users"></i></div>
+                    <div class="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100 transition-colors hover:bg-gray-100">
+                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-users"></i></div>
                          <div>
                              <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Team</p>
                              <p id="modalTeam" class="text-sm font-semibold text-gray-700">Team</p>
                          </div>
                     </div>
-                     <div class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 border border-gray-100">
-                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-map-pin"></i></div>
+                     <div class="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100 transition-colors hover:bg-gray-100">
+                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-map-pin"></i></div>
                          <div>
                              <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Location</p>
                              <p id="modalLocation" class="text-sm font-semibold text-gray-700">Location</p>
                          </div>
                     </div>
                     <!-- Telegram Button -->
-                    <a id="modalTelegramLink" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#0088cc] text-white font-semibold hover:bg-[#0077b5] transition-colors shadow-sm mt-4">
-                        <i class="fab fa-telegram-plane"></i> Contact via Telegram
+                    <a id="modalTelegramLink" href="#" target="_blank" class="flex items-center justify-center gap-3 w-full py-3.5 rounded-2xl bg-[#0088cc] text-white font-semibold hover:bg-[#0077b5] transition-all shadow-lg shadow-blue-100 hover:shadow-blue-200 active:scale-95 mt-6">
+                        <i class="fab fa-telegram-plane text-lg"></i> 
+                        <span>Contact via Telegram</span>
                     </a>
                 </div>
             </div>
@@ -755,10 +823,10 @@
 
     <!-- Map Modal -->
     <div id="mapModal" class="modal-overlay flex items-center justify-center p-4">
-        <div class="modal-card bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[70vh] flex flex-col overflow-hidden relative" onclick="event.stopPropagation()">
-            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
-                <h3 class="font-bold text-lg text-brand-dark">Location View</h3>
-                <button class="text-gray-400 hover:text-brand-dark p-2" onclick="closeModals()"><i class="fas fa-times"></i></button>
+        <div class="modal-card bg-white rounded-3xl shadow-2xl w-full max-w-4xl h-[70vh] flex flex-col overflow-hidden relative" onclick="event.stopPropagation()">
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-white z-10">
+                <h3 class="font-bold text-xl text-brand-dark tracking-tight">Location View</h3>
+                <button class="text-gray-400 hover:text-brand-dark p-2 transition-transform hover:rotate-90" onclick="closeModals()"><i class="fas fa-times text-xl"></i></button>
             </div>
             <iframe id="mapFrame" class="w-full h-full bg-gray-100" frameborder="0"></iframe>
         </div>
@@ -767,6 +835,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             initFilters();
+            updateStats();
             
             // Modal Backdrop Click
             document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -788,7 +857,22 @@
 
             // Toggle Filter Panel
             document.getElementById('filterToggleBtn').addEventListener('click', () => {
-                document.getElementById('filterPanel').classList.toggle('hidden');
+                const panel = document.getElementById('filterPanel');
+                if (panel.classList.contains('hidden')) {
+                    panel.classList.remove('hidden');
+                    // Small animation for panel content
+                    panel.querySelectorAll('.container > *').forEach((el, i) => {
+                        el.style.opacity = '0';
+                        el.style.transform = 'translateY(-10px)';
+                        setTimeout(() => {
+                            el.style.transition = 'all 0.3s ease';
+                            el.style.opacity = '1';
+                            el.style.transform = 'translateY(0)';
+                        }, i * 50);
+                    });
+                } else {
+                    panel.classList.add('hidden');
+                }
             });
             
             // Toggle Role Dropdown
@@ -844,6 +928,44 @@
                 }
             });
         };
+
+        /* --- Statistics --- */
+        function updateStats() {
+            // Global Stats
+            const totalMembers = document.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
+            const totalTeams = document.querySelectorAll('[data-entity]:not(.filtered-hidden)').length; // Approximation using entity boxes
+            const totalLocs = document.querySelectorAll('[data-location]:not(.filtered-hidden)').length;
+
+            animateValue('total-members-count', parseInt(document.getElementById('total-members-count').innerText), totalMembers, 800);
+            animateValue('total-teams-count', parseInt(document.getElementById('total-teams-count').innerText), totalTeams, 800);
+            animateValue('total-loc-count', parseInt(document.getElementById('total-loc-count').innerText), totalLocs, 800);
+
+            // Per Entity Badge Counts
+            document.querySelectorAll('.entity-box').forEach(box => {
+                const count = box.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
+                const badge = box.querySelector('.member-count-badge');
+                if(badge) {
+                    badge.textContent = `${count} Members`;
+                    badge.style.opacity = count === 0 ? '0.5' : '1';
+                }
+            });
+        }
+
+        function animateValue(id, start, end, duration) {
+            if (start === end) return;
+            const range = end - start;
+            let current = start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            const obj = document.getElementById(id);
+            const timer = setInterval(function() {
+                current += increment;
+                obj.innerHTML = current;
+                if (current == end) {
+                    clearInterval(timer);
+                }
+            }, Math.max(stepTime, 20));
+        }
 
         /* --- Filtering --- */
         function initFilters() {
@@ -908,6 +1030,9 @@
                 const visible = box.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
                 box.style.display = visible ? 'flex' : 'none';
             });
+            
+            // Recalculate stats
+            updateStats();
         }
 
         /* --- Modals --- */
@@ -979,5 +1104,3 @@
     </script>
 </body>
 </html>
-
-
