@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traffic Loop | Organization</title>
+    <title>Traffic Loop | Enterprise Structure</title>
     
-    <!-- Premium Typography: Inter (Closest to Apple's San Francisco) -->
+    <!-- Fonts: Inter (Standard for high-end UI) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Libraries -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -20,41 +20,26 @@
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: { 
-                        // Extracted from Logo
                         brand: {
-                            dark: '#1d1d1f',    // Apple/Google Black
-                            gray: '#86868b',    // Apple Gray
-                            purple: '#8b5cf6',  // Traffic Loop Purple
-                            light: '#F5F5F7',   // Premium Background
-                            surface: '#FFFFFF'
+                            black: '#111827',   // Deep black for headings
+                            dark: '#1F2937',    // Dark gray for body
+                            gray: '#6B7280',    // Muted text
+                            purple: '#8b5cf6',  // Logo Purple (Primary)
+                            purpleLight: '#F3E8FF', // Light purple bg
+                            bg: '#FAFAFA',      // Premium off-white background
+                            border: '#E5E7EB',  // Light border
                         }
                     },
                     boxShadow: {
-                        'premium': '0 4px 24px rgba(0, 0, 0, 0.04)', // Ultra soft shadow
-                        'premium-hover': '0 20px 40px rgba(0, 0, 0, 0.08)',
-                        'floating': '0 12px 40px rgba(0, 0, 0, 0.12)',
+                        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'float': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                     },
                     borderRadius: {
-                        'xl': '18px', // Smooth corners
-                        '2xl': '24px',
-                        '3xl': '32px',
-                    },
-                    animation: {
-                        'fade-up': 'fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'scale-in': 'scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                    },
-                    keyframes: {
-                        fadeUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        scaleIn: {
-                            '0%': { opacity: '0', transform: 'scale(0.95)' },
-                            '100%': { opacity: '1', transform: 'scale(1)' },
-                        }
+                        'xl': '12px',
                     }
                 }
             }
@@ -62,349 +47,338 @@
     </script>
 
     <style>
-        /* --- CUPERTINO DESIGN SYSTEM --- */
         body {
-            background-color: #F5F5F7;
-            color: #1d1d1f;
+            background-color: #FAFAFA;
+            color: #1F2937;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
         }
 
-        /* Glass Header (Frosted) */
-        .nav-blur {
-            background: rgba(251, 251, 253, 0.85);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        /* --- Header / Nav --- */
+        .header-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #E5E7EB;
         }
 
-        /* Card Philosophy: "Content First" */
-        .card-premium {
-            background: #FFFFFF;
-            border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03); /* Barely visible shadow */
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(0,0,0,0.02); /* Micro-border for contrast */
+        /* --- Section Markers --- */
+        .section-marker {
+            width: 4px;
+            height: 24px;
+            background-color: #8b5cf6;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+
+        /* --- Card Design (Clean Enterprise) --- */
+        .card-ent {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            opacity: 0; /* For animation */
+        }
+        .card-ent:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+            border-color: #d8b4fe;
         }
 
-        .card-premium:hover {
-            transform: translateY(-4px) scale(1.005);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            z-index: 10;
+        /* --- Lists --- */
+        .list-row {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+        .list-row:last-child { border-bottom: none; }
+        .list-row:hover { background-color: #F9FAFB; }
+
+        /* --- Buttons --- */
+        .btn-ghost {
+            color: #6B7280;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-ghost:hover {
+            background-color: #F3F4F6;
+            color: #111827;
         }
 
-        /* The "Loop" Accent - Subtle indication of Brand */
-        .brand-indicator {
-            width: 40px; height: 4px;
-            background: #8b5cf6; /* Traffic Loop Purple */
-            border-radius: 2px;
-            margin-bottom: 16px;
-            opacity: 0.8;
+        /* --- Collapse Logic --- */
+        .team-section {
+            border-top: 1px solid #E5E7EB;
         }
+        .team-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+        .team-content.expanded {
+            max-height: 500px; /* Arbitrary large height */
+        }
+        .chevron { transition: transform 0.3s ease; }
+        .chevron.rotated { transform: rotate(180deg); }
 
-        /* Typography Hierarchy */
-        h1, h2, h3, h4 { letter-spacing: -0.02em; }
-        
-        /* Inputs */
-        .input-premium {
-            background: #e6e6e8; /* Darker input bg for contrast on white */
-            border: none;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            color: #1d1d1f;
-        }
-        .input-premium:focus {
-            background: #FFFFFF;
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15); /* Purple Focus Ring */
-            outline: none;
-        }
+        /* --- Typography --- */
+        .text-role { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #8b5cf6; letter-spacing: 0.05em; }
+        .text-name { font-size: 15px; font-weight: 600; color: #111827; }
 
-        /* Buttons: Apple Style Pills */
-        .btn-secondary {
-            background: #e8e8ed;
-            color: #1d1d1f;
-            transition: background 0.2s;
-        }
-        .btn-secondary:hover { background: #dcdce0; }
-
-        /* Collapse Animation (Smooth) */
-        .team-collapse {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-            opacity: 0;
-        }
-        .team-collapse.expanded {
-            grid-template-rows: 1fr;
-            opacity: 1;
-            margin-top: 12px;
-        }
-        .team-collapse > div { overflow: hidden; }
-
-        /* Count Badge */
-        .count-badge {
-            background: #F5F5F7;
-            color: #86868b;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 999px;
-            letter-spacing: 0.02em;
-        }
-
-        /* Modal Overlay */
+        /* --- Modals --- */
         .modal-overlay {
-            background: rgba(0, 0, 0, 0.3); /* Subtle dark overlay */
-            backdrop-filter: blur(12px); /* Strong blur */
-            opacity: 0; visibility: hidden; transition: all 0.4s ease;
-            z-index: 100; position: fixed; inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
         }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-
-        .modal-card {
-            transform: scale(0.92) translateY(20px);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        .modal-content {
+            background: white;
+            border-radius: 16px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .modal-overlay.show .modal-card { transform: scale(1) translateY(0); }
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
 
-        /* Utilities */
-        .filtered-hidden { display: none !important; }
-        .clickable-person { cursor: pointer; border-radius: 12px; transition: background 0.2s; }
-        .clickable-person:hover { background: #F5F5F7; }
-        
-        /* Staggered Animation Delays */
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-        
         /* Print */
         @media print {
-            body { background: white; }
-            .no-print { display: none; }
-            .card-premium { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; opacity: 1 !important; }
-            .team-collapse { display: block !important; grid-template-rows: 1fr !important; opacity: 1 !important; }
+            .no-print { display: none !important; }
+            .card-ent { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+            .team-content { max-height: none !important; display: block !important; }
         }
     </style>
 </head>
-<body>
+<body class="pb-20">
 
-    <!-- Navigation -->
-    <nav class="nav-blur fixed top-0 w-full z-50 h-16 flex items-center">
-        <div class="container mx-auto px-6 flex justify-between items-center">
+    <!-- Sticky Header -->
+    <header class="header-bar fixed top-0 w-full z-50 h-16 flex items-center shadow-sm">
+        <div class="container mx-auto px-6 max-w-[1600px] flex justify-between items-center">
             <!-- Brand -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
                 <img src="https://i.imgur.com/Paft0Df.png" alt="Traffic Loop" class="h-8 w-auto object-contain">
-                <div class="h-4 w-[1px] bg-gray-300 mx-1"></div>
-                <span class="text-sm font-medium text-brand-gray tracking-wide">Organization</span>
+                <div class="h-6 w-px bg-gray-200"></div>
+                <h1 class="text-lg font-bold text-gray-800 tracking-tight hidden sm:block">Organization Chart</h1>
             </div>
 
-            <!-- Global Search & Actions -->
-            <div class="flex items-center gap-4 no-print">
-                <!-- Search Bar -->
-                <div class="relative hidden md:block group">
-                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="text" id="globalSearch" placeholder="Search..." 
-                           class="input-premium pl-9 pr-4 py-1.5 text-sm w-64 placeholder-gray-500">
+            <!-- Controls -->
+            <div class="flex items-center gap-3 no-print">
+                <!-- Search -->
+                <div class="relative hidden lg:block">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="globalSearch" placeholder="Search team or member..." 
+                           class="pl-10 pr-4 py-2 bg-gray-100 border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-brand-purple focus:bg-white transition-all outline-none">
                 </div>
-                
-                <!-- Filters Trigger -->
-                <button id="filterToggleBtn" class="btn-secondary w-8 h-8 flex items-center justify-center rounded-full text-sm transition-transform hover:scale-105 active:scale-95">
-                    <i class="fas fa-sliders-h"></i>
+
+                <div class="h-6 w-px bg-gray-200 mx-2 hidden sm:block"></div>
+
+                <!-- Filters Button -->
+                <button id="filterToggleBtn" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors">
+                    <i class="fas fa-filter text-gray-500"></i> <span>Filters</span>
+                </button>
+
+                <!-- Actions -->
+                <button onclick="expandAllTeams()" class="w-9 h-9 flex items-center justify-center bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors" title="Expand All">
+                    <i class="fas fa-expand-alt"></i>
+                </button>
+                <button onclick="collapseAllTeams()" class="w-9 h-9 flex items-center justify-center bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors" title="Collapse All">
+                    <i class="fas fa-compress-alt"></i>
+                </button>
+                <button onclick="exportPDF()" class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 text-sm font-medium transition-colors shadow-sm">
+                    <i class="fas fa-download"></i> <span class="hidden sm:inline">Export</span>
                 </button>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Filters Panel (Hidden by default, slides down) -->
-    <div id="filterPanel" class="fixed top-16 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-100 z-40 hidden transition-all duration-300 shadow-sm">
-        <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row gap-6 items-center justify-between">
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <select id="locationFilter" class="input-premium px-4 py-2 text-sm w-full md:w-48 cursor-pointer">
+    <!-- Filter Dropdown (Absolute) -->
+    <div id="filterPanel" class="fixed top-16 right-0 left-0 bg-white/95 backdrop-blur-xl border-b border-gray-200 z-40 hidden shadow-lg transform transition-all">
+        <div class="container mx-auto px-6 py-4 max-w-[1600px] flex flex-wrap items-center gap-4">
+            <div class="flex flex-col">
+                <label class="text-xs font-semibold text-gray-500 uppercase mb-1">Location</label>
+                <select id="locationFilter" class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-brand-purple focus:border-brand-purple block w-48 p-2.5">
                     <option value="">All Locations</option>
                 </select>
-                <div class="relative w-full md:w-48">
-                    <button id="roleDropdownBtn" class="input-premium px-4 py-2 text-sm w-full text-left flex justify-between items-center">
-                        <span class="selected-role-text">All Roles</span>
-                        <i class="fas fa-chevron-down text-xs text-gray-400"></i>
-                    </button>
-                    <!-- Role Dropdown -->
-                    <div id="roleDropdown" class="absolute top-full left-0 w-full mt-2 bg-white rounded-xl shadow-floating p-2 hidden border border-gray-100 max-h-60 overflow-y-auto z-50">
-                        <!-- JS Populated -->
-                    </div>
-                </div>
             </div>
-            
-            <div class="flex gap-2">
-                <button onclick="expandAllTeams()" class="text-xs font-semibold text-brand-purple hover:text-brand-dark transition-colors px-3 py-1">Expand All</button>
-                <button onclick="collapseAllTeams()" class="text-xs font-semibold text-gray-500 hover:text-brand-dark transition-colors px-3 py-1">Collapse</button>
-                <button onclick="exportPDF()" class="text-xs font-semibold text-gray-500 hover:text-brand-dark transition-colors px-3 py-1"><i class="fas fa-download mr-1"></i> PDF</button>
+            <div class="flex flex-col relative group">
+                <label class="text-xs font-semibold text-gray-500 uppercase mb-1">Role</label>
+                <button id="roleDropdownBtn" class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-brand-purple focus:border-brand-purple w-48 p-2.5 text-left flex justify-between items-center">
+                    <span class="truncate selected-role-text">All Roles</span>
+                    <i class="fas fa-chevron-down text-gray-400"></i>
+                </button>
+                <div id="roleDropdown" class="absolute top-full left-0 w-64 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-60 overflow-y-auto hidden z-50 p-1">
+                    <!-- Populated by JS -->
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Canvas -->
-    <main class="container mx-auto px-6 pt-28 pb-20 org-chart-canvas">
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 pt-24 max-w-[1600px] org-chart-canvas">
         
-        <!-- Hero: Executive Leadership & Stats -->
-        <div class="text-center mb-16 animate-fade-up">
-            <h1 class="text-5xl font-bold text-brand-dark mb-4 tracking-tight">Leadership</h1>
-            <p class="text-brand-gray text-lg max-w-2xl mx-auto mb-10">Traffic Loop Solutions structure overview.</p>
-            
-            <!-- Company Stats Dashboard -->
-            <div class="inline-flex flex-wrap justify-center gap-4 bg-white px-6 py-3 rounded-2xl shadow-premium border border-gray-100">
-                <div class="text-center px-4 border-r border-gray-100">
-                    <div class="text-2xl font-bold text-brand-dark" id="total-members-count">0</div>
-                    <div class="text-[10px] font-semibold text-brand-gray uppercase tracking-widest">Members</div>
+        <!-- Dashboard Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+            <div class="md:col-span-1 bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-1">Overview</h2>
+                <p class="text-sm text-gray-500">Company Structure</p>
+            </div>
+            <div class="md:col-span-3 grid grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-gray-900" id="stat-members">0</div>
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Members</div>
+                    </div>
+                    <!-- Icon: Neutral / Brand Purple -->
+                    <div class="w-10 h-10 bg-purple-50 text-brand-purple rounded-full flex items-center justify-center text-lg"><i class="fas fa-users"></i></div>
                 </div>
-                <div class="text-center px-4 border-r border-gray-100">
-                    <div class="text-2xl font-bold text-brand-dark" id="total-teams-count">0</div>
-                    <div class="text-[10px] font-semibold text-brand-gray uppercase tracking-widest">Teams</div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-gray-900" id="stat-teams">0</div>
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Active Teams</div>
+                    </div>
+                    <!-- Icon: Neutral Gray -->
+                    <div class="w-10 h-10 bg-gray-50 text-gray-600 rounded-full flex items-center justify-center text-lg"><i class="fas fa-layer-group"></i></div>
                 </div>
-                <div class="text-center px-4">
-                    <div class="text-2xl font-bold text-brand-dark" id="total-loc-count">0</div>
-                    <div class="text-[10px] font-semibold text-brand-gray uppercase tracking-widest">Locations</div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-gray-900" id="stat-locations">3</div>
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Physical Locations</div>
+                    </div>
+                    <!-- Icon: Neutral Gray -->
+                    <div class="w-10 h-10 bg-gray-50 text-gray-600 rounded-full flex items-center justify-center text-lg"><i class="fas fa-map-marker-alt"></i></div>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-center gap-8 mb-24 animate-fade-up delay-100">
-            <!-- Manager Card -->
-            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person animate-fade-up delay-100" 
-                 data-name="Salaheddine Elyaakoubi" data-role="Manager" data-location="Global" data-telegram="@Salaheddine_elyakoubi">
-                <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center text-3xl text-brand-dark shadow-inner">
-                    <img src="https://ui-avatars.com/api/?name=Salaheddine+E&background=random&color=fff&size=128" class="rounded-full w-full h-full object-cover opacity-90" alt="">
-                </div>
-                <h2 class="text-2xl font-bold text-brand-dark mb-1">Salaheddine Elyaakoubi</h2>
-                <p class="text-brand-purple font-medium text-sm tracking-wide uppercase mb-4">Manager</p>
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold text-gray-600">
-                    <i class="fas fa-globe-americas"></i> Global
-                </div>
-            </div>
-
-            <!-- HR Card -->
-            <div class="card-premium w-full md:w-96 p-8 text-center cursor-pointer clickable-person animate-fade-up delay-200"
-                 data-name="Ibrahim EL Maimouni" data-role="HR Manager" data-location="HQ" data-telegram="@Ibrahim_Elmimouni">
-                 <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center text-3xl text-brand-dark shadow-inner">
-                    <img src="https://ui-avatars.com/api/?name=Ibrahim+E&background=random&color=fff&size=128" class="rounded-full w-full h-full object-cover opacity-90" alt="">
-                </div>
-                <h2 class="text-2xl font-bold text-brand-dark mb-1">Ibrahim EL Maimouni</h2>
-                <p class="text-brand-purple font-medium text-sm tracking-wide uppercase mb-4">Human Resources</p>
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold text-gray-600">
-                    <i class="fas fa-building"></i> Headquarters
-                </div>
-            </div>
-        </div>
-
-        <!-- Section Divider -->
-        <div class="border-t border-gray-200 my-16"></div>
-
-        <!-- Special Departments (Grid Layout) -->
-        <div class="mb-20 animate-fade-up delay-200" data-location="Special Departments (California)">
-            <div class="flex items-center justify-between mb-8">
+        <!-- Executives -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-5xl mx-auto">
+            <!-- GM -->
+            <div class="card-ent p-6 flex items-center gap-6 cursor-pointer clickable-person hover:ring-2 hover:ring-brand-purple/20" 
+                 data-name="Salaheddine Elyaakoubi" data-role="Manager" data-location="California (Avenue Banafsaj)" data-telegram="@Salaheddine_elyakoubi">
+                <div class="w-20 h-20 rounded-full bg-gray-900 text-white flex items-center justify-center text-2xl font-bold shadow-md">SE</div>
                 <div>
-                    <h3 class="text-2xl font-bold text-brand-dark">Specialized Departments</h3>
-                    <p class="text-brand-gray text-sm">Main Office</p>
+                    <h3 class="text-2xl font-bold text-gray-900">Salaheddine Elyaakoubi</h3>
+                    <p class="text-brand-purple font-semibold text-sm uppercase tracking-wide mb-2">General Manager</p>
+                    <div class="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full w-fit">
+                        <i class="fas fa-globe-americas"></i> Global Operations
+                    </div>
                 </div>
-                <!-- Map Button -->
-                <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
-                    data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.733248043701!2d-118.2436849847898!3d34.05223422525514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fcd699d41e495!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2sus!4v1678888888888!5m2!1sen!2sus">
-                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+            </div>
+            <!-- HR -->
+            <div class="card-ent p-6 flex items-center gap-6 cursor-pointer clickable-person hover:ring-2 hover:ring-brand-purple/20" 
+                 data-name="Ibrahim EL Maimouni" data-role="HR Manager" data-location="California (Avenue Banafsaj)" data-telegram="@Ibrahim_Elmimouni">
+                <div class="w-20 h-20 rounded-full bg-gray-400 text-white flex items-center justify-center text-2xl font-bold shadow-md">IE</div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900">Ibrahim EL Maimouni</h3>
+                    <p class="text-brand-purple font-semibold text-sm uppercase tracking-wide mb-2">HR Manager</p>
+                    <div class="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full w-fit">
+                        <i class="fas fa-building"></i> Headquarters
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Specialized Units -->
+        <div class="mb-16" data-location="Special Departments (California)">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <div class="section-marker"></div>
+                    <h2 class="text-2xl font-bold text-gray-900">Specialized Units</h2>
+                </div>
+                <!-- Updated Map URL to match California (Avenue Banafsaj) -->
+                <button class="text-sm font-medium text-gray-500 hover:text-brand-purple transition-colors flex items-center gap-2 location-map-btn" 
+                    data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.7368258798906!2d-5.8449250237249295!3d35.78184052443994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c79a01a02e7a7%3A0x3742104ecd03499a!2sTraffic%20loop%20solutions!5e0!3m2!1sen!2sma!4v1746104811818!5m2!1sen!2sma">
+                    <i class="fas fa-map-marker-alt"></i> View Map
                 </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Tech Dept -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up" data-entity="Technician">
-                    <div class="brand-indicator"></div>
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <h4 class="font-bold text-lg">Technician</h4>
-                            <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">SUPPORT</span>
-                        </div>
-                        <span class="count-badge member-count-badge">0</span>
+                <!-- Technician -->
+                <div class="card-ent entity-box" data-entity="Technician">
+                    <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <span class="text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded uppercase">Tech</span>
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
                     </div>
-                    <!-- Single Person -->
-                    <div class="flex items-center gap-3 clickable-person p-2" data-name="Mohamed Alaoui" data-role="Tech Lead" data-team="Technician" data-telegram="+212636203456">
-                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold text-sm">MA</div>
-                        <div>
-                            <div class="font-semibold text-sm">Mohamed Alaoui</div>
-                            <div class="text-xs text-brand-gray">Technical Lead</div>
+                    <div class="list-row clickable-person" data-name="Mohamed Alaoui" data-role="Tech Lead" data-team="Technician" data-telegram="+212636203456">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">M</div>
+                            <div>
+                                <div class="text-name text-sm">Mohamed Alaoui</div>
+                                <div class="text-role text-[10px]">Lead</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Offers -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up delay-100" data-entity="Offers Team">
-                    <div class="brand-indicator"></div>
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                             <h4 class="font-bold text-lg">Offers</h4>
-                             <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">MARKETING</span>
-                        </div>
-                        <span class="count-badge member-count-badge">0</span>
+                <div class="card-ent entity-box" data-entity="Offers Team">
+                    <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <span class="text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded uppercase">Offers</span>
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
                     </div>
-                    <div class="mt-auto">
-                        <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
-                            <span>View Members</span>
-                            <i class="fas fa-plus transition-transform"></i>
-                        </button>
-                        <div class="team-collapse">
-                            <div class="space-y-1 pt-2">
-                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Bouchra Merroun" data-role="Offers" data-telegram="@B_chra">Bouchra Merroun</div>
-                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Imane Laboudi" data-role="Offers">Imane Laboudi</div>
+                    <div class="bg-white">
+                        <div class="flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                            <span class="text-xs font-medium text-gray-500 uppercase">View Members</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                        </div>
+                        <div class="team-content">
+                            <div class="list-row clickable-person" data-name="Bouchra Merroun" data-role="Offers" data-telegram="@B_chra">
+                                <span class="text-sm font-medium">Bouchra Merroun</span>
+                            </div>
+                            <div class="list-row clickable-person" data-name="Imane Laboudi" data-role="Offers">
+                                <span class="text-sm font-medium">Imane Laboudi</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Security -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up delay-200" data-entity="Security">
-                    <div class="brand-indicator"></div>
-                     <div class="flex justify-between items-start mb-4">
-                        <div>
-                             <h4 class="font-bold text-lg">Security</h4>
-                             <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
-                        </div>
-                        <span class="count-badge member-count-badge">0</span>
+                <div class="card-ent entity-box" data-entity="Security">
+                    <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <span class="text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded uppercase">Security</span>
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
                     </div>
-                    <div class="mt-auto">
-                        <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
-                            <span>View Staff</span>
-                            <i class="fas fa-plus transition-transform"></i>
-                        </button>
-                        <div class="team-collapse">
-                            <div class="space-y-1 pt-2">
-                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Abdelmoumen" data-role="Security">Abdelmoumen</div>
-                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Hamid" data-role="Security">Hamid</div>
+                    <div class="bg-white">
+                        <div class="flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                            <span class="text-xs font-medium text-gray-500 uppercase">View Staff</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                        </div>
+                        <div class="team-content">
+                            <div class="list-row clickable-person" data-name="Abdelmoumen" data-role="Security">
+                                <span class="text-sm font-medium">Abdelmoumen</span>
+                            </div>
+                            <div class="list-row clickable-person" data-name="Hamid" data-role="Security">
+                                <span class="text-sm font-medium">Hamid</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Cleaning -->
-                <div class="card-premium p-6 flex flex-col h-full entity-box animate-fade-up delay-300" data-entity="Cleaning">
-                    <div class="brand-indicator"></div>
-                     <div class="flex justify-between items-start mb-4">
-                        <div>
-                             <h4 class="font-bold text-lg">Cleaning</h4>
-                             <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">FACILITY</span>
-                        </div>
-                        <span class="count-badge member-count-badge">0</span>
+                <div class="card-ent entity-box" data-entity="Cleaning">
+                    <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <span class="text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded uppercase">Cleaning</span>
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
                     </div>
-                    <div class="mt-auto">
-                        <button class="w-full text-left text-xs font-semibold text-brand-purple flex justify-between items-center py-2 toggle-btn" onclick="toggleTeam(this)">
-                            <span>View Staff</span>
-                            <i class="fas fa-plus transition-transform"></i>
-                        </button>
-                        <div class="team-collapse">
-                            <div class="space-y-1 pt-2">
-                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Mounia" data-role="Cleaning">Mounia</div>
-                                <div class="clickable-person p-2 text-sm text-gray-700" data-name="Aziza" data-role="Cleaning">Aziza</div>
+                    <div class="bg-white">
+                        <div class="flex justify-between items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                            <span class="text-xs font-medium text-gray-500 uppercase">View Staff</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                        </div>
+                        <div class="team-content">
+                            <div class="list-row clickable-person" data-name="Mounia" data-role="Cleaning">
+                                <span class="text-sm font-medium">Mounia</span>
+                            </div>
+                            <div class="list-row clickable-person" data-name="Aziza" data-role="Cleaning">
+                                <span class="text-sm font-medium">Aziza</span>
                             </div>
                         </div>
                     </div>
@@ -412,193 +386,170 @@
             </div>
         </div>
 
-        <!-- California Main -->
-        <div class="mb-20 animate-fade-up delay-300" data-location="California">
-            <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-brand-dark">California (Avenue Banafsaj)</h3>
-                    <p class="text-brand-gray text-sm">Main Office</p>
+        <!-- California Operations -->
+        <div class="mb-16" data-location="California (Avenue Banafsaj)">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <div class="section-marker"></div>
+                    <h2 class="text-2xl font-bold text-gray-900">California (Avenue Banafsaj)</h2>
                 </div>
-                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
+                <button class="text-sm font-medium text-gray-500 hover:text-brand-purple transition-colors flex items-center gap-2 location-map-btn"
                     data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.7368258798906!2d-5.8449250237249295!3d35.78184052443994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c79a01a02e7a7%3A0x3742104ecd03499a!2sTraffic%20loop%20solutions!5e0!3m2!1sen!2sma!4v1746104811818!5m2!1sen!2sma">
-                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+                    <i class="fas fa-map-marker-alt"></i> View Map
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- GML Supervisor -->
-                <div class="card-premium p-0 entity-box animate-fade-up" data-entity="GML">
-                    <div class="p-6 border-b border-gray-100">
-                        <div class="flex justify-between items-start mb-4">
-                             <div class="brand-indicator mb-0"></div>
-                             <span class="count-badge member-count-badge">0</span>
-                        </div>
-                        <h4 class="font-bold text-xl mb-4">GML</h4>
-                        <div class="flex items-center gap-3 clickable-person p-2 -ml-2 hover:bg-gray-50" data-name="Hicham Mennour" data-role="Supervisor" data-telegram="@hichamwork">
-                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shadow-md">HM</div>
-                             <div>
-                                <div class="font-bold text-sm">Hicham Mennour</div>
-                                <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
-                             </div>
-                        </div>
-                    </div>
-                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
-                        <!-- Team 1 -->
-                        <div class="mb-2">
-                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
-                                <span>OTHERS TEAM</span>
-                                <i class="fas fa-plus text-[10px] opacity-50"></i>
-                            </button>
-                            <div class="team-collapse pl-2">
-                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mohamed khallouqi" data-telegram="@M_med_018">Mohamed khallouqi</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Ihab Lamsaadi" data-telegram="@ihablams">Ihab Lamsaadi</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Khalid Touil" data-telegram="@koli78">Khalid Touil</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Nadir Elabid" data-telegram="+212691936017">Nadir Elabid</div>
-                                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- GML -->
+                <div class="card-ent entity-box" data-entity="GML">
+                    <div class="p-5 flex items-center justify-between">
+                        <div class="flex items-center gap-3 clickable-person cursor-pointer" data-name="Hicham Mennour" data-role="Supervisor" data-telegram="@hichamwork">
+                            <div class="w-10 h-10 rounded bg-gray-900 text-white flex items-center justify-center text-xs font-bold">HM</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-base">GML</h4>
+                                <div class="text-[10px] text-gray-500 uppercase font-semibold">Hicham Mennour</div>
                             </div>
                         </div>
-                        <!-- Team 2 -->
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
+                    </div>
+                    
+                    <div class="team-section">
+                        <!-- Others Team -->
+                        <div class="border-b border-gray-100">
+                            <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                <span class="text-xs font-semibold text-gray-600">Others Team</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                            </div>
+                            <div class="team-content bg-gray-50/50">
+                                <div class="list-row clickable-person" data-name="Mohamed Khallouqi" data-telegram="@M_med_018"><span class="text-sm">Mohamed Khallouqi</span></div>
+                                <div class="list-row clickable-person" data-name="Ihab Lamsaadi" data-telegram="@ihablams"><span class="text-sm">Ihab Lamsaadi</span></div>
+                                <div class="list-row clickable-person" data-name="Khalid Touil" data-telegram="@koli78"><span class="text-sm">Khalid Touil</span></div>
+                                <div class="list-row clickable-person" data-name="Nadir Elabid" data-telegram="+212691936017"><span class="text-sm">Nadir Elabid</span></div>
+                            </div>
+                        </div>
+                        <!-- Gmail Team -->
                         <div>
-                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
-                                <span>GMAIL TEAM</span>
-                                <i class="fas fa-plus text-[10px] opacity-50"></i>
-                            </button>
-                            <div class="team-collapse pl-2">
-                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
-                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Akram Mlouki" data-role="Team Leader">Akram Mlouki (Lead)</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Oumaima El Moussaoui" data-telegram="@ELMusauiOumaima">Oumaima El Moussaoui</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Charif Edrissi" data-telegram="+212680743979">Charif Edrissi</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Khalid Mesbah" data-telegram="@khaledeeev">Khalid Mesbah</div>
-                                </div>
+                            <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                <span class="text-xs font-semibold text-gray-600">Gmail Team</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                            </div>
+                            <div class="team-content bg-gray-50/50">
+                                <div class="list-row clickable-person" data-name="Akram Mlouki" data-role="Team Leader"><span class="text-sm font-semibold">Akram Mlouki (Lead)</span></div>
+                                <div class="list-row clickable-person" data-name="Oumaima El Moussaoui" data-telegram="@ELMusauiOumaima"><span class="text-sm">Oumaima El Moussaoui</span></div>
+                                <div class="list-row clickable-person" data-name="Charif Edrissi" data-telegram="+212680743979"><span class="text-sm">Charif Edrissi</span></div>
+                                <div class="list-row clickable-person" data-name="Khalid Mesbah" data-telegram="@khaledeeev"><span class="text-sm">Khalid Mesbah</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- GMK Supervisor -->
-                <div class="card-premium p-0 entity-box animate-fade-up delay-100" data-entity="GMK">
-                    <div class="p-6 border-b border-gray-100">
-                        <div class="flex justify-between items-start mb-4">
-                             <div class="brand-indicator mb-0"></div>
-                             <span class="count-badge member-count-badge">0</span>
-                        </div>
-                        <h4 class="font-bold text-xl mb-4">GMK</h4>
-                        <div class="flex items-center gap-3 clickable-person p-2 -ml-2 hover:bg-gray-50" data-name="Hamza Fellah" data-role="Supervisor" data-telegram="+212677510391">
-                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shadow-md">HF</div>
-                             <div>
-                                <div class="font-bold text-sm">Hamza Fellah</div>
-                                <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
-                             </div>
-                        </div>
-                    </div>
-                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
-                        <!-- Hotmail -->
-                        <div class="mb-2">
-                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
-                                <span>HOTMAIL TEAM</span>
-                                <i class="fas fa-plus text-[10px] opacity-50"></i>
-                            </button>
-                            <div class="team-collapse pl-2">
-                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
-                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Marouane Latif" data-role="Team Leader" data-telegram="@marouanLatif">Marouane Latif (Lead)</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mhamed Gssayer" data-telegram="@Mhagsa">Mhamed Gssayer</div>
-                                </div>
+                <!-- GMK -->
+                <div class="card-ent entity-box" data-entity="GMK">
+                    <div class="p-5 flex items-center justify-between">
+                        <div class="flex items-center gap-3 clickable-person cursor-pointer" data-name="Hamza Fellah" data-role="Supervisor" data-telegram="+212677510391">
+                            <div class="w-10 h-10 rounded bg-gray-900 text-white flex items-center justify-center text-xs font-bold">HF</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-base">GMK</h4>
+                                <div class="text-[10px] text-gray-500 uppercase font-semibold">Hamza Fellah</div>
                             </div>
                         </div>
-                        <!-- Gmail -->
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
+                    </div>
+                    
+                    <div class="team-section">
+                        <!-- Hotmail Team -->
+                        <div class="border-b border-gray-100">
+                            <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                <span class="text-xs font-semibold text-gray-600">Hotmail Team</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                            </div>
+                            <div class="team-content bg-gray-50/50">
+                                <div class="list-row clickable-person" data-name="Marouane Latif" data-role="Team Leader" data-telegram="@marouanLatif"><span class="text-sm font-semibold">Marouane Latif (Lead)</span></div>
+                                <div class="list-row clickable-person" data-name="Mhamed Gssayer" data-telegram="@Mhagsa"><span class="text-sm">Mhamed Gssayer</span></div>
+                            </div>
+                        </div>
+                        <!-- Gmail Team -->
                         <div>
-                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
-                                <span>GMAIL TEAM</span>
-                                <i class="fas fa-plus text-[10px] opacity-50"></i>
-                            </button>
-                            <div class="team-collapse pl-2">
-                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
-                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Haitam Oullad Benhammou" data-role="Team Leader" data-telegram="@haitamouladbenhamou">Haitam O. Benhammou (Lead)</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Bouchra S'bai" data-telegram="+212698117856">Bouchra S'bai</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Naim Bellali" data-telegram="@Theusers212">Naim Bellali</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Houda Rossi" data-telegram="">Houda Rossi</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Firdaous El Harrak" data-telegram="@hk_firdaous">Firdaous El Harrak</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Nadia Samadi" data-telegram="@NadiiaSamadi">Nadia Samadi</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Yasir Babahammou" data-telegram="@babahammouyassir">Yasir Babahammou</div>
-                                </div>
+                            <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                <span class="text-xs font-semibold text-gray-600">Gmail Team</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                            </div>
+                            <div class="team-content bg-gray-50/50">
+                                <div class="list-row clickable-person" data-name="Haitam Oullad Benhammou" data-role="Team Leader" data-telegram="@haitamouladbenhamou"><span class="text-sm font-semibold">Haitam O. Benhammou</span></div>
+                                <div class="list-row clickable-person" data-name="Bouchra S'bai" data-telegram="+212698117856"><span class="text-sm">Bouchra S'bai</span></div>
+                                <div class="list-row clickable-person" data-name="Naim Bellali" data-telegram="@Theusers212"><span class="text-sm">Naim Bellali</span></div>
+                                <div class="list-row clickable-person" data-name="Houda Rossi"><span class="text-sm">Houda Rossi</span></div>
+                                <div class="list-row clickable-person" data-name="Firdaous El Harrak" data-telegram="@hk_firdaous"><span class="text-sm">Firdaous El Harrak</span></div>
+                                <div class="list-row clickable-person" data-name="Nadia Samadi" data-telegram="@NadiiaSamadi"><span class="text-sm">Nadia Samadi</span></div>
+                                <div class="list-row clickable-person" data-name="Yasir Babahammou" data-telegram="@babahammouyassir"><span class="text-sm">Yasir Babahammou</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- GM2 Supervisor -->
-                 <div class="card-premium p-0 entity-box animate-fade-up delay-200" data-entity="GM2">
-                    <div class="p-6 border-b border-gray-100">
-                        <div class="flex justify-between items-start mb-4">
-                             <div class="brand-indicator mb-0"></div>
-                             <span class="count-badge member-count-badge">0</span>
+                <!-- GM2 -->
+                <div class="card-ent entity-box" data-entity="GM2">
+                    <div class="p-5 flex items-center justify-between">
+                        <div class="flex items-center gap-3 clickable-person cursor-pointer" data-name="Ismail Semlali" data-role="Supervisor" data-telegram="@esmaelwork">
+                            <div class="w-10 h-10 rounded bg-gray-900 text-white flex items-center justify-center text-xs font-bold">IS</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-base">GM2</h4>
+                                <div class="text-[10px] text-gray-500 uppercase font-semibold">Ismail Semlali</div>
+                            </div>
                         </div>
-                        <h4 class="font-bold text-xl mb-4">GM2</h4>
-                        <div class="flex items-center gap-3 clickable-person p-2 -ml-2 hover:bg-gray-50" data-name="Ismail Semlali" data-role="Supervisor" data-telegram="@esmaelwork">
-                             <div class="w-10 h-10 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shadow-md">IS</div>
-                             <div>
-                                <div class="font-bold text-sm">Ismail Semlali</div>
-                                <div class="text-xs text-brand-gray uppercase tracking-wide">Supervisor</div>
-                             </div>
-                        </div>
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
                     </div>
-                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
+                    
+                    <div class="team-section">
                         <div>
-                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
-                                <span>GMAIL INBOX</span>
-                                <i class="fas fa-plus text-[10px] opacity-50"></i>
-                            </button>
-                            <div class="team-collapse pl-2">
-                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
-                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Mehdi Kazman" data-role="Team Leader" data-telegram="@mkazmane">Mehdi Kazman (Lead)</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Meryam Benoualidine" data-telegram="@meryam200">Meryam Benoualidine</div>
-                                </div>
+                            <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                <span class="text-xs font-semibold text-gray-600">Gmail Inbox</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                            </div>
+                            <div class="team-content bg-gray-50/50">
+                                <div class="list-row clickable-person" data-name="Mehdi Kazman" data-role="Team Leader" data-telegram="@mkazmane"><span class="text-sm font-semibold">Mehdi Kazman (Lead)</span></div>
+                                <div class="list-row clickable-person" data-name="Meryam Benoualidine" data-telegram="@meryam200"><span class="text-sm">Meryam Benoualidine</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- GMS/GMW -->
-                 <div class="card-premium p-0 entity-box animate-fade-up delay-300" data-entity="GMS">
-                    <div class="p-6 border-b border-gray-100">
-                         <div class="flex justify-between items-start mb-4">
-                             <div class="brand-indicator mb-0"></div>
-                             <span class="count-badge member-count-badge">0</span>
+                <div class="card-ent entity-box" data-entity="GMS">
+                    <div class="p-5 flex items-center justify-between">
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">GMS / GMW</h4>
+                            <div class="text-[10px] text-gray-500 uppercase font-semibold mt-1">Combined Unit</div>
                         </div>
-                        <h4 class="font-bold text-xl mb-4">GMS / GMW</h4>
-                         <div class="text-xs text-brand-gray mb-2">Combined Units</div>
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
                     </div>
-                    <div class="p-4 bg-gray-50/50 rounded-b-[20px]">
-                         <!-- GMS -->
-                         <div class="mb-2">
-                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
-                                <span>GMAIL SPAM (GMS)</span>
-                                <i class="fas fa-plus text-[10px] opacity-50"></i>
-                            </button>
-                            <div class="team-collapse pl-2">
-                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
-                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Adil Jbilou Mnari" data-role="Team Leader" data-telegram="@mohammedmnari">Adil Jbilou Mnari (Lead)</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Ayoub El Mahdi" data-telegram="@ayoubelmahdi">Ayoub El Mahdi</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Halima Es-sebyity" data-telegram="@Essebyity">Halima Es-sebyity</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Achraf Jebari" data-telegram="@achrafmaro">Achraf Jebari</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Firdaws El Haouzi" data-telegram="@firdaw123">Firdaws El Haouzi</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Adnan Bakkali" data-telegram="">Adnan Bakkali</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Soulaimane El Harras" data-telegram="">Soulaimane El Harras</div>
-                                    <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Fatima Zahrae Chaoui" data-telegram="@chaouiFatimazahrae">Fatima Zahrae Chaoui</div>
-                                </div>
+                    
+                    <div class="team-section">
+                        <!-- GMS -->
+                        <div class="border-b border-gray-100">
+                            <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                <span class="text-xs font-semibold text-gray-600">Gmail Spam (GMS)</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                            </div>
+                            <div class="team-content bg-gray-50/50">
+                                <div class="list-row clickable-person" data-name="Adil Jbilou Mnari" data-role="Team Leader" data-telegram="@mohammedmnari"><span class="text-sm font-semibold">Adil Jbilou Mnari (Lead)</span></div>
+                                <div class="list-row clickable-person" data-name="Ayoub El Mahdi" data-telegram="@ayoubelmahdi"><span class="text-sm">Ayoub El Mahdi</span></div>
+                                <div class="list-row clickable-person" data-name="Halima Es-sebyity" data-telegram="@Essebyity"><span class="text-sm">Halima Es-sebyity</span></div>
+                                <div class="list-row clickable-person" data-name="Achraf Jebari" data-telegram="@achrafmaro"><span class="text-sm">Achraf Jebari</span></div>
+                                <div class="list-row clickable-person" data-name="Firdaws El Haouzi" data-telegram="@firdaw123"><span class="text-sm">Firdaws El Haouzi</span></div>
+                                <div class="list-row clickable-person" data-name="Adnan Bakkali"><span class="text-sm">Adnan Bakkali</span></div>
+                                <div class="list-row clickable-person" data-name="Soulaimane El Harras"><span class="text-sm">Soulaimane El Harras</span></div>
+                                <div class="list-row clickable-person" data-name="Fatima Zahrae Chaoui" data-telegram="@chaouiFatimazahrae"><span class="text-sm">Fatima Zahrae Chaoui</span></div>
                             </div>
                         </div>
                         <!-- GMW -->
                         <div>
-                             <button class="w-full text-left text-xs font-semibold text-gray-600 hover:text-brand-purple flex justify-between items-center py-2 px-2 rounded hover:bg-white transition-colors toggle-btn" onclick="toggleTeam(this)">
-                                <span>YAHOO TEAM (GMW)</span>
-                                <i class="fas fa-plus text-[10px] opacity-50"></i>
-                            </button>
-                            <div class="team-collapse pl-2">
-                                <div class="space-y-1 border-l border-gray-200 pl-3 py-2">
-                                    <div class="clickable-person p-1.5 text-sm font-semibold text-brand-dark" data-name="Souhail Kabbour" data-role="Team Leader" data-telegram="@souhailkbr">Souhail Kabbour (Lead)</div>
-                                </div>
+                            <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                <span class="text-xs font-semibold text-gray-600">Yahoo Team (GMW)</span>
+                                <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                            </div>
+                            <div class="team-content bg-gray-50/50">
+                                <div class="list-row clickable-person" data-name="Souhail Kabbour" data-role="Team Leader" data-telegram="@souhailkbr"><span class="text-sm font-semibold">Souhail Kabbour (Lead)</span></div>
                             </div>
                         </div>
                     </div>
@@ -607,85 +558,87 @@
         </div>
 
         <!-- Sour El Maagazine -->
-         <div class="mb-20 animate-fade-up delay-300" data-location="Sour El Maagazine">
-            <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-brand-dark">Sour El Maagazine</h3>
-                    <p class="text-brand-gray text-sm">Secondary Office</p>
+        <div class="mb-16" data-location="Sour El Maagazine">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <div class="section-marker"></div>
+                    <h2 class="text-2xl font-bold text-gray-900">Sour El Maagazine</h2>
                 </div>
-                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
+                <button class="text-sm font-medium text-gray-500 hover:text-brand-purple transition-colors flex items-center gap-2 location-map-btn" 
                     data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.787475691114!2d-5.814137823725026!3d35.780596524508454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c7f142e05ed99%3A0x8c6ad852c8e2742e!2sPI%20Marketing!5e0!3m2!1sen!2sma!4v1746104905595!5m2!1sen!2sma">
-                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+                    <i class="fas fa-map-marker-alt"></i> View Map
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- GMA -->
-                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2 animate-fade-up" data-entity="GMA">
-                    <div class="p-6 border-b border-gray-100">
-                        <div class="flex justify-between items-start mb-4">
-                             <div class="brand-indicator mb-0"></div>
-                             <span class="count-badge member-count-badge">0</span>
-                        </div>
-                        <h4 class="font-bold text-xl mb-1">GMA</h4>
-                    </div>
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Hatim -->
+                <div class="card-ent entity-box col-span-1 md:col-span-2" data-entity="GMA">
+                    <div class="p-5 flex items-center justify-between">
                         <div>
-                             <div class="flex items-center gap-3 clickable-person mb-4 p-2 -ml-2 hover:bg-gray-50 rounded-xl" data-name="Hatim Lachiri" data-role="Team Leader" data-telegram="@HatimLac">
-                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold shadow-md">HL</div>
+                            <h4 class="font-bold text-gray-900 text-base">GMA</h4>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <!-- Hatim Group -->
+                        <div class="border-r border-gray-100">
+                            <div class="p-4 flex items-center gap-3 clickable-person cursor-pointer bg-gray-50/50" data-name="Hatim Lachiri" data-role="Team Leader" data-telegram="@HatimLac">
+                                <div class="w-8 h-8 rounded bg-gray-900 text-white flex items-center justify-center text-xs font-bold">HL</div>
                                 <div>
-                                    <div class="font-bold text-sm">Hatim Lachiri</div>
-                                    <div class="text-xs text-brand-gray uppercase tracking-wide">Team Leader</div>
+                                    <div class="font-bold text-sm text-gray-900">Hatim Lachiri</div>
+                                    <div class="text-[10px] text-gray-500 uppercase">Team Leader</div>
                                 </div>
                             </div>
-                            <!-- Sub Teams -->
-                             <div class="pl-5 border-l-2 border-gray-100 space-y-2">
-                                 <div>
-                                    <button class="w-full text-left text-xs font-semibold text-gray-500 hover:text-brand-purple py-1 toggle-btn" onclick="toggleTeam(this)">Yahoo Team</button>
-                                    <div class="team-collapse">
-                                        <div class="pl-2 pt-1 pb-2">
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mohamed Stitou">Mohamed Stitou (Lead)</div>
-                                        </div>
+                            <div class="team-section">
+                                <div class="border-b border-gray-100">
+                                    <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                        <span class="text-xs font-semibold text-gray-600">Yahoo Team</span>
+                                        <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
                                     </div>
-                                 </div>
-                                 <div>
-                                    <button class="w-full text-left text-xs font-semibold text-gray-500 hover:text-brand-purple py-1 toggle-btn" onclick="toggleTeam(this)">Gmail Spam</button>
-                                    <div class="team-collapse">
-                                        <div class="pl-2 pt-1 pb-2">
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mehdi Eziyami" data-telegram="@mehdiigm">Mehdi Eziyami (Lead)</div>
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Younes Benkirou">Younes Benkirou</div>
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="FatimaZohra Marso">FatimaZohra Marso</div>
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Yassine Tahiri">Yassine Tahiri</div>
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Yousra El Filali">Yousra El Filali</div>
-											<div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Asmae Khalfi">Asmae Khalfi</div>
-                                        </div>
+                                    <div class="team-content bg-gray-50/50">
+                                        <div class="list-row clickable-person" data-name="Mohamed Stitou"><span class="text-sm font-semibold">Mohamed Stitou (Lead)</span></div>
                                     </div>
-                                 </div>
-                             </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                        <span class="text-xs font-semibold text-gray-600">Gmail Spam</span>
+                                        <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                                    </div>
+                                    <div class="team-content bg-gray-50/50">
+                                        <div class="list-row clickable-person" data-name="Mehdi Eziyami" data-telegram="@mehdiigm"><span class="text-sm font-semibold">Mehdi Eziyami (Lead)</span></div>
+                                        <div class="list-row clickable-person" data-name="Younes Benkirou"><span class="text-sm">Younes Benkirou</span></div>
+                                        <div class="list-row clickable-person" data-name="FatimaZohra Marso"><span class="text-sm">FatimaZohra Marso</span></div>
+                                        <div class="list-row clickable-person" data-name="Yassine Tahiri"><span class="text-sm">Yassine Tahiri</span></div>
+                                        <div class="list-row clickable-person" data-name="Yousra El Filali"><span class="text-sm">Yousra El Filali</span></div>
+                                        <div class="list-row clickable-person" data-name="Asmae Khalfi"><span class="text-sm">Asmae Khalfi</span></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Ahmed -->
+                        <!-- Ahmed Group -->
                         <div>
-                             <div class="flex items-center gap-3 clickable-person mb-4 p-2 -ml-2 hover:bg-gray-50 rounded-xl" data-name="Ahmed Benjelloun Fahri" data-role="Team Leader">
-                                <div class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm font-bold shadow-md">AB</div>
+                            <div class="p-4 flex items-center gap-3 clickable-person cursor-pointer bg-gray-50/50" data-name="Ahmed Benjelloun Fahri" data-role="Team Leader">
+                                <div class="w-8 h-8 rounded bg-gray-900 text-white flex items-center justify-center text-xs font-bold">AB</div>
                                 <div>
-                                    <div class="font-bold text-sm">Ahmed Benjelloun Fahri</div>
-                                    <div class="text-xs text-brand-gray uppercase tracking-wide">Team Leader</div>
+                                    <div class="font-bold text-sm text-gray-900">Ahmed Benjelloun Fahri</div>
+                                    <div class="text-[10px] text-gray-500 uppercase">Team Leader</div>
                                 </div>
                             </div>
-                             <div class="pl-5 border-l-2 border-gray-100 space-y-2">
-                                 <div>
-                                    <button class="w-full text-left text-xs font-semibold text-gray-500 hover:text-brand-purple py-1 toggle-btn" onclick="toggleTeam(this)">Others Team</button>
-                                    <div class="team-collapse">
-                                        <div class="pl-2 pt-1 pb-2">
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Afaf Dahimi">Afaf Dahimi</div>
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Mohamed Farsani">Mohamed Farsani</div>
-                                            <div class="clickable-person p-1.5 text-sm text-gray-600" data-name="Oumaima Maich">Oumaima Maich</div>
-                                        </div>
+                            <div class="team-section">
+                                <div>
+                                    <div class="flex justify-between items-center px-5 py-3 cursor-pointer hover:bg-gray-50 transition-colors toggle-btn" onclick="toggleSection(this)">
+                                        <span class="text-xs font-semibold text-gray-600">Others Team</span>
+                                        <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
                                     </div>
-                                 </div>
-                             </div>
+                                    <div class="team-content bg-gray-50/50">
+                                        <div class="list-row clickable-person" data-name="Afaf Dahimi"><span class="text-sm">Afaf Dahimi</span></div>
+                                        <div class="list-row clickable-person" data-name="Mohamed Farsani"><span class="text-sm">Mohamed Farsani</span></div>
+                                        <div class="list-row clickable-person" data-name="Oumaima Maich"><span class="text-sm">Oumaima Maich</span></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -693,128 +646,122 @@
         </div>
 
         <!-- Riad Tetouan -->
-        <div class="mb-12 animate-fade-up delay-300" data-location="Riad Tetouan">
-             <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-brand-dark">Riad Tetouan</h3>
-                    <p class="text-brand-gray text-sm">IT & Development</p>
+        <div class="mb-16" data-location="Riad Tetouan">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <div class="section-marker"></div>
+                    <h2 class="text-2xl font-bold text-gray-900">Riad Tetouan</h2>
                 </div>
-                 <button class="btn-secondary w-10 h-10 rounded-full flex items-center justify-center location-map-btn transition-transform hover:rotate-12"
+                <button class="text-sm font-medium text-gray-500 hover:text-brand-purple transition-colors flex items-center gap-2 location-map-btn" 
                     data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1477.0876264023589!2d-5.801125955928066!3d35.77059454517391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b81ca76fe8ea9%3A0x288e0c1dc391b2d7!2sTangier%20Office%20Center!5e1!3m2!1sen!2sma!4v1746174355291!5m2!1sen!2sma">
-                    <i class="fas fa-map-marker-alt text-brand-purple"></i>
+                    <i class="fas fa-map-marker-alt"></i> View Map
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                 <div class="card-premium p-0 entity-box col-span-1 md:col-span-2 animate-fade-up" data-entity="EIN CONSULTING">
-                     <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                         <div>
-                            <div class="brand-indicator"></div>
-                            <h4 class="font-bold text-xl">EIN CONSULTING</h4>
-                         </div>
-                         <div class="flex items-center gap-4">
-                             <span class="count-badge member-count-badge">0</span>
-                             <!-- IT Manager -->
-                             <div class="text-right clickable-person p-2 rounded-xl hover:bg-gray-50" data-name="Mohamed Aoujil" data-role="IT Manager" data-telegram="@aoujilmed">
-                                 <div class="font-bold text-sm text-brand-dark">Mohamed Aoujil</div>
-                                 <div class="text-xs text-brand-purple font-bold">IT MANAGER</div>
-                             </div>
-                         </div>
-                     </div>
-                     
-                     <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-                         <!-- Reporting -->
-                         <div class="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
-                             <div class="flex items-center gap-2 mb-3">
-                                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-chart-line text-xs"></i></div>
-                                 <span class="font-bold text-sm">Reporting</span>
-                             </div>
-                             <!-- Reporting Manager -->
-                             <div class="clickable-person p-2 mb-2 bg-white rounded-lg border border-gray-100 shadow-sm" data-name="Jihane El Moustaid" data-role="Manager">
-                                 <div class="text-xs font-bold text-brand-dark">Jihane El Moustaid</div>
-                                 <div class="text-[10px] text-gray-500">Manager</div>
-                             </div>
-                             <div class="space-y-1">
-                                 <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Hamza Nigriyya">Hamza Nigriyya</div>
-                             </div>
-                         </div>
+            <div class="card-ent entity-box" data-entity="EIN CONSULTING">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-xl">EIN CONSULTING</h4>
+                        <div class="text-xs text-gray-500">IT & Development</div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-bold text-gray-400 count-badge">0</span>
+                        <div class="flex items-center gap-3 clickable-person bg-gray-50 px-4 py-2 rounded-lg cursor-pointer" data-name="Mohamed Aoujil" data-role="IT Manager" data-telegram="@aoujilmed">
+                            <div class="text-right">
+                                <div class="font-bold text-sm text-gray-900">Mohamed Aoujil</div>
+                                <div class="text-[10px] text-brand-purple font-bold uppercase tracking-wide">IT Manager</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                    <!-- Reporting -->
+                    <div class="p-5">
+                        <div class="flex items-center gap-2 mb-4 text-gray-500">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="text-sm font-bold uppercase tracking-wide">Reporting</span>
+                        </div>
+                        <div class="list-row clickable-person bg-gray-50 rounded-lg mb-2" data-name="Jihane El Moustaid" data-role="Manager">
+                            <span class="text-sm font-semibold">Jihane El Moustaid</span>
+                            <span class="text-[10px] text-gray-400 uppercase">Manager</span>
+                        </div>
+                        <div class="list-row clickable-person border-none" data-name="Hamza Nigriyya"><span class="text-sm">Hamza Nigriyya</span></div>
+                    </div>
 
-                         <!-- Support -->
-                         <div class="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
-                             <div class="flex items-center gap-2 mb-3">
-                                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-headset text-xs"></i></div>
-                                 <span class="font-bold text-sm">Support</span>
-                             </div>
-                             <button class="w-full text-center text-xs text-brand-purple font-semibold py-2 bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow toggle-btn" onclick="toggleTeam(this)">Show Team</button>
-                             <div class="team-collapse">
-                                <div class="space-y-1 pt-2">
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Abdellatif Mrini">Abdellatif Mrini</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Mohamed Abasidi">Mohamed Abasidi</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Abdelhay Amrani">Abdelhay Amrani</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Mouad El Mediouni">Mouad El Mediouni</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Hafsa M'bital">Hafsa M'bital</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Mohammed Ifri">Mohammed Ifri</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Abdelali Laatamli">Abdelali Laatamli</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Ilias Anouar">Ilias Anouar</div>
-                                    <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Najoua">Najoua</div>
-                                </div>
-                             </div>
-                         </div>
+                    <!-- Support -->
+                    <div class="p-5">
+                        <div class="flex items-center gap-2 mb-4 text-gray-500">
+                            <i class="fas fa-headset"></i>
+                            <span class="text-sm font-bold uppercase tracking-wide">Support</span>
+                        </div>
+                        <div class="flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors toggle-btn mb-2" onclick="toggleSection(this)">
+                            <span class="text-xs font-medium text-gray-500 uppercase">Show Team</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-400 chevron"></i>
+                        </div>
+                        <div class="team-content">
+                            <div class="list-row clickable-person" data-name="Abdellatif Mrini"><span class="text-sm">Abdellatif Mrini</span></div>
+                            <div class="list-row clickable-person" data-name="Mohamed Abasidi"><span class="text-sm">Mohamed Abasidi</span></div>
+                            <div class="list-row clickable-person" data-name="Abdelhay Amrani"><span class="text-sm">Abdelhay Amrani</span></div>
+                            <div class="list-row clickable-person" data-name="Mouad El Mediouni"><span class="text-sm">Mouad El Mediouni</span></div>
+                            <div class="list-row clickable-person" data-name="Hafsa M'bital"><span class="text-sm">Hafsa M'bital</span></div>
+                            <div class="list-row clickable-person" data-name="Mohammed Ifri"><span class="text-sm">Mohammed Ifri</span></div>
+                            <div class="list-row clickable-person" data-name="Abdelali Laatamli"><span class="text-sm">Abdelali Laatamli</span></div>
+                            <div class="list-row clickable-person" data-name="Ilias Anouar"><span class="text-sm">Ilias Anouar</span></div>
+                            <div class="list-row clickable-person" data-name="Najoua"><span class="text-sm">Najoua</span></div>
+                        </div>
+                    </div>
 
-                         <!-- Dev -->
-                         <div class="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
-                             <div class="flex items-center gap-2 mb-3">
-                                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"><i class="fas fa-code text-xs"></i></div>
-                                 <span class="font-bold text-sm">Development</span>
-                             </div>
-                             <div class="clickable-person p-2 mb-2 bg-white rounded-lg border border-gray-100 shadow-sm" data-name="Younes Zaidi" data-role="Lead Dev">
-                                 <div class="text-xs font-bold text-brand-dark">Younes Zaidi</div>
-                                 <div class="text-[10px] text-gray-500">Lead Developer</div>
-                             </div>
-                             <div class="space-y-1">
-                                 <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Ouarda Taimi">Ouarda Taimi</div>
-                                 <div class="clickable-person p-1.5 text-xs text-gray-600" data-name="Zakariyae Chmaili">Zakariyae Chmaili</div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
+                    <!-- Dev -->
+                    <div class="p-5">
+                        <div class="flex items-center gap-2 mb-4 text-gray-500">
+                            <i class="fas fa-code"></i>
+                            <span class="text-sm font-bold uppercase tracking-wide">Development</span>
+                        </div>
+                        <div class="list-row clickable-person bg-gray-50 rounded-lg mb-2" data-name="Younes Zaidi" data-role="Lead Dev">
+                            <span class="text-sm font-semibold">Younes Zaidi</span>
+                            <span class="text-[10px] text-gray-400 uppercase">Lead</span>
+                        </div>
+                        <div class="list-row clickable-person" data-name="Ouarda Taimi"><span class="text-sm">Ouarda Taimi</span></div>
+                        <div class="list-row clickable-person" data-name="Zakariyae Chmaili"><span class="text-sm">Zakariyae Chmaili</span></div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </main>
 
-    <!-- Modal System -->
-    <!-- Profile Modal -->
-    <div id="profileModal" class="modal-overlay flex items-center justify-center p-4">
-        <div class="modal-card bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden relative" onclick="event.stopPropagation()">
-            <button class="absolute top-4 right-4 text-gray-400 hover:text-brand-dark z-10 p-2 transition-transform hover:rotate-90" onclick="closeModals()">
+    <!-- Modals -->
+    <div id="profileModal" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-sm relative p-0" onclick="event.stopPropagation()">
+            <div class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-br from-gray-900 to-gray-800 rounded-t-2xl"></div>
+            <button class="absolute top-4 right-4 text-white/80 hover:text-white z-10" onclick="closeModals()">
                 <i class="fas fa-times text-lg"></i>
             </button>
-            <div class="p-8 text-center">
-                <div class="w-24 h-24 mx-auto bg-brand-purple text-white rounded-full flex items-center justify-center text-3xl font-bold mb-6 shadow-floating shadow-purple-200">
+            <div class="pt-12 px-6 pb-8 text-center relative">
+                <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 shadow-lg border-4 border-white relative z-10 text-gray-900">
                     <span id="modalInitials">AB</span>
                 </div>
-                <h3 id="modalName" class="text-2xl font-bold text-brand-dark mb-1 tracking-tight">Name</h3>
+                <h3 id="modalName" class="text-2xl font-bold text-gray-900 mb-1">Name</h3>
                 <p id="modalRole" class="text-brand-purple font-semibold text-xs uppercase tracking-widest">Role</p>
                 
-                <div class="mt-8 space-y-4 text-left">
-                    <div class="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100 transition-colors hover:bg-gray-100">
-                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-users"></i></div>
+                <div class="mt-8 space-y-3 text-left">
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm border border-gray-100"><i class="fas fa-users text-sm"></i></div>
                          <div>
-                             <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Team</p>
-                             <p id="modalTeam" class="text-sm font-semibold text-gray-700">Team</p>
+                             <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wide">Team</p>
+                             <p id="modalTeam" class="text-sm font-semibold text-gray-900">Team</p>
                          </div>
                     </div>
-                     <div class="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100 transition-colors hover:bg-gray-100">
-                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm"><i class="fas fa-map-pin"></i></div>
+                     <div class="flex items-center gap-4 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm border border-gray-100"><i class="fas fa-map-pin text-sm"></i></div>
                          <div>
-                             <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Location</p>
-                             <p id="modalLocation" class="text-sm font-semibold text-gray-700">Location</p>
+                             <p class="text-[10px] uppercase text-gray-400 font-bold tracking-wide">Location</p>
+                             <p id="modalLocation" class="text-sm font-semibold text-gray-900">Location</p>
                          </div>
                     </div>
-                    <!-- Telegram Button -->
-                    <a id="modalTelegramLink" href="#" target="_blank" class="flex items-center justify-center gap-3 w-full py-3.5 rounded-2xl bg-[#0088cc] text-white font-semibold hover:bg-[#0077b5] transition-all shadow-lg shadow-blue-100 hover:shadow-blue-200 active:scale-95 mt-6">
-                        <i class="fab fa-telegram-plane text-lg"></i> 
-                        <span>Contact via Telegram</span>
+                    <a id="modalTelegramLink" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-lg bg-gray-900 text-white font-medium hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 mt-6">
+                        <i class="fab fa-telegram-plane"></i> <span>Message on Telegram</span>
                     </a>
                 </div>
             </div>
@@ -822,13 +769,13 @@
     </div>
 
     <!-- Map Modal -->
-    <div id="mapModal" class="modal-overlay flex items-center justify-center p-4">
-        <div class="modal-card bg-white rounded-3xl shadow-2xl w-full max-w-4xl h-[70vh] flex flex-col overflow-hidden relative" onclick="event.stopPropagation()">
-            <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-white z-10">
-                <h3 class="font-bold text-xl text-brand-dark tracking-tight">Location View</h3>
-                <button class="text-gray-400 hover:text-brand-dark p-2 transition-transform hover:rotate-90" onclick="closeModals()"><i class="fas fa-times text-xl"></i></button>
+    <div id="mapModal" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-5xl h-[80vh] flex flex-col relative" onclick="event.stopPropagation()">
+            <div class="p-4 flex justify-between items-center border-b border-gray-200">
+                <h3 class="font-bold text-lg text-gray-900">Location Map</h3>
+                <button class="text-gray-400 hover:text-gray-900 p-2" onclick="closeModals()"><i class="fas fa-times text-lg"></i></button>
             </div>
-            <iframe id="mapFrame" class="w-full h-full bg-gray-100" frameborder="0"></iframe>
+            <iframe id="mapFrame" class="w-full h-full bg-gray-100 rounded-b-2xl" frameborder="0"></iframe>
         </div>
     </div>
 
@@ -860,16 +807,6 @@
                 const panel = document.getElementById('filterPanel');
                 if (panel.classList.contains('hidden')) {
                     panel.classList.remove('hidden');
-                    // Small animation for panel content
-                    panel.querySelectorAll('.container > *').forEach((el, i) => {
-                        el.style.opacity = '0';
-                        el.style.transform = 'translateY(-10px)';
-                        setTimeout(() => {
-                            el.style.transition = 'all 0.3s ease';
-                            el.style.opacity = '1';
-                            el.style.transform = 'translateY(0)';
-                        }, i * 50);
-                    });
                 } else {
                     panel.classList.add('hidden');
                 }
@@ -888,96 +825,76 @@
             });
         });
 
-        /* --- Team Toggle (Smooth) --- */
-        window.toggleTeam = function(btn) {
-            const container = btn.parentElement;
-            const collapse = container.querySelector('.team-collapse') || btn.nextElementSibling;
-            const icon = btn.querySelector('.fa-plus');
+        /* --- Toggle Logic (Fixed for Isolation) --- */
+        window.toggleSection = function(btn) {
+            // Find the NEXT sibling that is the content
+            // Assuming structure: Header -> Content
+            const container = btn.parentElement; 
+            const content = container.querySelector('.team-content') || btn.nextElementSibling;
+            
+            if (!content) return;
 
-            if(collapse.classList.contains('expanded')) {
-                collapse.classList.remove('expanded');
-                btn.classList.remove('text-brand-purple');
-                if(icon) {
-                    icon.classList.remove('fa-minus');
-                    icon.classList.add('fa-plus');
-                }
+            const icon = btn.querySelector('.chevron');
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                if(icon) icon.classList.remove('rotated');
             } else {
-                collapse.classList.add('expanded');
-                btn.classList.add('text-brand-purple');
-                if(icon) {
-                    icon.classList.remove('fa-plus');
-                    icon.classList.add('fa-minus');
-                }
+                content.classList.add('expanded');
+                if(icon) icon.classList.add('rotated');
             }
         };
 
         window.expandAllTeams = () => {
-            document.querySelectorAll('.team-collapse').forEach(el => {
+            document.querySelectorAll('.team-content').forEach(el => {
                 if(!el.classList.contains('expanded')) {
-                    const btn = el.parentElement.querySelector('.toggle-btn');
-                    if(btn) toggleTeam(btn);
+                    el.classList.add('expanded');
+                    // Find trigger
+                    const container = el.parentElement;
+                    const icon = container.querySelector('.chevron');
+                    if(icon) icon.classList.add('rotated');
                 }
             });
         };
 
         window.collapseAllTeams = () => {
-            document.querySelectorAll('.team-collapse').forEach(el => {
+            document.querySelectorAll('.team-content').forEach(el => {
                 if(el.classList.contains('expanded')) {
-                    const btn = el.parentElement.querySelector('.toggle-btn');
-                    if(btn) toggleTeam(btn);
+                    el.classList.remove('expanded');
+                    const container = el.parentElement;
+                    const icon = container.querySelector('.chevron');
+                    if(icon) icon.classList.remove('rotated');
                 }
             });
         };
 
-        /* --- Statistics --- */
+        /* --- Stats --- */
         function updateStats() {
-            // Global Stats
             const totalMembers = document.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
-            const totalTeams = document.querySelectorAll('[data-entity]:not(.filtered-hidden)').length; // Approximation using entity boxes
-            const totalLocs = document.querySelectorAll('[data-location]:not(.filtered-hidden)').length;
+            document.getElementById('stat-members').innerText = totalMembers;
 
-            animateValue('total-members-count', parseInt(document.getElementById('total-members-count').innerText), totalMembers, 800);
-            animateValue('total-teams-count', parseInt(document.getElementById('total-teams-count').innerText), totalTeams, 800);
-            animateValue('total-loc-count', parseInt(document.getElementById('total-loc-count').innerText), totalLocs, 800);
+            const totalTeams = document.querySelectorAll('.entity-box:not(.filtered-hidden)').length;
+            document.getElementById('stat-teams').innerText = totalTeams;
 
-            // Per Entity Badge Counts
+            // Count Badges
             document.querySelectorAll('.entity-box').forEach(box => {
                 const count = box.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
-                const badge = box.querySelector('.member-count-badge');
-                if(badge) {
-                    badge.textContent = `${count} Members`;
-                    badge.style.opacity = count === 0 ? '0.5' : '1';
-                }
+                const badge = box.querySelector('.count-badge');
+                if(badge) badge.innerText = count;
             });
-        }
-
-        function animateValue(id, start, end, duration) {
-            if (start === end) return;
-            const range = end - start;
-            let current = start;
-            const increment = end > start ? 1 : -1;
-            const stepTime = Math.abs(Math.floor(duration / range));
-            const obj = document.getElementById(id);
-            const timer = setInterval(function() {
-                current += increment;
-                obj.innerHTML = current;
-                if (current == end) {
-                    clearInterval(timer);
-                }
-            }, Math.max(stepTime, 20));
         }
 
         /* --- Filtering --- */
         function initFilters() {
-            // Populate Location Select
-            const locs = new Set();
-            document.querySelectorAll('[data-location]').forEach(el => locs.add(el.dataset.location));
             const locSelect = document.getElementById('locationFilter');
-            locs.forEach(l => {
+            const mainLocations = ["California (Avenue Banafsaj)", "Sour El Maagazine", "Riad Tetouan"];
+            
+            mainLocations.forEach(l => {
                 const opt = document.createElement('option');
                 opt.value = l; opt.textContent = l;
                 locSelect.appendChild(opt);
             });
+
             locSelect.addEventListener('change', () => filterData(document.getElementById('globalSearch').value));
 
             // Populate Roles
@@ -995,29 +912,36 @@
 
         function filterData(searchTerm) {
             const term = searchTerm.toLowerCase();
-            const location = document.getElementById('locationFilter').value;
+            const locationFilter = document.getElementById('locationFilter').value;
             const selectedRoles = Array.from(document.querySelectorAll('#roleDropdown input:checked')).map(cb => cb.value);
 
-            // Update text
-            document.querySelector('.selected-role-text').textContent = selectedRoles.length ? `${selectedRoles.length} Roles Selected` : 'All Roles';
+            document.querySelector('.selected-role-text').textContent = selectedRoles.length ? `${selectedRoles.length} Roles` : 'All Roles';
 
             document.querySelectorAll('.clickable-person').forEach(person => {
                 const name = person.dataset.name.toLowerCase();
                 const role = (person.dataset.role || '').toLowerCase();
-                const pLoc = (person.dataset.location || person.closest('[data-location]')?.dataset.location || '').toLowerCase();
+                const pLocRaw = (person.dataset.location || person.closest('[data-location]')?.dataset.location || '');
                 
+                let pLocNormalized = "";
+                if(pLocRaw.includes("California")) pLocNormalized = "California (Avenue Banafsaj)";
+                else if(pLocRaw.includes("Sour")) pLocNormalized = "Sour El Maagazine";
+                else if(pLocRaw.includes("Riad")) pLocNormalized = "Riad Tetouan";
+                else pLocNormalized = pLocRaw; 
+
                 const matchTerm = !term || name.includes(term) || role.includes(term);
-                const matchLoc = !location || pLoc === location.toLowerCase();
+                const matchLoc = !locationFilter || pLocNormalized === locationFilter; 
                 const matchRole = !selectedRoles.length || selectedRoles.includes(person.dataset.role);
 
                 if(matchTerm && matchLoc && matchRole) {
                     person.classList.remove('filtered-hidden');
-                    // Auto-expand parent if searching
                     if(term) {
-                        const collapse = person.closest('.team-collapse');
-                        if(collapse && !collapse.classList.contains('expanded')) {
-                            const btn = collapse.parentElement.querySelector('.toggle-btn');
-                            if(btn) toggleTeam(btn);
+                        // Traverse parents to expand if searched
+                        let parent = person.closest('.team-content');
+                        if (parent && !parent.classList.contains('expanded')) {
+                            parent.classList.add('expanded');
+                            let container = parent.parentElement;
+                            let icon = container.querySelector('.chevron');
+                            if(icon) icon.classList.add('rotated');
                         }
                     }
                 } else {
@@ -1025,39 +949,38 @@
                 }
             });
 
-            // Hide empty containers logic (simplified for brevity)
             document.querySelectorAll('.entity-box').forEach(box => {
                 const visible = box.querySelectorAll('.clickable-person:not(.filtered-hidden)').length;
-                box.style.display = visible ? 'flex' : 'none';
+                box.style.display = visible ? 'block' : 'none';
             });
             
-            // Recalculate stats
+            document.querySelectorAll('[data-location]').forEach(section => {
+                 const visibleBoxes = Array.from(section.querySelectorAll('.entity-box')).some(b => b.style.display !== 'none');
+                 section.style.display = visibleBoxes ? 'block' : 'none';
+            });
+            
             updateStats();
         }
 
         /* --- Modals --- */
         function openProfile(el) {
-            document.getElementById('modalName').textContent = el.dataset.name;
-            document.getElementById('modalRole').textContent = el.dataset.role || 'Member';
+            document.getElementById('modalName').innerText = el.dataset.name;
+            document.getElementById('modalRole').innerText = el.dataset.role || 'Team Member';
             
-            // Initials
             const nameParts = el.dataset.name.split(' ');
             const initials = (nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : '')).toUpperCase();
-            document.getElementById('modalInitials').textContent = initials;
+            document.getElementById('modalInitials').innerText = initials;
 
-            // Context
             let team = el.dataset.team;
             if(!team) {
-                // Try to infer from header
                 const box = el.closest('.entity-box');
                 if(box) team = box.dataset.entity;
             }
-            document.getElementById('modalTeam').textContent = team || 'General';
+            document.getElementById('modalTeam').innerText = team || 'General';
             
             const loc = el.dataset.location || el.closest('[data-location]')?.dataset.location || 'Main Office';
-            document.getElementById('modalLocation').textContent = loc;
+            document.getElementById('modalLocation').innerText = loc;
 
-            // Telegram
             const tgBtn = document.getElementById('modalTelegramLink');
             if(el.dataset.telegram) {
                 tgBtn.href = `https://t.me/${el.dataset.telegram.replace('@','')}`;
@@ -1066,32 +989,38 @@
                 tgBtn.style.display = 'none';
             }
 
-            document.getElementById('profileModal').classList.add('show');
+            document.getElementById('profileModal').classList.remove('hidden');
+            // Small delay for transition
+            setTimeout(() => {
+                document.getElementById('profileModal').classList.add('show');
+            }, 10);
         }
 
         function openMap(url) {
             document.getElementById('mapFrame').src = url;
-            document.getElementById('mapModal').classList.add('show');
+            document.getElementById('mapModal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('mapModal').classList.add('show');
+            }, 10);
         }
 
         function closeModals() {
             document.querySelectorAll('.modal-overlay').forEach(el => el.classList.remove('show'));
             setTimeout(() => {
+                document.querySelectorAll('.modal-overlay').forEach(el => el.classList.add('hidden'));
                 document.getElementById('mapFrame').src = '';
             }, 300);
         }
 
-        /* --- Export PDF --- */
+        /* --- Export --- */
         function exportPDF() {
             expandAllTeams();
             const element = document.querySelector('.org-chart-canvas');
-            
-            // Hide navbar/filters for print
-            const nav = document.querySelector('nav');
+            const nav = document.querySelector('.header-bar');
             nav.style.display = 'none';
 
             html2pdf().from(element).set({
-                margin: 10,
+                margin: 5,
                 filename: 'traffic_loop_org_chart.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, letterRendering: true },
@@ -1104,6 +1033,3 @@
     </script>
 </body>
 </html>
-
-
-
